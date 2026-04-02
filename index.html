@@ -1,20 +1,340 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barongo Product Form</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barongo Product Form</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e2e8f0; font-family: system-ui, sans-serif; padding: 16px; }
+  h1 { color: #a78bfa; font-size: 20px; margin-bottom: 20px; text-align: center; letter-spacing: 1px; }
+  .section-title { font-size: 11px; font-weight: bold; color: #a78bfa; letter-spacing: 2px; margin: 16px 0 8px; }
+  .toggle-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .toggle-btn { flex: 1; padding: 8px; font-size: 13px; background: #1e1e2e; color: #e2e8f0; border: 1px solid #444; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+  .toggle-btn.active { background: #7c3aed; border-color: #7c3aed; }
+  input, select { width: 100%; padding: 10px; background: #1e1e2e; color: #e2e8f0; border: 1px solid #333; border-radius: 8px; font-size: 14px; margin-bottom: 10px; outline: none; }
+  input:focus, select:focus { border-color: #7c3aed; }
+  input::placeholder { color: #555; }
+  .card { background: #1a1a2e; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+  .variant-card { background: #12122a; border-radius: 8px; padding: 12px; margin-bottom: 8px; border: 1px solid #2a2a4a; }
+  .variant-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .del-btn { background: none; border: none; color: #f87171; font-size: 18px; cursor: pointer; padding: 0 4px; }
+  .add-btn { width: 100%; padding: 10px; background: #1e1e2e; color: #a78bfa; border: 1px solid #a78bfa; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 4px; }
+  .preview-box { background: #1a1a2e; border-radius: 10px; padding: 14px; white-space: pre-wrap; font-size: 13px; line-height: 1.6; color: #e2e8f0; min-height: 80px; margin-bottom: 16px; border: 1px solid #2a2a4a; }
+  .action-row { display: flex; gap: 8px; margin-top: 8px; }
+  .btn-copy { flex: 1; padding: 14px; font-size: 15px; background: #7c3aed; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+  .btn-copy:active { background: #6d28d9; }
+  .hidden { display: none; }
+  label { font-size: 12px; color: #888; margin-bottom: 4px; display: block; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+</style>
 </head>
 <body>
-    <h1>Barongo Product Form</h1>
-    <form action="#" method="post">
-        <label for="productName">Product Name:</label><br>
-        <input type="text" id="productName" name="productName"><br>
-        <label for="productDescription">Product Description:</label><br>
-        <textarea id="productDescription" name="productDescription"></textarea><br>
-        <label for="productPrice">Product Price:</label><br>
-        <input type="number" id="productPrice" name="productPrice"><br>
-        <input type="submit" value="Submit">
-    </form>
+
+<h1>🛒 BARONGO PRODUCT FORM</h1>
+
+<!-- PRODUCT NAME -->
+<div class="section-title">PRODUCT NAME</div>
+<input type="text" id="productName" placeholder="e.g. Lunch Box" oninput="updatePreview()">
+
+<!-- PRODUCT TYPE -->
+<div class="section-title">PRODUCT TYPE</div>
+<div class="toggle-row">
+  <button class="toggle-btn active" id="btnSingle" onclick="setType('single')">Single</button>
+  <button class="toggle-btn" id="btnVariant" onclick="setType('variant')">Variants</button>
+</div>
+
+<!-- CAPTION MODE -->
+<div class="section-title">CAPTION MODE</div>
+<div class="toggle-row">
+  <button class="toggle-btn active" id="btnStandard" onclick="setMode('standard')">Standard</button>
+  <button class="toggle-btn" id="btnRepost" onclick="setMode('repost')">Repost</button>
+  <button class="toggle-btn" id="btnFlash" onclick="setMode('flash')">Flash</button>
+</div>
+
+<!-- SINGLE PRICING -->
+<div id="singleSection">
+  <div class="section-title">RETAIL</div>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label>Price (TZS)</label>
+        <input type="number" id="priceRetail" placeholder="5500" oninput="updatePreview()">
+      </div>
+      <div>
+        <label>Qty (empty = 1pc)</label>
+        <input type="number" id="retailQty" placeholder="12" oninput="updatePreview()">
+      </div>
+    </div>
+    <label>Original Price (for strikethrough)</label>
+    <input type="number" id="rOg" placeholder="optional" oninput="updatePreview()">
+    <label>Status</label>
+    <select id="retailStatus" onchange="updateVisibility()">
+      <option value="in_stock">In Stock</option>
+      <option value="low_stock">Low Stock</option>
+      <option value="out_of_stock">Out of Stock</option>
+    </select>
+  </div>
+
+  <div class="section-title">WHOLESALE</div>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label>Price (TZS)</label>
+        <input type="number" id="priceWholesale" placeholder="290000" oninput="updatePreview()">
+      </div>
+      <div>
+        <label>Unit Qty</label>
+        <input type="number" id="unit" placeholder="800" oninput="updatePreview()">
+      </div>
+    </div>
+    <label>Original Price (for strikethrough)</label>
+    <input type="number" id="wOg" placeholder="optional" oninput="updatePreview()">
+    <label>Status</label>
+    <select id="wholesaleStatus" onchange="updateVisibility()">
+      <option value="in_stock">In Stock</option>
+      <option value="low_stock">Low Stock</option>
+      <option value="out_of_stock">Out of Stock</option>
+    </select>
+  </div>
+
+  <!-- RESTOCK -->
+  <div id="restockSection" class="hidden">
+    <div class="section-title">RESTOCK DATE</div>
+    <div class="card">
+      <label>Date (e.g. April 5)</label>
+      <input type="text" id="restockDate" placeholder="optional" oninput="updatePreview()">
+    </div>
+  </div>
+</div>
+
+<!-- VARIANTS -->
+<div id="variantSection" class="hidden">
+  <div class="section-title">VARIANTS</div>
+  <div id="variantRows"></div>
+  <button class="add-btn" onclick="addVariant()">+ Add Variant</button>
+</div>
+
+<!-- FLASH -->
+<div id="flashSection" class="hidden">
+  <div class="section-title">FLASH OFFER</div>
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <label>Flash Price (TZS)</label>
+        <input type="number" id="flashPrice" placeholder="4500" oninput="updatePreview()">
+      </div>
+      <div>
+        <label>Flash Qty</label>
+        <input type="number" id="flashQty" placeholder="12" oninput="updatePreview()">
+      </div>
+    </div>
+    <label>Expiry</label>
+    <input type="text" id="flashExpiry" placeholder="e.g. Leo tu / Today Only" oninput="updatePreview()">
+  </div>
+</div>
+
+<!-- PREVIEW -->
+<div class="section-title">CAPTION PREVIEW</div>
+<div class="preview-box" id="previewBox">Fill in details above...</div>
+
+<!-- ACTIONS -->
+<div class="action-row">
+  <button class="btn-copy" onclick="copyAll()" style="background:#16a34a;">📋 Copy All</button>
+</div>
+
+<script>
+let productType = 'single';
+let captionMode = 'standard';
+let variants = [];
+
+function setType(type) {
+  productType = type;
+  document.getElementById('btnSingle').classList.toggle('active', type === 'single');
+  document.getElementById('btnVariant').classList.toggle('active', type === 'variant');
+  document.getElementById('singleSection').classList.toggle('hidden', type !== 'single');
+  document.getElementById('variantSection').classList.toggle('hidden', type !== 'variant');
+  updatePreview();
+}
+
+function setMode(mode) {
+  captionMode = mode;
+  ['Standard','Repost','Flash'].forEach(m => {
+    document.getElementById('btn'+m).classList.toggle('active', mode === m.toLowerCase());
+  });
+  document.getElementById('flashSection').classList.toggle('hidden', mode !== 'flash');
+  updatePreview();
+}
+
+function updateVisibility() {
+  const rs = document.getElementById('retailStatus').value;
+  const ws = document.getElementById('wholesaleStatus').value;
+  const eitherOut = rs === 'out_of_stock' || ws === 'out_of_stock';
+  document.getElementById('restockSection').classList.toggle('hidden', !eitherOut);
+  updatePreview();
+}
+
+function addVariant(v = {}) {
+  const idx = variants.length;
+  variants.push({ name: v.name||'', retail: v.retail||'', r_og: v.r_og||'', wholesale: v.wholesale||'', w_og: v.w_og||'', unit: v.unit||'', status: v.status||'in_stock' });
+  renderVariants();
+}
+
+function removeVariant(i) {
+  variants.splice(i, 1);
+  renderVariants();
+  updatePreview();
+}
+
+function renderVariants() {
+  const container = document.getElementById('variantRows');
+  container.innerHTML = '';
+  variants.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'variant-card';
+    card.innerHTML = `
+      <div class="variant-header">
+        <input type="text" placeholder="Variant name e.g. Size 12" value="${v.name}" oninput="variants[${i}].name=this.value;updatePreview()" style="margin:0;flex:1;">
+        <button class="del-btn" onclick="removeVariant(${i})">✕</button>
+      </div>
+      <div class="grid2">
+        <div><label>Retail Price</label><input type="number" placeholder="3000" value="${v.retail}" oninput="variants[${i}].retail=this.value;updatePreview()"></div>
+        <div><label>Retail Original</label><input type="number" placeholder="optional" value="${v.r_og}" oninput="variants[${i}].r_og=this.value;updatePreview()"></div>
+        <div><label>Wholesale Price</label><input type="number" placeholder="150000" value="${v.wholesale}" oninput="variants[${i}].wholesale=this.value;updatePreview()"></div>
+        <div><label>Wholesale Original</label><input type="number" placeholder="optional" value="${v.w_og}" oninput="variants[${i}].w_og=this.value;updatePreview()"></div>
+        <div><label>Unit Qty</label><input type="number" placeholder="50" value="${v.unit}" oninput="variants[${i}].unit=this.value;updatePreview()"></div>
+        <div><label>Status</label><select onchange="variants[${i}].status=this.value;updatePreview()">
+          <option value="in_stock" ${v.status==='in_stock'?'selected':''}>In Stock</option>
+          <option value="low_stock" ${v.status==='low_stock'?'selected':''}>Low Stock</option>
+          <option value="out_of_stock" ${v.status==='out_of_stock'?'selected':''}>Out of Stock</option>
+        </select></div>
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function val(id) { return document.getElementById(id)?.value?.trim() || ''; }
+
+function buildCaption() {
+  const name = val('productName') || '—';
+  const priceRetail = val('priceRetail');
+  const retailQty = val('retailQty');
+  const rOg = val('rOg');
+  const retailStatus = val('retailStatus');
+  const priceWholesale = val('priceWholesale');
+  const unit = val('unit');
+  const wOg = val('wOg');
+  const wholesaleStatus = val('wholesaleStatus');
+  const flashPrice = val('flashPrice');
+  const flashQty = val('flashQty');
+  const flashExpiry = val('flashExpiry');
+  const restockDate = val('restockDate');
+  const rQty = retailQty ? `${retailQty} pcs` : '1 pc';
+  const showRetail = priceRetail && retailStatus !== 'out_of_stock';
+  const showWholesale = priceWholesale && unit && wholesaleStatus !== 'out_of_stock';
+  const bothOut = !showRetail && !showWholesale && (retailStatus === 'out_of_stock' || wholesaleStatus === 'out_of_stock');
+
+  let blocks = '';
+
+  if (productType === 'variant') {
+    const lines = variants.filter(v => v.status !== 'out_of_stock' && v.name).map(v => {
+      let line = `▫️ *${v.name}*`;
+      if (v.retail) {
+        if (v.r_og) line += ` — ~${v.r_og} TZS~ *${v.retail} TZS*`;
+        else line += ` — *${v.retail} TZS*`;
+      }
+      if (v.wholesale && v.unit) {
+        if (v.w_og) line += ` | ~x${v.unit} = ${v.w_og}~ x${v.unit} = *${v.wholesale} TZS*`;
+        else line += ` | Jumla x${v.unit} = *${v.wholesale} TZS*`;
+      }
+      if (v.status === 'low_stock') line += ' ⚠️';
+      return line;
+    }).join('\n');
+    if (lines) blocks = `📦 *VARIANTS & PRICING*\n${lines}`;
+
+  } else if (captionMode === 'flash') {
+    if (flashPrice) {
+      const fQty = flashQty ? `${flashQty} pcs` : '1 pc';
+      blocks = `🔥 *FLASH OFFER*\n👉 ${fQty} = *${flashPrice} TZS*`;
+      if (flashExpiry) blocks += `\n⏰ *${flashExpiry}*`;
+    }
+    if (showWholesale) {
+      let wb = `💰 *WHOLESALE DEAL 🔥*\n`;
+      if (wOg) wb += `👉 ~${unit} pcs = ${wOg} TZS~\n`;
+      wb += `👉 ${unit} pcs = *${priceWholesale} TZS*`;
+      if (wholesaleStatus === 'low_stock') wb += `\n⚠️ *Hurry — Low Stock!*`;
+      blocks = blocks ? blocks + '\n\n' + wb : wb;
+    }
+
+  } else if (captionMode === 'repost') {
+    let rb = showRetail ? `💰 *RETAIL OFFER*\n👉 ${rQty} = *${priceRetail} TZS*` : '';
+    let wb = showWholesale ? `💰 *WHOLESALE DEAL 🔥*\n👉 ${unit} pcs = *${priceWholesale} TZS*` : '';
+    blocks = [rb, wb].filter(Boolean).join('\n\n');
+
+  } else {
+    let rb = '';
+    if (showRetail) {
+      rb = `💰 *RETAIL OFFER*\n`;
+      if (rOg) rb += `👉 ~${rQty} = ${rOg} TZS~\n`;
+      rb += `👉 ${rQty} = *${priceRetail} TZS*`;
+      if (retailStatus === 'low_stock') rb += `\n⚠️ *Hurry — Low Stock!*`;
+    }
+    let wb = '';
+    if (showWholesale) {
+      wb = `💰 *WHOLESALE DEAL 🔥*\n`;
+      if (wOg) wb += `👉 ~${unit} pcs = ${wOg} TZS~\n`;
+      wb += `👉 ${unit} pcs = *${priceWholesale} TZS*`;
+      if (wholesaleStatus === 'low_stock') wb += `\n⚠️ *Hurry — Low Stock!*`;
+    }
+    if (bothOut) {
+      blocks = restockDate ? `📅 *Restocking ${restockDate} — Pre-order Now*` : `❌ *Currently Unavailable*`;
+    } else {
+      blocks = [rb, wb].filter(Boolean).join('\n\n');
+    }
+  }
+
+  const header = captionMode === 'repost' ? `🔄 *STILL AVAILABLE — ${name}*` : `🛒 *${name}*`;
+  return `${header}\n\n${blocks}\n\n🔗 *Official:* @machimbocomplex\n⚡ *Fast Delivery | Reliable Service*`;
+}
+
+function updatePreview() {
+  document.getElementById('previewBox').textContent = buildCaption();
+}
+
+function copyAll() {
+  const name = val('productName');
+  const data = `%%DATA%%
+name: ${name}
+caption_type: ${captionMode}
+price_retail: ${val('priceRetail')}
+retail_qty: ${val('retailQty')}
+r_og: ${val('rOg')}
+retail_status: ${val('retailStatus')}
+price_wholesale: ${val('priceWholesale')}
+unit: ${val('unit')}
+w_og: ${val('wOg')}
+wholesale_status: ${val('wholesaleStatus')}
+flash_price: ${val('flashPrice')}
+flash_qty: ${val('flashQty')}
+flash_expiry: ${val('flashExpiry')}
+restock_date: ${val('restockDate')}
+variations: ${variants.map(v=>v.name).join(', ')}
+variation_retail: ${variants.map(v=>v.retail).join(', ')}
+variation_r_og: ${variants.map(v=>v.r_og).join(', ')}
+variation_wholesale: ${variants.map(v=>v.wholesale).join(', ')}
+variation_w_og: ${variants.map(v=>v.w_og).join(', ')}
+variation_unit: ${variants.map(v=>v.unit).join(', ')}
+variation_status: ${variants.map(v=>v.status).join(', ')}
+%%CAPTION%%
+${buildCaption()}
+%%END%%`;
+
+  navigator.clipboard.writeText(data).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = '📋 Copy All', 2000);
+  });
+}
+</script>
 </body>
 </html>
