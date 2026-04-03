@@ -758,8 +758,7 @@ function updatePreview() {
 // ── COPY ALL ───────────────────────────────────────────────
 function copyAll() {
   const name = val('productName');
-
-  // Serialize variant data
+  const today = new Date().toISOString().split('T')[0];
   const vNames = variants.map(v => buildVariantName(v)).join(', ');
   const vPrefixes = variants.map(v => v.prefix).join(', ');
   const vSizes = variants.map(v => v.size).join(', ');
@@ -771,36 +770,471 @@ function copyAll() {
   const vWQty = variants.map(v => v.wholesaleQty).join(', ');
   const vStatus = variants.map(v => v.status).join(', ');
 
-  const data = `%%DATA%%
-name: ${name}
-product_type: ${productType}
-price_wholesale: ${val('priceWholesale')}
-unit: ${val('unit')}
-w_og: ${val('wOg')}
-wholesale_status: ${wStatus}
-price_retail: ${val('priceRetail')}
-retail_qty: ${val('retailQty')}
-r_og: ${val('rOg')}
-retail_status: ${rStatus}
-restock_date: ${val('restockDate')}
-variations: ${vNames}
-variation_prefixes: ${vPrefixes}
-variation_sizes: ${vSizes}
-variation_units: ${vUnits}
-variation_retail: ${vRetail}
-variation_r_og: ${vROg}
-variation_wholesale: ${vWholesale}
-variation_w_og: ${vWOg}
-variation_wholesale_qty: ${vWQty}
-variation_status: ${vStatus}
-%%CAPTION%%
-${buildCaption()}
-%%END%%`;
+  const fm = `---\nname: ${name}\nproduct_type: ${productType}\nprice_wholesale: ${val('priceWholesale')}\nunit: ${val('unit')}\nw_og: ${val('wOg')}\nwholesale_status: ${wStatus}\nprice_retail: ${val('priceRetail')}\nretail_qty: ${val('retailQty')}\nr_og: ${val('rOg')}\nretail_status: ${rStatus}\nrestock_date: ${val('restockDate')}\nvariations: ${vNames}\nvariation_prefixes: ${vPrefixes}\nvariation_sizes: ${vSizes}\nvariation_units: ${vUnits}\nvariation_retail: ${vRetail}\nvariation_r_og: ${vROg}\nvariation_wholesale: ${vWholesale}\nvariation_w_og: ${vWOg}\nvariation_wholesale_qty: ${vWQty}\nvariation_status: ${vStatus}\ndate: ${today}\n---`;
+  const noteContent = fm + '\n\n' + `\`\`\`dataviewjs
+const { Modal, Notice } = obsidian;
+const folderPath = dv.current().file.folder;
+const mediaFolder = "_Media";
+const app = this.app;
+const SIGNATURE = \`───────────────\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\\n📞 +255756374915\`;
 
-  navigator.clipboard.writeText(data).then(() => {
+// ── HELPERS ───────────────────────────────────────────────
+
+function fmt(n) {
+  if (!n) return n;
+  return Number(String(n).replace(/,/g,'')).toLocaleString('en-US');
+}
+
+function parseList(str) {
+  if (!str) return [];
+  return String(str).split(',').map(s => s.trim());
+}
+
+// ── CAPTION BUILDERS ──────────────────────────────────────
+
+function buildSingleCaption(f, mode = 'standard', flashData = null) {
+  const name = f.name || f.file.name;
+  const priceW = f.price_wholesale;
+  const unitQty = f.unit;
+  const wOg = f.w_og;
+  const priceR = f.price_retail;
+  const rQty = f.retail_qty || '1';
+  const rOg = f.r_og;
+  const wStatus = f.wholesale_status || 'in_stock';
+  const rStatus = f.retail_status || 'in_stock';
+  const restock = f.restock_date;
+
+  const showW = priceW && unitQty && wStatus !== 'out_of_stock';
+  const showR = priceR && rStatus !== 'out_of_stock';
+  const bothOut = !showW && !showR && (wStatus === 'out_of_stock' || rStatus === 'out_of_stock');
+
+  if (mode === 'tiktok') {
+    return \`Unataka bei ya jumla au rejareja? 👀\\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\\n\\nWafanyabiashara na watumiaji wote mnakaribishwa.\\n\\nPiga simu au WhatsApp sasa hivi upate bei yako:\\n📞 +255756374915\\n\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\`;
+  }
+
+  if (mode === 'flash' && flashData) {
+    const fQty = flashData.qty || '1';
+    const fPrice = flashData.price;
+    const fOg = flashData.og;
+    let body = \`🔥 *\${name}*\\n\`;
+    if (fOg) body += \`~👉 \${fQty}pc = TZS \${fmt(fOg)}~\\n\`;
+    body += \`\\n⏰ Offer ya muda mfupi\\n👉 \${fQty}pc = *TZS \${fmt(fPrice)}*\`;
+    if (showW) {
+      let wBlock = wOg
+        ? \`📦 *Jumla*\\n~👉 \${unitQty}pc = TZS \${fmt(wOg)}~\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`
+        : \`📦 *Jumla*\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
+      body += \`\\n\\n\${wBlock}\`;
+    }
+    return \`⚡ *PROMOSHEN YA LEO TU* ⚡\\n───────────────\\n\\n\${body}\\n\\n\${SIGNATURE}\`;
+  }
+
+  let body = '';
+
+  if (bothOut) {
+    body = restock ? \`📅 *Inakuja Tena — \${restock}*\` : \`❌ *Haipatikani Sasa Hivi*\`;
+  } else {
+    let wBlock = '';
+    if (showW) {
+      if (wOg) {
+        wBlock = \`📦 *Jumla*\\n~👉 \${unitQty}pc = TZS \${fmt(wOg)}~\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
+      } else {
+        wBlock = \`📦 *Jumla*\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
+      }
+      if (wStatus === 'low_stock') wBlock += \` ⚠\`;
+    }
+
+    let rBlock = '';
+    if (mode !== 'wholesale' && showR) {
+      if (rOg) {
+        rBlock = \`🛍 *Rejareja*\\n~👉 \${rQty}pc = TZS \${fmt(rOg)}~\\n👉 \${rQty}pc = *TZS \${fmt(priceR)}*\`;
+      } else {
+        rBlock = \`🛍 *Rejareja*\\n👉 \${rQty}pc = *TZS \${fmt(priceR)}*\`;
+      }
+      if (rStatus === 'low_stock') rBlock += \` ⚠\`;
+    }
+
+    body = [wBlock, rBlock].filter(Boolean).join('\\n\\n');
+  }
+
+  if (mode === 'repost') {
+    return \`🛒 *\${name} bado zipo!*\\n───────────────\\n\\n\${body}\\n\\nWateja wengi wanaendelea kuchukua 📦\\nUsisubiri ziishe — chukua zako sasa! 🔥\\n\\n\${SIGNATURE}\`;
+  }
+
+  return \`🛒 *\${name}*\\n───────────────\\n\\n\${body}\\n\\n\${SIGNATURE}\`;
+}
+
+function buildVariantCaption(f, mode = 'standard', flashSelections = null) {
+  const name = f.name || f.file.name;
+  const prefixes = parseList(f.variation_prefixes);
+  const sizes = parseList(f.variation_sizes);
+  const units = parseList(f.variation_units);
+  const retails = parseList(f.variation_retail);
+  const rOgs = parseList(f.variation_r_og);
+  const wholesales = parseList(f.variation_wholesale);
+  const wOgs = parseList(f.variation_w_og);
+  const wQtys = parseList(f.variation_wholesale_qty);
+  const statuses = parseList(f.variation_status);
+
+  if (mode === 'tiktok') {
+    return \`Unataka bei ya jumla au rejareja? 👀\\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\\n\\nWafanyabiashara na watumiaji wote mnakaribishwa.\\n\\nPiga simu au WhatsApp sasa hivi upate bei yako:\\n📞 +255756374915\\n\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\`;
+  }
+
+  const buildVName = (i) => {
+    const prefix = prefixes[i] || '';
+    const size = sizes[i] || '';
+    const unit = units[i] || 'pc';
+    if (!size) return prefix;
+    if (prefix) return unit && unit !== 'pc' ? \`\${prefix}-\${size} \${unit}\` : \`\${prefix}-\${size}\`;
+    return unit && unit !== 'pc' ? \`\${size} \${unit}\` : size;
+  };
+
+  const activeIdxs = sizes.map((_, i) => i).filter(i => statuses[i] !== 'out_of_stock');
+
+  if (!activeIdxs.length) {
+    return \`🛒 *\${name}*\\n───────────────\\n\\n❌ *Haipatikani Sasa Hivi*\\n\\n\${SIGNATURE}\`;
+  }
+
+  let header = mode === 'flash'
+    ? \`⚡ *PROMOSHEN YA LEO TU* ⚡\`
+    : mode === 'repost'
+    ? \`🛒 *\${name} bado zipo!*\`
+    : \`🛒 *\${name}*\`;
+
+  const lines = activeIdxs.map(i => {
+    const vName = buildVName(i);
+    const isFlashSelected = mode === 'flash' && flashSelections && flashSelections[i];
+    const flashItem = isFlashSelected ? flashSelections[i] : null;
+
+    const wPrice = isFlashSelected && flashItem.wPrice ? flashItem.wPrice : wholesales[i];
+    const wOgPrice = isFlashSelected && flashItem.wOg ? flashItem.wOg : wOgs[i];
+    const rPrice = isFlashSelected && flashItem.rPrice ? flashItem.rPrice : retails[i];
+    const rOgPrice = isFlashSelected && flashItem.rOg ? flashItem.rOg : rOgs[i];
+
+    const hasWOg = wOgPrice && wPrice;
+    const hasROg = rOgPrice && rPrice;
+    const hasStrike = hasWOg || hasROg;
+
+    let block = \`💰 *\${vName}*\\n\`;
+
+    if (wPrice && wQtys[i]) {
+      if (hasWOg) {
+        block += \`📦 ~Jumla: \${wQtys[i]}pc = TZS \${fmt(wOgPrice)}~\\n\`;
+        block += \`📦 Jumla: \${wQtys[i]}pc = *TZS \${fmt(wPrice)}*\`;
+      } else {
+        block += \`📦 Jumla: \${wQtys[i]}pc = *TZS \${fmt(wPrice)}*\`;
+      }
+    }
+
+    if (mode !== 'wholesale' && rPrice) {
+      block += hasStrike ? '\\n\\n' : '\\n';
+      if (hasROg) {
+        block += \`🛍 ~Rejareja: 1pc = TZS \${fmt(rOgPrice)}~\\n\`;
+        block += \`🛍 Rejareja: 1pc = *TZS \${fmt(rPrice)}*\`;
+      } else {
+        block += \`🛍 Rejareja: 1pc = *TZS \${fmt(rPrice)}*\`;
+      }
+    }
+
+    if (statuses[i] === 'low_stock') block += \` ⚠\`;
+
+    return block;
+  }).join('\\n\\n');
+
+  let footer = '';
+  if (mode === 'repost') {
+    footer = \`\\n\\nWateja wengi wanaendelea kuchukua 📦\\nUsisubiri ziishe — chukua zako sasa! 🔥\`;
+  }
+  if (mode === 'flash') {
+    footer = \`\\n\\n⏰ Offer ya muda mfupi\`;
+  }
+
+  return \`\${header}\\n───────────────\\n\\n\${lines}\${footer}\\n\\n\${SIGNATURE}\`;
+}
+
+function buildCaption(f, mode = 'standard', extra = null) {
+  const type = f.product_type || 'single';
+  if (type === 'variant') return buildVariantCaption(f, mode, extra);
+  return buildSingleCaption(f, mode, extra);
+}
+
+// ── COPY HELPER ───────────────────────────────────────────
+function copyCaption(text, btn) {
+  navigator.clipboard.writeText(text);
+  const orig = btn.textContent;
+  btn.textContent = '✅ Imenakiliwa!';
+  setTimeout(() => btn.textContent = orig, 2000);
+}
+
+// ── MEDIA BUTTONS ─────────────────────────────────────────
+async function getMediaFiles() {
+  const folder = app.vault.getAbstractFileByPath(mediaFolder);
+  if (!folder) return [];
+  return folder.children.filter(f =>
+    f.extension && ["mp4","mov","jpg","jpeg","png","webp"].includes(f.extension.toLowerCase())
+  );
+}
+
+async function getExistingCount(type) {
+  const folder = app.vault.getAbstractFileByPath(folderPath);
+  if (!folder) return 0;
+  return folder.children.filter(f =>
+    f.name && f.name.toLowerCase().startsWith(type.toLowerCase())
+  ).length;
+}
+
+async function handleMedia(type) {
+  const files = await getMediaFiles();
+  if (files.length === 0) { new Notice("Hakuna faili katika _Media."); return; }
+
+  class PickerModal extends Modal {
+    onOpen() {
+      this.titleEl.setText(\`Chagua faili — \${type}\`);
+      files.forEach(file => {
+        const btn = this.contentEl.createEl("button", { text: file.name });
+        btn.style.cssText = "display:block;width:100%;padding:10px;margin-bottom:6px;background:#2a2a2a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;text-align:left;";
+        btn.onclick = async () => {
+          this.close();
+          try {
+            const count = await getExistingCount(type);
+            const ext = file.extension.toLowerCase();
+            const newName = count === 0 ? \`\${type}.\${ext}\` : \`\${type}\${count}.\${ext}\`;
+            const content = await app.vault.readBinary(file);
+            await app.vault.createBinary(\`\${folderPath}/\${newName}\`, content);
+            await app.vault.delete(file);
+            const noteFile = app.vault.getAbstractFileByPath(dv.current().file.path);
+            const noteContent = await app.vault.read(noteFile);
+            await app.vault.modify(noteFile, noteContent + \`\\n![[\${newName}]]\`);
+            new Notice(\`✅ \${newName} imeongezwa.\`);
+          } catch(e) { new Notice(\`❌ \${e.message}\`); }
+        };
+      });
+    }
+    onClose() { this.contentEl.empty(); }
+  }
+  new PickerModal(app).open();
+}
+
+// ── FLASH MODAL ───────────────────────────────────────────
+function openFlashModal(f) {
+  const type = f.product_type || 'single';
+
+  class FlashModal extends Modal {
+    onOpen() {
+      const { contentEl } = this;
+      contentEl.style.cssText = "padding:16px;";
+      contentEl.createEl("h3", { text: "⚡ Promoshen ya Leo" }).style.cssText = "color:#a78bfa;margin-bottom:16px;";
+
+      if (type === 'single') {
+        const ogLabel = contentEl.createEl("label", { text: "Bei ya Awali (TZS)" });
+        ogLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
+        const ogInput = contentEl.createEl("input");
+        ogInput.type = "number";
+        ogInput.placeholder = "Bei ya zamani";
+        ogInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:12px;";
+
+        const priceLabel = contentEl.createEl("label", { text: "Bei ya Flash (TZS)" });
+        priceLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
+        const priceInput = contentEl.createEl("input");
+        priceInput.type = "number";
+        priceInput.placeholder = "Bei mpya ya leo";
+        priceInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:12px;";
+
+        const qtyLabel = contentEl.createEl("label", { text: "Idadi (pc)" });
+        qtyLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
+        const qtyInput = contentEl.createEl("input");
+        qtyInput.type = "number";
+        qtyInput.placeholder = "1";
+        qtyInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:16px;";
+
+        const copyBtn = contentEl.createEl("button", { text: "📋 Nakili Caption ya Flash" });
+        copyBtn.style.cssText = "width:100%;padding:12px;background:#7c3aed;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;";
+        copyBtn.onclick = () => {
+          const caption = buildSingleCaption(f, 'flash', {
+            og: ogInput.value,
+            price: priceInput.value,
+            qty: qtyInput.value || '1'
+          });
+          navigator.clipboard.writeText(caption);
+          copyBtn.textContent = '✅ Imenakiliwa!';
+          setTimeout(() => { copyBtn.textContent = '📋 Nakili Caption ya Flash'; }, 2000);
+        };
+
+      } else {
+        // Variants flash — checklist
+        const sizes = f.variation_sizes ? String(f.variation_sizes).split(',').map(s=>s.trim()) : [];
+        const prefixes = f.variation_prefixes ? String(f.variation_prefixes).split(',').map(s=>s.trim()) : [];
+        const units = f.variation_units ? String(f.variation_units).split(',').map(s=>s.trim()) : [];
+        const statuses = f.variation_status ? String(f.variation_status).split(',').map(s=>s.trim()) : [];
+
+        contentEl.createEl("p", { text: "Chagua varianti za flash:" }).style.cssText = "font-size:12px;color:#888;margin-bottom:10px;";
+
+        const selections = {};
+
+        sizes.forEach((size, i) => {
+          if (statuses[i] === 'out_of_stock') return;
+          const prefix = prefixes[i] || '';
+          const unit = units[i] || 'pc';
+          const vName = prefix
+            ? (unit && unit !== 'pc' ? \`\${prefix}-\${size} \${unit}\` : \`\${prefix}-\${size}\`)
+            : (unit && unit !== 'pc' ? \`\${size} \${unit}\` : size);
+
+          const row = contentEl.createEl("div");
+          row.style.cssText = "background:#1a1a2e;border-radius:8px;padding:10px;margin-bottom:8px;";
+
+          const checkRow = row.createEl("div");
+          checkRow.style.cssText = "display:flex;align-items:center;gap:8px;margin-bottom:8px;";
+          const checkbox = checkRow.createEl("input");
+          checkbox.type = "checkbox";
+          checkbox.style.cssText = "width:16px;height:16px;accent-color:#7c3aed;";
+          checkRow.createEl("span", { text: vName }).style.cssText = "font-weight:600;font-size:14px;";
+
+          const inputs = row.createEl("div");
+          inputs.style.display = "none";
+
+          const makeInput = (placeholder) => {
+            const inp = inputs.createEl("input");
+            inp.type = "number";
+            inp.placeholder = placeholder;
+            inp.style.cssText = "width:100%;padding:8px 10px;background:#0f0f1c;color:white;border:1px solid #333;border-radius:6px;font-size:13px;margin-bottom:6px;";
+            return inp;
+          };
+
+          const wOgInp = makeInput("Bei ya zamani - Jumla (hiari)");
+          const wInp = makeInput("Bei ya flash - Jumla");
+          const rOgInp = makeInput("Bei ya zamani - Rejareja (hiari)");
+          const rInp = makeInput("Bei ya flash - Rejareja");
+
+          checkbox.onchange = () => {
+            inputs.style.display = checkbox.checked ? "block" : "none";
+            if (checkbox.checked) {
+              selections[i] = { wOg: '', wPrice: '', rOg: '', rPrice: '' };
+            } else {
+              delete selections[i];
+            }
+          };
+
+          [wOgInp, wInp, rOgInp, rInp].forEach(inp => {
+            inp.oninput = () => {
+              if (selections[i]) {
+                selections[i].wOg = wOgInp.value;
+                selections[i].wPrice = wInp.value;
+                selections[i].rOg = rOgInp.value;
+                selections[i].rPrice = rInp.value;
+              }
+            };
+          });
+        });
+
+        const copyBtn = contentEl.createEl("button", { text: "📋 Nakili Caption ya Flash" });
+        copyBtn.style.cssText = "width:100%;padding:12px;background:#7c3aed;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;margin-top:8px;";
+        copyBtn.onclick = () => {
+          const caption = buildVariantCaption(f, 'flash', selections);
+          navigator.clipboard.writeText(caption);
+          copyBtn.textContent = '✅ Imenakiliwa!';
+          setTimeout(() => { copyBtn.textContent = '📋 Nakili Caption ya Flash'; }, 2000);
+        };
+      }
+    }
+    onClose() { this.contentEl.empty(); }
+  }
+
+  new FlashModal(app).open();
+}
+
+// ── PASTE DATA HANDLER ────────────────────────────────────
+async function handlePaste() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text.includes("%%DATA%%")) { new Notice("❌ Hakuna data ya fomu kwenye clipboard."); return; }
+    const dataBlock = text.match(/%%DATA%%([\\s\\S]*?)%%CAPTION%%/)?.[1] ?? "";
+    const captionBlock = text.match(/%%CAPTION%%([\\s\\S]*?)%%END%%/)?.[1]?.trim() ?? "";
+    const noteFile = app.vault.getAbstractFileByPath(dv.current().file.path);
+    let content = await app.vault.read(noteFile);
+    dataBlock.trim().split("\\n").forEach(line => {
+      const colonIdx = line.indexOf(':');
+      if (colonIdx === -1) return;
+      const key = line.slice(0, colonIdx).trim();
+      const value = line.slice(colonIdx + 1).trim();
+      if (!key) return;
+      const regex = new RegExp(\`^\${key}:.*$\`, "m");
+      if (regex.test(content)) {
+        content = content.replace(regex, \`\${key}: \${value}\`);
+      }
+    });
+    const marker = "<!-- caption -->";
+    if (content.includes(marker)) {
+      content = content.replace(/<!-- caption -->[\\s\\S]*?<!-- \\/caption -->/, \`<!-- caption -->\\n\${captionBlock}\\n<!-- /caption -->\`);
+    } else {
+      const fmEnd = content.indexOf("---", 3) + 3;
+      content = content.slice(0, fmEnd) + \`\\n\\n<!-- caption -->\\n\${captionBlock}\\n<!-- /caption -->\` + content.slice(fmEnd);
+    }
+    await app.vault.modify(noteFile, content);
+    new Notice("✅ Data imewekwa.");
+  } catch(e) { new Notice(\`❌ \${e.message}\`); }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+const f = dv.current();
+
+// Media row
+const mediaRow = dv.el("div", "");
+mediaRow.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;";
+["Showcase","Godown","Image","Specification"].forEach(type => {
+  const btn = mediaRow.createEl("button", { text: \`+ \${type}\` });
+  btn.style.cssText = "padding:7px 14px;font-size:13px;background:#1e1e2e;color:#a78bfa;border:1px solid #a78bfa;border-radius:6px;cursor:pointer;";
+  btn.onclick = () => handleMedia(type);
+});
+
+// Action row
+const actionRow = dv.el("div", "");
+actionRow.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;";
+
+const btnStyle = (bg) => \`padding:10px 14px;font-size:13px;font-weight:600;background:\${bg};color:white;border:none;border-radius:8px;cursor:pointer;flex:1;\`;
+
+// Open Form
+const openBtn = actionRow.createEl("button", { text: "⚡ Fomu" });
+openBtn.style.cssText = btnStyle("#7c3aed");
+openBtn.onclick = () => window.open("https://absolutemaster.github.io/barongo-form", "_blank");
+
+// Paste
+const pasteBtn = actionRow.createEl("button", { text: "📥 Weka" });
+pasteBtn.style.cssText = btnStyle("#0f766e");
+pasteBtn.onclick = handlePaste;
+
+// Standard copy
+const stdBtn = actionRow.createEl("button", { text: "📋 Kawaida" });
+stdBtn.style.cssText = btnStyle("#1d4ed8");
+stdBtn.onclick = () => copyCaption(buildCaption(f, 'standard'), stdBtn);
+
+// Row 2
+const actionRow2 = dv.el("div", "");
+actionRow2.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;";
+
+// Repost
+const repostBtn = actionRow2.createEl("button", { text: "🔄 Repost" });
+repostBtn.style.cssText = btnStyle("#166534");
+repostBtn.onclick = () => copyCaption(buildCaption(f, 'repost'), repostBtn);
+
+// Wholesale only
+const wBtn = actionRow2.createEl("button", { text: "🏭 Jumla" });
+wBtn.style.cssText = btnStyle("#92400e");
+wBtn.onclick = () => copyCaption(buildCaption(f, 'wholesale'), wBtn);
+
+// Flash
+const flashBtn = actionRow2.createEl("button", { text: "⚡ Flash" });
+flashBtn.style.cssText = btnStyle("#b45309");
+flashBtn.onclick = () => openFlashModal(f);
+
+// TikTok
+const ttBtn = actionRow2.createEl("button", { text: "🎵 TikTok" });
+ttBtn.style.cssText = btnStyle("#be185d");
+ttBtn.onclick = () => copyCaption(buildCaption(f, 'tiktok'), ttBtn);
+\`\`\``;
+
+  navigator.clipboard.writeText(noteContent).then(() => {
     const btn = document.querySelector('.btn-copy');
     const orig = btn.textContent;
-    btn.textContent = '✅ Imenakiliwa!';
+    btn.textContent = '\u2705 Imenakiliwa!';
     btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
     setTimeout(() => {
       btn.textContent = orig;
