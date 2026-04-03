@@ -1,153 +1,473 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Barongo Product Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Barongo — Ingiza Bidhaa</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0f0f1a; color: #e2e8f0; font-family: system-ui, sans-serif; padding: 16px; }
-  h1 { color: #a78bfa; font-size: 20px; margin-bottom: 20px; text-align: center; letter-spacing: 1px; }
-  .section-title { font-size: 11px; font-weight: bold; color: #a78bfa; letter-spacing: 2px; margin: 16px 0 8px; }
-  .toggle-row { display: flex; gap: 8px; margin-bottom: 8px; }
-  .toggle-btn { flex: 1; padding: 8px; font-size: 13px; background: #1e1e2e; color: #e2e8f0; border: 1px solid #444; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
-  .toggle-btn.active { background: #7c3aed; border-color: #7c3aed; }
-  input, select { width: 100%; padding: 10px; background: #1e1e2e; color: #e2e8f0; border: 1px solid #333; border-radius: 8px; font-size: 14px; margin-bottom: 10px; outline: none; }
-  input:focus, select:focus { border-color: #7c3aed; }
-  input::placeholder { color: #555; }
-  .card { background: #1a1a2e; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
-  .variant-card { background: #12122a; border-radius: 8px; padding: 12px; margin-bottom: 8px; border: 1px solid #2a2a4a; }
-  .variant-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .del-btn { background: none; border: none; color: #f87171; font-size: 18px; cursor: pointer; padding: 0 4px; }
-  .add-btn { width: 100%; padding: 10px; background: #1e1e2e; color: #a78bfa; border: 1px solid #a78bfa; border-radius: 8px; cursor: pointer; font-size: 14px; margin-top: 4px; }
-  .preview-box { background: #1a1a2e; border-radius: 10px; padding: 14px; white-space: pre-wrap; font-size: 13px; line-height: 1.6; color: #e2e8f0; min-height: 80px; margin-bottom: 16px; border: 1px solid #2a2a4a; }
-  .action-row { display: flex; gap: 8px; margin-top: 8px; }
-  .btn-copy { flex: 1; padding: 14px; font-size: 15px; background: #7c3aed; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
-  .btn-copy:active { background: #6d28d9; }
-  .hidden { display: none; }
-  label { font-size: 12px; color: #888; margin-bottom: 4px; display: block; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  :root {
+    --bg: #080810;
+    --surface: #0f0f1c;
+    --card: #14142a;
+    --border: #1e1e3a;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --gold: #f5c842;
+    --text: #e8e8f0;
+    --muted: #5a5a7a;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f97316;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0f0f1c 0%, #1a1040 100%);
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .logo {
+    width: 36px;
+    height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .brand { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+  .brand span { color: var(--accent); }
+  .subtitle { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-left: 48px; }
+
+  /* CONTAINER */
+  .container { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+
+  /* SECTION */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 24px 0 10px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  /* TOGGLE ROW */
+  .toggle-row {
+    display: flex;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 9px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.5px;
+    background: none;
+    color: var(--muted);
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .toggle-btn.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 2px 12px rgba(108,99,255,0.4);
+  }
+
+  /* INPUT */
+  .field { margin-bottom: 12px; }
+  .field:last-child { margin-bottom: 0; }
+  .field-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: block;
+  }
+  input[type="text"],
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 11px 14px;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  input::placeholder { color: var(--muted); }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a5a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* STATUS BADGES */
+  .status-row { display: flex; gap: 6px; }
+  .status-btn {
+    flex: 1;
+    padding: 8px 4px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .status-btn.active-green { background: rgba(34,197,94,0.15); border-color: var(--green); color: var(--green); }
+  .status-btn.active-orange { background: rgba(249,115,22,0.15); border-color: var(--orange); color: var(--orange); }
+  .status-btn.active-red { background: rgba(239,68,68,0.15); border-color: var(--red); color: var(--red); }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  /* VARIANT CARD */
+  .variant-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .variant-number {
+    position: absolute;
+    top: -1px;
+    left: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    background: var(--surface);
+    padding: 0 6px;
+    transform: translateY(-50%);
+  }
+  .variant-del {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(239,68,68,0.1);
+    border: none;
+    color: var(--red);
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* UNIT SELECTOR */
+  .unit-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .unit-chip {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .unit-chip.active { background: rgba(108,99,255,0.2); border-color: var(--accent); color: var(--accent); }
+
+  /* ADD BUTTON */
+  .add-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px dashed var(--accent);
+    border-radius: 12px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .add-btn:active { background: rgba(108,99,255,0.1); }
+
+  /* PREVIEW */
+  .preview-wrap {
+    background: #0a0a18;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .preview-header {
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .preview-body {
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: #c8c8e8;
+    min-height: 100px;
+  }
+
+  /* ACTION BUTTONS */
+  .action-row { display: flex; gap: 10px; margin-top: 16px; }
+  .btn-main {
+    flex: 1;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .btn-copy {
+    background: linear-gradient(135deg, var(--accent), #9333ea);
+    color: white;
+    box-shadow: 0 4px 20px rgba(108,99,255,0.3);
+  }
+  .btn-copy:active { transform: scale(0.97); }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  /* OG TOGGLE */
+  .og-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .og-toggle input { width: auto; }
+  .og-toggle span { font-size: 12px; color: var(--muted); }
+
+  /* FLASH VARIANT CHECKLIST */
+  .flash-check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+  .flash-check-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .flash-check-label { font-size: 13px; font-weight: 600; flex: 1; }
+  .flash-price-input { width: 120px !important; font-size: 13px; padding: 7px 10px; }
+  .flash-og-input { width: 120px !important; font-size: 13px; padding: 7px 10px; }
 </style>
 </head>
 <body>
 
-<h1>🛒 BARONGO PRODUCT FORM</h1>
-
-<!-- PRODUCT NAME -->
-<div class="section-title">PRODUCT NAME</div>
-<input type="text" id="productName" placeholder="e.g. Lunch Box" oninput="updatePreview()">
-
-<!-- PRODUCT TYPE -->
-<div class="section-title">PRODUCT TYPE</div>
-<div class="toggle-row">
-  <button class="toggle-btn active" id="btnSingle" onclick="setType('single')">Single</button>
-  <button class="toggle-btn" id="btnVariant" onclick="setType('variant')">Variants</button>
+<div class="header">
+  <div class="header-top">
+    <div class="logo">🛒</div>
+    <div class="brand">BARONGO <span>HE</span></div>
+  </div>
+  <div class="subtitle">Ingiza Bidhaa Mpya</div>
 </div>
 
-<!-- CAPTION MODE -->
-<div class="section-title">CAPTION MODE</div>
-<div class="toggle-row">
-  <button class="toggle-btn active" id="btnStandard" onclick="setMode('standard')">Standard</button>
-  <button class="toggle-btn" id="btnRepost" onclick="setMode('repost')">Repost</button>
-  <button class="toggle-btn" id="btnFlash" onclick="setMode('flash')">Flash</button>
-</div>
+<div class="container">
 
-<!-- SINGLE PRICING -->
-<div id="singleSection">
-  <div class="section-title">RETAIL</div>
+  <!-- PRODUCT NAME -->
+  <div class="section-label">Jina la Bidhaa</div>
   <div class="card">
-    <div class="grid2">
-      <div>
-        <label>Price (TZS)</label>
-        <input type="number" id="priceRetail" placeholder="5500" oninput="updatePreview()">
-      </div>
-      <div>
-        <label>Qty (empty = 1pc)</label>
-        <input type="number" id="retailQty" placeholder="12" oninput="updatePreview()">
-      </div>
+    <div class="field">
+      <input type="text" id="productName" placeholder="mf. LUNCH BOX, SPIRAL BASIN" oninput="updatePreview()">
     </div>
-    <label>Original Price (for strikethrough)</label>
-    <input type="number" id="rOg" placeholder="optional" oninput="updatePreview()">
-    <label>Status</label>
-    <select id="retailStatus" onchange="updateVisibility()">
-      <option value="in_stock">In Stock</option>
-      <option value="low_stock">Low Stock</option>
-      <option value="out_of_stock">Out of Stock</option>
-    </select>
   </div>
 
-  <div class="section-title">WHOLESALE</div>
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <label>Price (TZS)</label>
-        <input type="number" id="priceWholesale" placeholder="290000" oninput="updatePreview()">
-      </div>
-      <div>
-        <label>Unit Qty</label>
-        <input type="number" id="unit" placeholder="800" oninput="updatePreview()">
-      </div>
-    </div>
-    <label>Original Price (for strikethrough)</label>
-    <input type="number" id="wOg" placeholder="optional" oninput="updatePreview()">
-    <label>Status</label>
-    <select id="wholesaleStatus" onchange="updateVisibility()">
-      <option value="in_stock">In Stock</option>
-      <option value="low_stock">Low Stock</option>
-      <option value="out_of_stock">Out of Stock</option>
-    </select>
+  <!-- PRODUCT TYPE -->
+  <div class="section-label">Aina ya Bidhaa</div>
+  <div class="toggle-row">
+    <button class="toggle-btn active" id="btnSingle" onclick="setType('single')">Bidhaa Moja</button>
+    <button class="toggle-btn" id="btnVariant" onclick="setType('variant')">Varianti</button>
   </div>
 
-  <!-- RESTOCK -->
-  <div id="restockSection" class="hidden">
-    <div class="section-title">RESTOCK DATE</div>
+  <!-- ═══════════════════════════════════════ -->
+  <!-- SINGLE PRODUCT SECTION -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="singleSection">
+
+    <!-- WHOLESALE -->
+    <div class="section-label">Bei ya Jumla</div>
     <div class="card">
-      <label>Date (e.g. April 5)</label>
-      <input type="text" id="restockDate" placeholder="optional" oninput="updatePreview()">
-    </div>
-  </div>
-</div>
-
-<!-- VARIANTS -->
-<div id="variantSection" class="hidden">
-  <div class="section-title">VARIANTS</div>
-  <div id="variantRows"></div>
-  <button class="add-btn" onclick="addVariant()">+ Add Variant</button>
-</div>
-
-<!-- FLASH -->
-<div id="flashSection" class="hidden">
-  <div class="section-title">FLASH OFFER</div>
-  <div class="card">
-    <div class="grid2">
-      <div>
-        <label>Flash Price (TZS)</label>
-        <input type="number" id="flashPrice" placeholder="4500" oninput="updatePreview()">
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label">Bei (TZS)</label>
+          <input type="number" id="priceWholesale" placeholder="290000" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label class="field-label">Idadi (pc)</label>
+          <input type="number" id="unit" placeholder="800" oninput="updatePreview()">
+        </div>
       </div>
-      <div>
-        <label>Flash Qty</label>
-        <input type="number" id="flashQty" placeholder="12" oninput="updatePreview()">
+      <label class="og-toggle">
+        <input type="checkbox" id="wOgToggle" onchange="toggleOg('w'); updatePreview()">
+        <span>Ongeza bei iliyofutwa</span>
+      </label>
+      <div id="wOgField" class="field hidden">
+        <label class="field-label">Bei ya Awali (TZS)</label>
+        <input type="number" id="wOg" placeholder="Bei ya zamani" oninput="updatePreview()">
+      </div>
+      <div class="field">
+        <label class="field-label">Hali ya Stoko</label>
+        <div class="status-row">
+          <button class="status-btn active-green" id="wStatus_in" onclick="setStatus('w','in_stock')">✓ Ipo</button>
+          <button class="status-btn" id="wStatus_low" onclick="setStatus('w','low_stock')">⚠ Inakwisha</button>
+          <button class="status-btn" id="wStatus_out" onclick="setStatus('w','out_of_stock')">✕ Haipi</button>
+        </div>
       </div>
     </div>
-    <label>Expiry</label>
-    <input type="text" id="flashExpiry" placeholder="e.g. Leo tu / Today Only" oninput="updatePreview()">
+
+    <!-- RETAIL -->
+    <div class="section-label">Bei ya Rejareja</div>
+    <div class="card">
+      <div class="grid2">
+        <div class="field">
+          <label class="field-label">Bei (TZS)</label>
+          <input type="number" id="priceRetail" placeholder="5500" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label class="field-label">Idadi (empty = 1pc)</label>
+          <input type="number" id="retailQty" placeholder="12" oninput="updatePreview()">
+        </div>
+      </div>
+      <label class="og-toggle">
+        <input type="checkbox" id="rOgToggle" onchange="toggleOg('r'); updatePreview()">
+        <span>Ongeza bei iliyofutwa</span>
+      </label>
+      <div id="rOgField" class="field hidden">
+        <label class="field-label">Bei ya Awali (TZS)</label>
+        <input type="number" id="rOg" placeholder="Bei ya zamani" oninput="updatePreview()">
+      </div>
+      <div class="field">
+        <label class="field-label">Hali ya Stoko</label>
+        <div class="status-row">
+          <button class="status-btn active-green" id="rStatus_in" onclick="setStatus('r','in_stock')">✓ Ipo</button>
+          <button class="status-btn" id="rStatus_low" onclick="setStatus('r','low_stock')">⚠ Inakwisha</button>
+          <button class="status-btn" id="rStatus_out" onclick="setStatus('r','out_of_stock')">✕ Haipi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESTOCK (shows when out of stock) -->
+    <div id="restockSection" class="hidden">
+      <div class="section-label">Tarehe ya Kuja Tena</div>
+      <div class="card">
+        <div class="field">
+          <input type="text" id="restockDate" placeholder="mf. Aprili 5" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<!-- PREVIEW -->
-<div class="section-title">CAPTION PREVIEW</div>
-<div class="preview-box" id="previewBox">Fill in details above...</div>
+  <!-- ═══════════════════════════════════════ -->
+  <!-- VARIANTS SECTION -->
+  <!-- ═══════════════════════════════════════ -->
+  <div id="variantSection" class="hidden">
 
-<!-- ACTIONS -->
-<div class="action-row">
-  <button class="btn-copy" onclick="copyAll()" style="background:#16a34a;">📋 Copy All</button>
+    <div class="section-label">Varianti</div>
+    <div id="variantRows"></div>
+    <button class="add-btn" onclick="addVariant()">+ Ongeza Varianti</button>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- PREVIEW -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section-label" style="margin-top:28px;">Mwonekano wa Caption</div>
+  <div class="preview-wrap">
+    <div class="preview-header">
+      <div class="preview-dot"></div>
+      Live Preview
+    </div>
+    <div class="preview-body" id="previewBox">Jaza maelezo hapo juu...</div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="action-row">
+    <button class="btn-main btn-copy" onclick="copyAll()">📋 Nakili Yote</button>
+  </div>
+
 </div>
 
 <script>
+// ── STATE ─────────────────────────────────────────────────
 let productType = 'single';
-let captionMode = 'standard';
+let wStatus = 'in_stock';
+let rStatus = 'in_stock';
 let variants = [];
 
+const SIGNATURE = `───────────────\n🌐 @machimbocomplex\n📍 Kariakoo | Aggrey & Sikukuu\n📞 +255756374915`;
+
+// ── TYPE TOGGLE ────────────────────────────────────────────
 function setType(type) {
   productType = type;
   document.getElementById('btnSingle').classList.toggle('active', type === 'single');
@@ -157,26 +477,46 @@ function setType(type) {
   updatePreview();
 }
 
-function setMode(mode) {
-  captionMode = mode;
-  ['Standard','Repost','Flash'].forEach(m => {
-    document.getElementById('btn'+m).classList.toggle('active', mode === m.toLowerCase());
-  });
-  document.getElementById('flashSection').classList.toggle('hidden', mode !== 'flash');
-  updatePreview();
-}
+// ── STATUS ─────────────────────────────────────────────────
+function setStatus(which, val) {
+  if (which === 'w') wStatus = val;
+  else rStatus = val;
 
-function updateVisibility() {
-  const rs = document.getElementById('retailStatus').value;
-  const ws = document.getElementById('wholesaleStatus').value;
-  const eitherOut = rs === 'out_of_stock' || ws === 'out_of_stock';
+  ['in','low','out'].forEach(s => {
+    const btn = document.getElementById(`${which}Status_${s}`);
+    btn.className = 'status-btn';
+    if (s === 'in' && val === 'in_stock') btn.classList.add('active-green');
+    if (s === 'low' && val === 'low_stock') btn.classList.add('active-orange');
+    if (s === 'out' && val === 'out_of_stock') btn.classList.add('active-red');
+  });
+
+  const eitherOut = wStatus === 'out_of_stock' || rStatus === 'out_of_stock';
   document.getElementById('restockSection').classList.toggle('hidden', !eitherOut);
   updatePreview();
 }
 
+// ── OG TOGGLE ──────────────────────────────────────────────
+function toggleOg(which) {
+  const checked = document.getElementById(`${which}OgToggle`).checked;
+  document.getElementById(`${which}OgField`).classList.toggle('hidden', !checked);
+}
+
+// ── VARIANTS ───────────────────────────────────────────────
+const UNITS = ['pc', 'kg', 'g', 'Ltrs', 'ml', 'cm', 'inch', '—'];
+
 function addVariant(v = {}) {
-  const idx = variants.length;
-  variants.push({ name: v.name||'', retail: v.retail||'', r_og: v.r_og||'', wholesale: v.wholesale||'', w_og: v.w_og||'', unit: v.unit||'', status: v.status||'in_stock' });
+  variants.push({
+    prefix: v.prefix || '',
+    size: v.size || '',
+    unit: v.unit || 'pc',
+    customUnit: v.customUnit || '',
+    retail: v.retail || '',
+    rOg: v.rOg || '',
+    wholesale: v.wholesale || '',
+    wOg: v.wOg || '',
+    wholesaleQty: v.wholesaleQty || '',
+    status: v.status || 'in_stock'
+  });
   renderVariants();
 }
 
@@ -189,150 +529,283 @@ function removeVariant(i) {
 function renderVariants() {
   const container = document.getElementById('variantRows');
   container.innerHTML = '';
+
   variants.forEach((v, i) => {
     const card = document.createElement('div');
     card.className = 'variant-card';
+
+    const displayName = buildVariantName(v);
     card.innerHTML = `
-      <div class="variant-header">
-        <input type="text" placeholder="Variant name e.g. Size 12" value="${v.name}" oninput="variants[${i}].name=this.value;updatePreview()" style="margin:0;flex:1;">
-        <button class="del-btn" onclick="removeVariant(${i})">✕</button>
-      </div>
-      <div class="grid2">
-        <div><label>Retail Price</label><input type="number" placeholder="3000" value="${v.retail}" oninput="variants[${i}].retail=this.value;updatePreview()"></div>
-        <div><label>Retail Original</label><input type="number" placeholder="optional" value="${v.r_og}" oninput="variants[${i}].r_og=this.value;updatePreview()"></div>
-        <div><label>Wholesale Price</label><input type="number" placeholder="150000" value="${v.wholesale}" oninput="variants[${i}].wholesale=this.value;updatePreview()"></div>
-        <div><label>Wholesale Original</label><input type="number" placeholder="optional" value="${v.w_og}" oninput="variants[${i}].w_og=this.value;updatePreview()"></div>
-        <div><label>Unit Qty</label><input type="number" placeholder="50" value="${v.unit}" oninput="variants[${i}].unit=this.value;updatePreview()"></div>
-        <div><label>Status</label><select onchange="variants[${i}].status=this.value;updatePreview()">
-          <option value="in_stock" ${v.status==='in_stock'?'selected':''}>In Stock</option>
-          <option value="low_stock" ${v.status==='low_stock'?'selected':''}>Low Stock</option>
-          <option value="out_of_stock" ${v.status==='out_of_stock'?'selected':''}>Out of Stock</option>
-        </select></div>
+      <div class="variant-number">VARIANTI ${i + 1}${displayName ? ' — ' + displayName : ''}</div>
+      <button class="variant-del" onclick="removeVariant(${i})">✕</button>
+
+      <div style="margin-top:10px;">
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label">Kiambatisho (hiari)</label>
+            <input type="text" placeholder="mf. Spiral, DRUM" value="${v.prefix}"
+              oninput="variants[${i}].prefix=this.value;renderVariants();updatePreview()">
+          </div>
+          <div class="field">
+            <label class="field-label">Ukubwa / Nambari</label>
+            <input type="text" placeholder="mf. 12, 14, 90" value="${v.size}"
+              oninput="variants[${i}].size=this.value;renderVariants();updatePreview()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Kipimo</label>
+          <div class="unit-selector" id="unitSelector_${i}">
+            ${UNITS.map(u => `<button class="unit-chip ${v.unit === u ? 'active' : ''}"
+              onclick="setVariantUnit(${i},'${u}')">${u === '—' ? 'Mwingine' : u}</button>`).join('')}
+          </div>
+          <input type="text" id="customUnit_${i}" placeholder="Andika kipimo chako"
+            value="${v.customUnit}" ${v.unit !== '—' ? 'style="display:none"' : ''}
+            oninput="variants[${i}].customUnit=this.value;updatePreview()">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid2">
+          <div class="field">
+            <label class="field-label">Bei Jumla (TZS)</label>
+            <input type="number" placeholder="150000" value="${v.wholesale}"
+              oninput="variants[${i}].wholesale=this.value;updatePreview()">
+          </div>
+          <div class="field">
+            <label class="field-label">Idadi Jumla (pc)</label>
+            <input type="number" placeholder="50" value="${v.wholesaleQty}"
+              oninput="variants[${i}].wholesaleQty=this.value;updatePreview()">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Bei ya Awali Jumla (hiari)</label>
+          <input type="number" placeholder="Bei ya zamani" value="${v.wOg}"
+            oninput="variants[${i}].wOg=this.value;updatePreview()">
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label class="field-label">Bei Rejareja (TZS)</label>
+          <input type="number" placeholder="4000" value="${v.retail}"
+            oninput="variants[${i}].retail=this.value;updatePreview()">
+        </div>
+        <div class="field">
+          <label class="field-label">Bei ya Awali Rejareja (hiari)</label>
+          <input type="number" placeholder="Bei ya zamani" value="${v.rOg}"
+            oninput="variants[${i}].rOg=this.value;updatePreview()">
+        </div>
+
+        <div class="field">
+          <label class="field-label">Hali ya Stoko</label>
+          <div class="status-row">
+            <button class="status-btn ${v.status==='in_stock'?'active-green':''}"
+              onclick="setVariantStatus(${i},'in_stock')">✓ Ipo</button>
+            <button class="status-btn ${v.status==='low_stock'?'active-orange':''}"
+              onclick="setVariantStatus(${i},'low_stock')">⚠ Inakwisha</button>
+            <button class="status-btn ${v.status==='out_of_stock'?'active-red':''}"
+              onclick="setVariantStatus(${i},'out_of_stock')">✕ Haipi</button>
+          </div>
+        </div>
       </div>`;
+
     container.appendChild(card);
   });
+
+  // Add button after all cards
+  updatePreview();
 }
 
-function val(id) { return document.getElementById(id)?.value?.trim() || ''; }
+function setVariantUnit(i, unit) {
+  variants[i].unit = unit;
+  const customInput = document.getElementById(`customUnit_${i}`);
+  if (customInput) customInput.style.display = unit === '—' ? 'block' : 'none';
+  renderVariants();
+  updatePreview();
+}
+
+function setVariantStatus(i, status) {
+  variants[i].status = status;
+  renderVariants();
+  updatePreview();
+}
+
+function buildVariantName(v) {
+  const unit = v.unit === '—' ? v.customUnit : v.unit;
+  if (!v.size) return v.prefix || '';
+  if (v.prefix) {
+    return unit && unit !== 'pc' ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
+  }
+  return unit && unit !== 'pc' ? `${v.size} ${unit}` : v.size;
+}
+
+// ── CAPTION BUILDER ────────────────────────────────────────
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function fmt(n) {
+  if (!n) return n;
+  return Number(n).toLocaleString('en-US');
+}
 
 function buildCaption() {
   const name = val('productName') || '—';
-  const priceRetail = val('priceRetail');
-  const retailQty = val('retailQty');
-  const rOg = val('rOg');
-  const retailStatus = val('retailStatus');
-  const priceWholesale = val('priceWholesale');
-  const unit = val('unit');
-  const wOg = val('wOg');
-  const wholesaleStatus = val('wholesaleStatus');
-  const flashPrice = val('flashPrice');
-  const flashQty = val('flashQty');
-  const flashExpiry = val('flashExpiry');
-  const restockDate = val('restockDate');
-  const rQty = retailQty ? `${retailQty} pcs` : '1 pc';
-  const showRetail = priceRetail && retailStatus !== 'out_of_stock';
-  const showWholesale = priceWholesale && unit && wholesaleStatus !== 'out_of_stock';
-  const bothOut = !showRetail && !showWholesale && (retailStatus === 'out_of_stock' || wholesaleStatus === 'out_of_stock');
-
-  let blocks = '';
 
   if (productType === 'variant') {
-    const lines = variants.filter(v => v.status !== 'out_of_stock' && v.name).map(v => {
-      let line = `▫️ *${v.name}*`;
-      if (v.retail) {
-        if (v.r_og) line += ` — ~${v.r_og} TZS~ *${v.retail} TZS*`;
-        else line += ` — *${v.retail} TZS*`;
-      }
-      if (v.wholesale && v.unit) {
-        if (v.w_og) line += ` | ~x${v.unit} = ${v.w_og}~ x${v.unit} = *${v.wholesale} TZS*`;
-        else line += ` | Jumla x${v.unit} = *${v.wholesale} TZS*`;
-      }
-      if (v.status === 'low_stock') line += ' ⚠️';
-      return line;
-    }).join('\n');
-    if (lines) blocks = `📦 *VARIANTS & PRICING*\n${lines}`;
-
-  } else if (captionMode === 'flash') {
-    if (flashPrice) {
-      const fQty = flashQty ? `${flashQty} pcs` : '1 pc';
-      blocks = `🔥 *FLASH OFFER*\n👉 ${fQty} = *${flashPrice} TZS*`;
-      if (flashExpiry) blocks += `\n⏰ *${flashExpiry}*`;
-    }
-    if (showWholesale) {
-      let wb = `💰 *WHOLESALE DEAL 🔥*\n`;
-      if (wOg) wb += `👉 ~${unit} pcs = ${wOg} TZS~\n`;
-      wb += `👉 ${unit} pcs = *${priceWholesale} TZS*`;
-      if (wholesaleStatus === 'low_stock') wb += `\n⚠️ *Hurry — Low Stock!*`;
-      blocks = blocks ? blocks + '\n\n' + wb : wb;
-    }
-
-  } else if (captionMode === 'repost') {
-    let rb = showRetail ? `💰 *RETAIL OFFER*\n👉 ${rQty} = *${priceRetail} TZS*` : '';
-    let wb = showWholesale ? `💰 *WHOLESALE DEAL 🔥*\n👉 ${unit} pcs = *${priceWholesale} TZS*` : '';
-    blocks = [rb, wb].filter(Boolean).join('\n\n');
-
+    return buildVariantCaption(name);
   } else {
-    let rb = '';
-    if (showRetail) {
-      rb = `💰 *RETAIL OFFER*\n`;
-      if (rOg) rb += `👉 ~${rQty} = ${rOg} TZS~\n`;
-      rb += `👉 ${rQty} = *${priceRetail} TZS*`;
-      if (retailStatus === 'low_stock') rb += `\n⚠️ *Hurry — Low Stock!*`;
+    return buildSingleCaption(name);
+  }
+}
+
+function buildSingleCaption(name) {
+  const priceW = val('priceWholesale');
+  const unitQty = val('unit');
+  const wOg = val('wOg');
+  const priceR = val('priceRetail');
+  const rQty = val('retailQty') || '1';
+  const rOg = val('rOg');
+  const restock = val('restockDate');
+
+  const showW = priceW && unitQty && wStatus !== 'out_of_stock';
+  const showR = priceR && rStatus !== 'out_of_stock';
+  const bothOut = !showW && !showR && (wStatus === 'out_of_stock' || rStatus === 'out_of_stock');
+
+  let body = '';
+
+  if (bothOut) {
+    body = restock
+      ? `📅 *Inakuja Tena — ${restock}*`
+      : `❌ *Haipatikani Sasa Hivi*`;
+  } else {
+    let wBlock = '';
+    if (showW) {
+      if (wOg) {
+        wBlock = `📦 *Jumla*\n~👉 ${unitQty}pc = TZS ${fmt(wOg)}~\n👉 ${unitQty}pc = *TZS ${fmt(priceW)}*`;
+      } else {
+        wBlock = `📦 *Jumla*\n👉 ${unitQty}pc = *TZS ${fmt(priceW)}*`;
+      }
+      if (wStatus === 'low_stock') wBlock += ` ⚠️`;
     }
-    let wb = '';
-    if (showWholesale) {
-      wb = `💰 *WHOLESALE DEAL 🔥*\n`;
-      if (wOg) wb += `👉 ~${unit} pcs = ${wOg} TZS~\n`;
-      wb += `👉 ${unit} pcs = *${priceWholesale} TZS*`;
-      if (wholesaleStatus === 'low_stock') wb += `\n⚠️ *Hurry — Low Stock!*`;
+
+    let rBlock = '';
+    if (showR) {
+      if (rOg) {
+        rBlock = `🛍️ *Rejareja*\n~👉 ${rQty}pc = TZS ${fmt(rOg)}~\n👉 ${rQty}pc = *TZS ${fmt(priceR)}*`;
+      } else {
+        rBlock = `🛍️ *Rejareja*\n👉 ${rQty}pc = *TZS ${fmt(priceR)}*`;
+      }
+      if (rStatus === 'low_stock') rBlock += ` ⚠️`;
     }
-    if (bothOut) {
-      blocks = restockDate ? `📅 *Restocking ${restockDate} — Pre-order Now*` : `❌ *Currently Unavailable*`;
-    } else {
-      blocks = [rb, wb].filter(Boolean).join('\n\n');
-    }
+
+    body = [wBlock, rBlock].filter(Boolean).join('\n\n');
   }
 
-  const header = captionMode === 'repost' ? `🔄 *STILL AVAILABLE — ${name}*` : `🛒 *${name}*`;
-  return `${header}\n\n${blocks}\n\n🔗 *Official:* @machimbocomplex\n⚡ *Fast Delivery | Reliable Service*`;
+  return `🛒 *${name}*\n───────────────\n\n${body}\n\n${SIGNATURE}`;
+}
+
+function buildVariantCaption(name) {
+  const activeVariants = variants.filter(v => v.status !== 'out_of_stock');
+
+  if (!activeVariants.length) {
+    return `🛒 *${name}*\n───────────────\n\n❌ *Haipatikani Sasa Hivi*\n\n${SIGNATURE}`;
+  }
+
+  const lines = activeVariants.map(v => {
+    const vName = buildVariantName(v);
+    const hasWOg = v.wOg && v.wholesale;
+    const hasROg = v.rOg && v.retail;
+    const hasStrike = hasWOg || hasROg;
+
+    let block = `💰 *${vName}*\n`;
+
+    if (v.wholesale && v.wholesaleQty) {
+      if (hasWOg) {
+        block += `📦 ~Jumla: ${v.wholesaleQty}pc = TZS ${fmt(v.wOg)}~\n`;
+        block += `📦 Jumla: ${v.wholesaleQty}pc = *TZS ${fmt(v.wholesale)}*`;
+      } else {
+        block += `📦 Jumla: ${v.wholesaleQty}pc = *TZS ${fmt(v.wholesale)}*`;
+      }
+    }
+
+    if (v.retail) {
+      if (v.wholesale && v.wholesaleQty) {
+        block += hasStrike ? '\n\n' : '\n';
+      }
+      if (hasROg) {
+        block += `🛍️ ~Rejareja: 1pc = TZS ${fmt(v.rOg)}~\n`;
+        block += `🛍️ Rejareja: 1pc = *TZS ${fmt(v.retail)}*`;
+      } else {
+        block += `🛍️ Rejareja: 1pc = *TZS ${fmt(v.retail)}*`;
+      }
+    }
+
+    if (v.status === 'low_stock') block += ` ⚠️`;
+
+    return block;
+  }).join('\n\n');
+
+  return `🛒 *${name}*\n───────────────\n\n${lines}\n\n${SIGNATURE}`;
 }
 
 function updatePreview() {
   document.getElementById('previewBox').textContent = buildCaption();
 }
 
+// ── COPY ALL ───────────────────────────────────────────────
 function copyAll() {
   const name = val('productName');
+
+  // Serialize variant data
+  const vNames = variants.map(v => buildVariantName(v)).join(', ');
+  const vPrefixes = variants.map(v => v.prefix).join(', ');
+  const vSizes = variants.map(v => v.size).join(', ');
+  const vUnits = variants.map(v => v.unit === '—' ? v.customUnit : v.unit).join(', ');
+  const vRetail = variants.map(v => v.retail).join(', ');
+  const vROg = variants.map(v => v.rOg).join(', ');
+  const vWholesale = variants.map(v => v.wholesale).join(', ');
+  const vWOg = variants.map(v => v.wOg).join(', ');
+  const vWQty = variants.map(v => v.wholesaleQty).join(', ');
+  const vStatus = variants.map(v => v.status).join(', ');
+
   const data = `%%DATA%%
 name: ${name}
-caption_type: ${captionMode}
-price_retail: ${val('priceRetail')}
-retail_qty: ${val('retailQty')}
-r_og: ${val('rOg')}
-retail_status: ${val('retailStatus')}
+product_type: ${productType}
 price_wholesale: ${val('priceWholesale')}
 unit: ${val('unit')}
 w_og: ${val('wOg')}
-wholesale_status: ${val('wholesaleStatus')}
-flash_price: ${val('flashPrice')}
-flash_qty: ${val('flashQty')}
-flash_expiry: ${val('flashExpiry')}
+wholesale_status: ${wStatus}
+price_retail: ${val('priceRetail')}
+retail_qty: ${val('retailQty')}
+r_og: ${val('rOg')}
+retail_status: ${rStatus}
 restock_date: ${val('restockDate')}
-variations: ${variants.map(v=>v.name).join(', ')}
-variation_retail: ${variants.map(v=>v.retail).join(', ')}
-variation_r_og: ${variants.map(v=>v.r_og).join(', ')}
-variation_wholesale: ${variants.map(v=>v.wholesale).join(', ')}
-variation_w_og: ${variants.map(v=>v.w_og).join(', ')}
-variation_unit: ${variants.map(v=>v.unit).join(', ')}
-variation_status: ${variants.map(v=>v.status).join(', ')}
+variations: ${vNames}
+variation_prefixes: ${vPrefixes}
+variation_sizes: ${vSizes}
+variation_units: ${vUnits}
+variation_retail: ${vRetail}
+variation_r_og: ${vROg}
+variation_wholesale: ${vWholesale}
+variation_w_og: ${vWOg}
+variation_wholesale_qty: ${vWQty}
+variation_status: ${vStatus}
 %%CAPTION%%
 ${buildCaption()}
 %%END%%`;
 
   navigator.clipboard.writeText(data).then(() => {
     const btn = document.querySelector('.btn-copy');
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy All', 2000);
+    const orig = btn.textContent;
+    btn.textContent = '✅ Imenakiliwa!';
+    btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.background = 'linear-gradient(135deg, var(--accent), #9333ea)';
+    }, 2500);
   });
 }
 </script>
