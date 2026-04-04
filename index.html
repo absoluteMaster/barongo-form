@@ -437,6 +437,15 @@
     <div id="variantRows"></div>
     <button class="add-btn" onclick="addVariant()">+ Ongeza Varianti</button>
 
+    <div id="variantRestockSection" class="hidden">
+      <div class="section-label" style="margin-top:20px;">Tarehe ya Kuja Tena</div>
+      <div class="card">
+        <div class="field">
+          <input type="text" id="variantRestockDate" placeholder="mf. Aprili 5" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ═══════════════════════════════════════ -->
@@ -495,6 +504,11 @@ function setStatus(which, val) {
   updatePreview();
 }
 
+function checkVariantRestock() {
+  const allOut = variants.length > 0 && variants.every(v => v.status === 'out_of_stock');
+  document.getElementById('variantRestockSection').classList.toggle('hidden', !allOut);
+}
+
 // ── OG TOGGLE ──────────────────────────────────────────────
 function toggleOg(which) {
   const checked = document.getElementById(`${which}OgToggle`).checked;
@@ -544,12 +558,12 @@ function renderVariants() {
           <div class="field">
             <label class="field-label">Kiambatisho (hiari)</label>
             <input type="text" placeholder="mf. Spiral, DRUM" value="${v.prefix}"
-              oninput="variants[${i}].prefix=this.value;renderVariants();updatePreview()">
+              oninput="variants[${i}].prefix=this.value;updateVariantLabel(${i});updatePreview()">
           </div>
           <div class="field">
             <label class="field-label">Ukubwa / Nambari</label>
             <input type="text" placeholder="mf. 12, 14, 90" value="${v.size}"
-              oninput="variants[${i}].size=this.value;renderVariants();updatePreview()">
+              oninput="variants[${i}].size=this.value;updateVariantLabel(${i});updatePreview()">
           </div>
         </div>
 
@@ -614,6 +628,7 @@ function renderVariants() {
   });
 
   // Add button after all cards
+  checkVariantRestock();
   updatePreview();
 }
 
@@ -628,6 +643,7 @@ function setVariantUnit(i, unit) {
 function setVariantStatus(i, status) {
   variants[i].status = status;
   renderVariants();
+  checkVariantRestock();
   updatePreview();
 }
 
@@ -638,6 +654,15 @@ function buildVariantName(v) {
     return unit && unit !== 'pc' ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
   }
   return unit && unit !== 'pc' ? `${v.size} ${unit}` : v.size;
+}
+
+function updateVariantLabel(i) {
+  const card = document.getElementById('variantRows').children[i];
+  if (!card) return;
+  const label = card.querySelector('.variant-number');
+  if (!label) return;
+  const displayName = buildVariantName(variants[i]);
+  label.textContent = `VARIANTI ${i + 1}${displayName ? ' — ' + displayName : ''}`;
 }
 
 // ── CAPTION BUILDER ────────────────────────────────────────
@@ -711,7 +736,9 @@ function buildVariantCaption(name) {
   const activeVariants = variants.filter(v => v.status !== 'out_of_stock');
 
   if (!activeVariants.length) {
-    return `🛒 *${name}*\n───────────────\n\n❌ *Haipatikani Sasa Hivi*\n\n${SIGNATURE}`;
+    const restock = val('variantRestockDate');
+    const msg = restock ? `📅 *Inakuja Tena — ${restock}*` : `❌ *Haipatikani Sasa Hivi*`;
+    return `🛒 *${name}*\n───────────────\n\n${msg}\n\n${SIGNATURE}`;
   }
 
   const lines = activeVariants.map(v => {
@@ -770,7 +797,9 @@ function copyAll() {
   const vWQty = variants.map(v => v.wholesaleQty).join(', ');
   const vStatus = variants.map(v => v.status).join(', ');
 
-  const fm = `---\nname: ${name}\nproduct_type: ${productType}\nprice_wholesale: ${val('priceWholesale')}\nunit: ${val('unit')}\nw_og: ${val('wOg')}\nwholesale_status: ${wStatus}\nprice_retail: ${val('priceRetail')}\nretail_qty: ${val('retailQty')}\nr_og: ${val('rOg')}\nretail_status: ${rStatus}\nrestock_date: ${val('restockDate')}\nvariations: ${vNames}\nvariation_prefixes: ${vPrefixes}\nvariation_sizes: ${vSizes}\nvariation_units: ${vUnits}\nvariation_retail: ${vRetail}\nvariation_r_og: ${vROg}\nvariation_wholesale: ${vWholesale}\nvariation_w_og: ${vWOg}\nvariation_wholesale_qty: ${vWQty}\nvariation_status: ${vStatus}\ndate: ${today}\n---`;
+  const wOgChecked = document.getElementById('wOgToggle')?.checked;
+  const rOgChecked = document.getElementById('rOgToggle')?.checked;
+  const fm = `---\nname: ${name}\nproduct_type: ${productType}\nprice_wholesale: ${val('priceWholesale')}\nunit: ${val('unit')}\nw_og: ${wOgChecked ? val('wOg') : ''}\nwholesale_status: ${wStatus}\nprice_retail: ${val('priceRetail')}\nretail_qty: ${val('retailQty')}\nr_og: ${rOgChecked ? val('rOg') : ''}\nretail_status: ${rStatus}\nrestock_date: ${val('restockDate')}\nvariant_restock_date: ${val('variantRestockDate')}\nvariations: ${vNames}\nvariation_prefixes: ${vPrefixes}\nvariation_sizes: ${vSizes}\nvariation_units: ${vUnits}\nvariation_retail: ${vRetail}\nvariation_r_og: ${vROg}\nvariation_wholesale: ${vWholesale}\nvariation_w_og: ${vWOg}\nvariation_wholesale_qty: ${vWQty}\nvariation_status: ${vStatus}\ndate: ${today}\n---`;
   const noteContent = fm + '\n\n' + `\`\`\`dataviewjs
 const { Modal, Notice } = obsidian;
 const folderPath = dv.current().file.folder;
