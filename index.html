@@ -3,1274 +3,1294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Barongo — Ingiza Bidhaa</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>Barongo — Captions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #080810;
-    --surface: #0f0f1c;
-    --card: #14142a;
-    --border: #1e1e3a;
-    --accent: #6c63ff;
-    --accent2: #ff6584;
-    --gold: #f5c842;
-    --text: #e8e8f0;
-    --muted: #5a5a7a;
-    --green: #22c55e;
-    --red: #ef4444;
-    --orange: #f97316;
-  }
+:root {
+  --bg: #0b0b0b;
+  --s1: #141414;
+  --s2: #1c1c1c;
+  --s3: #252525;
+  --border: #2e2e2e;
+  --border2: #3a3a3a;
+  --a: #e8a020;
+  --a2: #d44c20;
+  --text: #ede9e0;
+  --sub: #888880;
+  --dim: #555550;
+  --green: #3ecf6a;
+  --orange: #f59e0b;
+  --red: #ef5050;
+  --r: 10px;
+  --r2: 7px;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 40px;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Figtree', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, #0f0f1c 0%, #1a1040 100%);
-    padding: 24px 20px 20px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .header-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 4px;
-  }
-  .logo {
-    width: 36px;
-    height: 36px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-  .brand { font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
-  .brand span { color: var(--accent); }
-  .subtitle { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-left: 48px; }
+/* ── HEADER ── */
+.hdr {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px 12px;
+}
+.hdr-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.hdr-logo {
+  width: 30px; height: 30px;
+  background: var(--a);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+}
+.hdr-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.hdr-name span { color: var(--a); }
+.product-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.product-name-wrap { flex: 1; position: relative; }
+.product-name-wrap input {
+  width: 100%;
+  background: var(--s2);
+  border: 1px solid var(--border2);
+  border-radius: var(--r2);
+  color: var(--text);
+  font-family: 'Figtree', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.product-name-wrap input:focus { border-color: var(--a); }
+.product-name-wrap input::placeholder { color: var(--dim); font-weight: 400; }
+.mode-toggle {
+  display: flex;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.mode-btn {
+  padding: 10px 13px;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: none;
+  border: none;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.mode-btn.on { background: var(--a); color: #000; }
 
-  /* CONTAINER */
-  .container { padding: 20px 16px; max-width: 480px; margin: 0 auto; }
+/* ── WRAP ── */
+.wrap { padding: 0 16px; max-width: 480px; margin: 0 auto; }
 
-  /* SECTION */
-  .section-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 24px 0 10px;
-  }
-  .section-label:first-child { margin-top: 0; }
+/* ── SECTION BLOCK ── */
+.blk {
+  margin-top: 18px;
+  animation: fadeUp 0.2s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.blk-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-bottom: 8px;
+}
 
-  /* CARD */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 16px;
-    margin-bottom: 10px;
-  }
+/* ── PILLS ── */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill {
+  padding: 8px 14px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--sub);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.pill:active { transform: scale(0.96); }
+.pill.on {
+  background: var(--a);
+  border-color: var(--a);
+  color: #000;
+}
+.pill.on2 {
+  background: transparent;
+  border-color: var(--a);
+  color: var(--a);
+}
 
-  /* TOGGLE ROW */
-  .toggle-row {
-    display: flex;
-    gap: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 4px;
-  }
-  .toggle-btn {
-    flex: 1;
-    padding: 9px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: 0.5px;
-    background: none;
-    color: var(--muted);
-    border: none;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .toggle-btn.active {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 2px 12px rgba(108,99,255,0.4);
-  }
+/* ── FIELD CARD ── */
+.fc {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.fc-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--a);
+  margin-bottom: 12px;
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-  /* INPUT */
-  .field { margin-bottom: 12px; }
-  .field:last-child { margin-bottom: 0; }
-  .field-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-    display: block;
-  }
-  input[type="text"],
-  input[type="number"],
-  select {
-    width: 100%;
-    padding: 11px 14px;
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    font-size: 14px;
-    font-family: 'Space Grotesk', sans-serif;
-    outline: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  input:focus, select:focus { border-color: var(--accent); }
-  input::placeholder { color: var(--muted); }
-  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235a5a7a' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+/* ── INPUT ── */
+.fld { margin-bottom: 10px; }
+.fld:last-child { margin-bottom: 0; }
+.fld-lbl {
+  font-size: 11px;
+  color: var(--dim);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-bottom: 5px;
+  display: block;
+}
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--s2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  font-size: 14px;
+  font-family: 'Figtree', sans-serif;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+input:focus { border-color: var(--a); }
+input::placeholder { color: var(--dim); }
 
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* ── OG TOGGLE INLINE ── */
+.og-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.og-toggle-btn {
+  font-size: 11px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--dim);
+  background: none;
+  border: 1px dashed var(--border2);
+  border-radius: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.og-toggle-btn.on { color: var(--a2); border-color: var(--a2); border-style: solid; }
+.og-field { display: none; }
+.og-field.show { display: block; }
 
-  /* STATUS BADGES */
-  .status-row { display: flex; gap: 6px; }
-  .status-btn {
-    flex: 1;
-    padding: 8px 4px;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-  }
-  .status-btn.active-green { background: rgba(34,197,94,0.15); border-color: var(--green); color: var(--green); }
-  .status-btn.active-orange { background: rgba(249,115,22,0.15); border-color: var(--orange); color: var(--orange); }
-  .status-btn.active-red { background: rgba(239,68,68,0.15); border-color: var(--red); color: var(--red); }
+/* ── STATUS ── */
+.status-row { display: flex; gap: 5px; margin-top: 10px; }
+.st-btn {
+  flex: 1;
+  padding: 7px 4px;
+  font-size: 11px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--s2);
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.st-btn.g { background: rgba(62,207,106,0.12); border-color: var(--green); color: var(--green); }
+.st-btn.o { background: rgba(245,158,11,0.12); border-color: var(--orange); color: var(--orange); }
+.st-btn.r { background: rgba(239,80,80,0.12); border-color: var(--red); color: var(--red); }
 
-  /* DIVIDER */
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+/* ── RESTOCK ── */
+.restock-reveal {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.2s ease;
+}
+.restock-reveal.show { display: block; }
 
-  /* VARIANT CARD */
-  .variant-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 8px;
-    position: relative;
-  }
-  .variant-number {
-    position: absolute;
-    top: -1px;
-    left: 14px;
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 1px;
-    background: var(--surface);
-    padding: 0 6px;
-    transform: translateY(-50%);
-  }
-  .variant-del {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(239,68,68,0.1);
-    border: none;
-    color: var(--red);
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+/* ── VARIANT ── */
+.variant-card {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 13px;
+  margin-bottom: 8px;
+  position: relative;
+  animation: fadeUp 0.2s ease;
+}
+.v-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--a);
+  margin-bottom: 10px;
+  padding-right: 32px;
+}
+.v-del {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(239,80,80,0.1);
+  border: none;
+  color: var(--red);
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+.unit-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.uc {
+  padding: 4px 9px;
+  font-size: 11px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.uc.on { background: rgba(232,160,32,0.15); border-color: var(--a); color: var(--a); }
+.add-variant-btn {
+  width: 100%;
+  padding: 11px;
+  background: transparent;
+  border: 1px dashed var(--border2);
+  border-radius: var(--r);
+  color: var(--sub);
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+.add-variant-btn:active { background: rgba(255,255,255,0.03); }
 
-  /* UNIT SELECTOR */
-  .unit-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-  .unit-chip {
-    padding: 5px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .unit-chip.active { background: rgba(108,99,255,0.2); border-color: var(--accent); color: var(--accent); }
+/* ── DIVIDER ── */
+.div { height: 1px; background: var(--border); margin: 10px 0; }
 
-  /* ADD BUTTON */
-  .add-btn {
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px dashed var(--accent);
-    border-radius: 12px;
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Space Grotesk', sans-serif;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .add-btn:active { background: rgba(108,99,255,0.1); }
+/* ── PREVIEW ── */
+.preview-wrap {
+  margin-top: 18px;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border2);
+}
+.preview-head {
+  background: var(--s2);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.preview-head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--a); }
+.reset-pill {
+  font-size: 10px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--a2);
+  background: rgba(212,76,32,0.1);
+  border: 1px solid var(--a2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  cursor: pointer;
+  display: none;
+}
+.reset-pill.show { display: block; }
+#previewBox {
+  width: 100%;
+  min-height: 140px;
+  padding: 14px;
+  background: var(--s1);
+  color: #c8c5bc;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.85;
+  border: none;
+  outline: none;
+  resize: vertical;
+  white-space: pre-wrap;
+}
 
-  /* PREVIEW */
-  .preview-wrap {
-    background: #0a0a18;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .preview-header {
-    padding: 10px 16px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  .preview-body {
-    padding: 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.8;
-    white-space: pre-wrap;
-    color: #c8c8e8;
-    min-height: 100px;
-  }
+/* ── COPY BTN ── */
+.copy-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 16px;
+  background: var(--a);
+  color: #000;
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:active { transform: scale(0.98); }
+.copy-btn.done { background: var(--green); }
 
-  /* ACTION BUTTONS */
-  .action-row { display: flex; gap: 10px; margin-top: 16px; }
-  .btn-main {
-    flex: 1;
-    padding: 15px;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: 'Space Grotesk', sans-serif;
-    border: none;
-    border-radius: 13px;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: all 0.2s;
-  }
-  .btn-copy {
-    background: linear-gradient(135deg, var(--accent), #9333ea);
-    color: white;
-    box-shadow: 0 4px 20px rgba(108,99,255,0.3);
-  }
-  .btn-copy:active { transform: scale(0.97); }
-
-  /* HIDDEN */
-  .hidden { display: none !important; }
-
-  /* OG TOGGLE */
-  .og-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    cursor: pointer;
-  }
-  .og-toggle input { width: auto; }
-  .og-toggle span { font-size: 12px; color: var(--muted); }
-
-  /* FLASH VARIANT CHECKLIST */
-  .flash-check-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 6px;
-  }
-  .flash-check-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
-  .flash-check-label { font-size: 13px; font-weight: 600; flex: 1; }
-  .flash-price-input { width: 120px !important; font-size: 13px; padding: 7px 10px; }
-  .flash-og-input { width: 120px !important; font-size: 13px; padding: 7px 10px; }
+/* ── HIDDEN ── */
+.gone { display: none !important; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
-    <div class="logo">🛒</div>
-    <div class="brand">BARONGO <span>HE</span></div>
+<div class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo">🛒</div>
+    <div class="hdr-name">BARONGO <span>HE</span></div>
   </div>
-  <div class="subtitle">Ingiza Bidhaa Mpya</div>
+  <div class="product-row">
+    <div class="product-name-wrap">
+      <input type="text" id="productName" placeholder="Jina la bidhaa..." oninput="S.name=this.value;regen()">
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn on" id="modeSingle" onclick="setMode('single')">Moja</button>
+      <button class="mode-btn" id="modeVariant" onclick="setMode('variant')">Varianti</button>
+    </div>
+  </div>
 </div>
 
-<div class="container">
+<div class="wrap">
 
-  <!-- PRODUCT NAME -->
-  <div class="section-label">Jina la Bidhaa</div>
-  <div class="card">
-    <div class="field">
-      <input type="text" id="productName" placeholder="mf. LUNCH BOX, SPIRAL BASIN" oninput="updatePreview()">
-    </div>
+  <!-- NETWORK -->
+  <div class="blk" id="netBlk">
+    <div class="blk-label">Mtandao</div>
+    <div class="pills" id="netPills"></div>
   </div>
 
-  <!-- PRODUCT TYPE -->
-  <div class="section-label">Aina ya Bidhaa</div>
-  <div class="toggle-row">
-    <button class="toggle-btn active" id="btnSingle" onclick="setType('single')">Bidhaa Moja</button>
-    <button class="toggle-btn" id="btnVariant" onclick="setType('variant')">Varianti</button>
+  <!-- CAPTION TYPE -->
+  <div class="blk gone" id="typeBlk">
+    <div class="blk-label">Aina ya Caption</div>
+    <div class="pills" id="typePills"></div>
   </div>
 
-  <!-- ═══════════════════════════════════════ -->
-  <!-- SINGLE PRODUCT SECTION -->
-  <!-- ═══════════════════════════════════════ -->
-  <div id="singleSection">
+  <!-- DYNAMIC FIELDS -->
+  <div id="fieldsArea"></div>
 
-    <!-- WHOLESALE -->
-    <div class="section-label">Bei ya Jumla</div>
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label class="field-label">Bei (TZS)</label>
-          <input type="number" id="priceWholesale" placeholder="290000" oninput="updatePreview()">
-        </div>
-        <div class="field">
-          <label class="field-label">Idadi (pc)</label>
-          <input type="number" id="unit" placeholder="800" oninput="updatePreview()">
-        </div>
-      </div>
-      <label class="og-toggle">
-        <input type="checkbox" id="wOgToggle" onchange="toggleOg('w'); updatePreview()">
-        <span>Ongeza bei iliyofutwa</span>
-      </label>
-      <div id="wOgField" class="field hidden">
-        <label class="field-label">Bei ya Awali (TZS)</label>
-        <input type="number" id="wOg" placeholder="Bei ya zamani" oninput="updatePreview()">
-      </div>
-      <div class="field">
-        <label class="field-label">Hali ya Stoko</label>
-        <div class="status-row">
-          <button class="status-btn active-green" id="wStatus_in" onclick="setStatus('w','in_stock')">✓ Ipo</button>
-          <button class="status-btn" id="wStatus_low" onclick="setStatus('w','low_stock')">⚠ Inakwisha</button>
-          <button class="status-btn" id="wStatus_out" onclick="setStatus('w','out_of_stock')">✕ Haipi</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- RETAIL -->
-    <div class="section-label">Bei ya Rejareja</div>
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label class="field-label">Bei (TZS)</label>
-          <input type="number" id="priceRetail" placeholder="5500" oninput="updatePreview()">
-        </div>
-        <div class="field">
-          <label class="field-label">Idadi (empty = 1pc)</label>
-          <input type="number" id="retailQty" placeholder="12" oninput="updatePreview()">
-        </div>
-      </div>
-      <label class="og-toggle">
-        <input type="checkbox" id="rOgToggle" onchange="toggleOg('r'); updatePreview()">
-        <span>Ongeza bei iliyofutwa</span>
-      </label>
-      <div id="rOgField" class="field hidden">
-        <label class="field-label">Bei ya Awali (TZS)</label>
-        <input type="number" id="rOg" placeholder="Bei ya zamani" oninput="updatePreview()">
-      </div>
-      <div class="field">
-        <label class="field-label">Hali ya Stoko</label>
-        <div class="status-row">
-          <button class="status-btn active-green" id="rStatus_in" onclick="setStatus('r','in_stock')">✓ Ipo</button>
-          <button class="status-btn" id="rStatus_low" onclick="setStatus('r','low_stock')">⚠ Inakwisha</button>
-          <button class="status-btn" id="rStatus_out" onclick="setStatus('r','out_of_stock')">✕ Haipi</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- RESTOCK (shows when out of stock) -->
-    <div id="restockSection" class="hidden">
-      <div class="section-label">Tarehe ya Kuja Tena</div>
-      <div class="card">
-        <div class="field">
-          <input type="text" id="restockDate" placeholder="mf. Aprili 5" oninput="updatePreview()">
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════ -->
-  <!-- VARIANTS SECTION -->
-  <!-- ═══════════════════════════════════════ -->
-  <div id="variantSection" class="hidden">
-
-    <div class="section-label">Varianti</div>
-    <div id="variantRows"></div>
-    <button class="add-btn" onclick="addVariant()">+ Ongeza Varianti</button>
-
-    <div id="variantRestockSection" class="hidden">
-      <div class="section-label" style="margin-top:20px;">Tarehe ya Kuja Tena</div>
-      <div class="card">
-        <div class="field">
-          <input type="text" id="variantRestockDate" placeholder="mf. Aprili 5" oninput="updatePreview()">
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ═══════════════════════════════════════ -->
   <!-- PREVIEW -->
-  <!-- ═══════════════════════════════════════ -->
-  <div class="section-label" style="margin-top:28px;">Mwonekano wa Caption</div>
-  <div class="preview-wrap">
-    <div class="preview-header">
-      <div class="preview-dot"></div>
-      Live Preview
+  <div class="preview-wrap" id="previewWrap">
+    <div class="preview-head">
+      <div class="preview-head-left">
+        <div class="preview-dot"></div>
+        Preview
+      </div>
+      <button class="reset-pill" id="resetPill" onclick="resetPreview()">↺ Reset</button>
     </div>
-    <div class="preview-body" id="previewBox">Jaza maelezo hapo juu...</div>
+    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Chagua mtandao na aina ya caption...</textarea>
   </div>
 
-  <!-- ACTIONS -->
-  <div class="action-row">
-    <button class="btn-main btn-copy" onclick="copyAll()">📋 Nakili Yote</button>
-  </div>
+  <button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 Nakili Caption</button>
 
 </div>
 
 <script>
-// ── STATE ─────────────────────────────────────────────────
-let productType = 'single';
-let wStatus = 'in_stock';
-let rStatus = 'in_stock';
-let variants = [];
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+const S = {
+  network: null,
+  type: null,
+  mode: 'single',
+  name: '',
+  w: { price: '', qty: '', og: '', ogOn: false, status: 'in_stock' },
+  r: { price: '', qty: '', og: '', ogOn: false, status: 'in_stock' },
+  flash: { price: '', og: '' },
+  restockDate: '',
+  restockHeadline: '',
+  variants: [],
+  variantRestock: '',
+  previewEdited: false,
+};
+
+const UNITS = ['pc','kg','g','Ltrs','ml','cm','inch','—'];
 
 const SIGNATURE = `───────────────\n🌐 @machimbocomplex\n📍 Kariakoo | Aggrey & Sikukuu\n📞 +255756374915`;
 
-// ── TYPE TOGGLE ────────────────────────────────────────────
-function setType(type) {
-  productType = type;
-  document.getElementById('btnSingle').classList.toggle('active', type === 'single');
-  document.getElementById('btnVariant').classList.toggle('active', type === 'variant');
-  document.getElementById('singleSection').classList.toggle('hidden', type !== 'single');
-  document.getElementById('variantSection').classList.toggle('hidden', type !== 'variant');
-  updatePreview();
+// ═══════════════════════════════════════════════════════
+// NETWORKS
+// ═══════════════════════════════════════════════════════
+const NETWORKS = [
+  { id: 'whatsapp',  label: 'WhatsApp',  e: '💬' },
+  { id: 'telegram',  label: 'Telegram',  e: '✈️' },
+  { id: 'tiktok',    label: 'TikTok',    e: '🎵' },
+  { id: 'any',       label: 'Yoyote',    e: '◈'  },
+];
+
+// ═══════════════════════════════════════════════════════
+// CAPTION REGISTRY
+// ═══════════════════════════════════════════════════════
+const REGISTRY = [
+  {
+    id: 'standard',
+    label: 'Standard',
+    e: '📋',
+    nets: ['whatsapp','telegram','any'],
+    groups: ['wholesale','retail'],
+    build: buildStandard,
+  },
+  {
+    id: 'wholesale_only',
+    label: 'Jumla Tu',
+    e: '📦',
+    nets: ['whatsapp','telegram','any'],
+    groups: ['wholesale'],
+    build: buildWholesaleOnly,
+  },
+  {
+    id: 'repost',
+    label: 'Repost',
+    e: '🔄',
+    nets: ['whatsapp','telegram','any'],
+    groups: ['wholesale','retail'],
+    build: buildRepost,
+  },
+  {
+    id: 'flash',
+    label: 'Flash Sale',
+    e: '⚡',
+    nets: ['whatsapp','telegram','any'],
+    groups: ['flash','wholesale'],
+    build: buildFlash,
+  },
+  {
+    id: 'new_arrival',
+    label: 'Bidhaa Mpya',
+    e: '✨',
+    nets: ['whatsapp','telegram','tiktok','any'],
+    groups: ['wholesale','retail'],
+    build: buildNewArrival,
+  },
+  {
+    id: 'back_in_stock',
+    label: 'Imerudishwa',
+    e: '🔃',
+    nets: ['whatsapp','telegram','any'],
+    groups: ['restock_headline','wholesale','retail'],
+    build: buildBackInStock,
+  },
+  {
+    id: 'engagement',
+    label: 'Engagement',
+    e: '🎯',
+    nets: ['tiktok','any'],
+    groups: [],
+    build: buildEngagement,
+  },
+  {
+    id: 'plain',
+    label: 'Plain Text',
+    e: '📄',
+    nets: ['any'],
+    groups: ['wholesale','retail'],
+    build: buildPlain,
+  },
+];
+
+// ═══════════════════════════════════════════════════════
+// NETWORK & TYPE SELECTION
+// ═══════════════════════════════════════════════════════
+function initNetworks() {
+  const el = document.getElementById('netPills');
+  el.innerHTML = NETWORKS.map(n =>
+    `<button class="pill" onclick="selectNetwork('${n.id}')" id="net_${n.id}">${n.e} ${n.label}</button>`
+  ).join('');
 }
 
-// ── STATUS ─────────────────────────────────────────────────
-function setStatus(which, val) {
-  if (which === 'w') wStatus = val;
-  else rStatus = val;
-
-  ['in','low','out'].forEach(s => {
-    const btn = document.getElementById(`${which}Status_${s}`);
-    btn.className = 'status-btn';
-    if (s === 'in' && val === 'in_stock') btn.classList.add('active-green');
-    if (s === 'low' && val === 'low_stock') btn.classList.add('active-orange');
-    if (s === 'out' && val === 'out_of_stock') btn.classList.add('active-red');
-  });
-
-  const eitherOut = wStatus === 'out_of_stock' || rStatus === 'out_of_stock';
-  document.getElementById('restockSection').classList.toggle('hidden', !eitherOut);
-  updatePreview();
+function selectNetwork(id) {
+  S.network = id;
+  document.querySelectorAll('#netPills .pill').forEach(b => b.classList.remove('on'));
+  document.getElementById('net_' + id).classList.add('on');
+  // if current type not valid for new network, clear it
+  if (S.type) {
+    const def = REGISTRY.find(r => r.id === S.type);
+    if (!def || !def.nets.includes(id)) {
+      S.type = null;
+    }
+  }
+  renderTypePills();
+  document.getElementById('typeBlk').classList.remove('gone');
 }
 
-function checkVariantRestock() {
-  const allOut = variants.length > 0 && variants.every(v => v.status === 'out_of_stock');
-  document.getElementById('variantRestockSection').classList.toggle('hidden', !allOut);
+function renderTypePills() {
+  const el = document.getElementById('typePills');
+  const available = REGISTRY.filter(r => r.nets.includes(S.network));
+  el.innerHTML = available.map(r =>
+    `<button class="pill ${S.type === r.id ? 'on' : ''}" onclick="selectType('${r.id}')" id="type_${r.id}">${r.e} ${r.label}</button>`
+  ).join('');
 }
 
-// ── OG TOGGLE ──────────────────────────────────────────────
-function toggleOg(which) {
-  const checked = document.getElementById(`${which}OgToggle`).checked;
-  document.getElementById(`${which}OgField`).classList.toggle('hidden', !checked);
+function selectType(id) {
+  S.type = id;
+  document.querySelectorAll('#typePills .pill').forEach(b => b.classList.remove('on'));
+  const btn = document.getElementById('type_' + id);
+  if (btn) btn.classList.add('on');
+  renderFields();
+  regen();
 }
 
-// ── VARIANTS ───────────────────────────────────────────────
-const UNITS = ['pc', 'kg', 'g', 'Ltrs', 'ml', 'cm', 'inch', '—'];
+// ═══════════════════════════════════════════════════════
+// PRODUCT MODE
+// ═══════════════════════════════════════════════════════
+function setMode(m) {
+  S.mode = m;
+  document.getElementById('modeSingle').classList.toggle('on', m === 'single');
+  document.getElementById('modeVariant').classList.toggle('on', m === 'variant');
+  if (S.type) renderFields();
+  regen();
+}
 
+// ═══════════════════════════════════════════════════════
+// FIELD RENDERING ENGINE
+// ═══════════════════════════════════════════════════════
+function renderFields() {
+  const area = document.getElementById('fieldsArea');
+  if (!S.type) { area.innerHTML = ''; return; }
+  const def = REGISTRY.find(r => r.id === S.type);
+  if (!def) { area.innerHTML = ''; return; }
+
+  let html = '<div class="blk" id="fieldsInner">';
+
+  if (S.mode === 'variant') {
+    // variant mode: show variant builder for all types that need price groups
+    const needsPrices = def.groups.some(g => ['wholesale','retail','flash'].includes(g));
+    if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
+    if (def.groups.includes('flash')) html += htmlFlashGroupVariant();
+    if (needsPrices) html += htmlVariantSection(def);
+    else if (!needsPrices && def.groups.length === 0) {
+      // engagement etc — no fields needed
+    }
+  } else {
+    // single mode
+    if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
+    if (def.groups.includes('flash')) html += htmlFlashGroup();
+    if (def.groups.includes('wholesale')) html += htmlWholesaleGroup();
+    if (def.groups.includes('retail')) html += htmlRetailGroup();
+  }
+
+  html += '</div>';
+  area.innerHTML = html;
+
+  // restore status button states
+  if (S.mode === 'single') {
+    applyStatus('w', S.w.status);
+    applyStatus('r', S.r.status);
+    if (S.w.ogOn) { const f = document.getElementById('wOgField'); if(f) f.classList.add('show'); }
+    if (S.r.ogOn) { const f = document.getElementById('rOgField'); if(f) f.classList.add('show'); }
+    checkRestockVisibility();
+  } else {
+    renderVariantRows();
+  }
+}
+
+// ── Wholesale group ──
+function htmlWholesaleGroup() {
+  return `
+  <div class="fc" id="wCard">
+    <div class="fc-title">📦 Bei ya Jumla</div>
+    <div class="grid2">
+      <div class="fld">
+        <label class="fld-lbl">Bei (TZS)</label>
+        <input type="number" placeholder="150000" value="${S.w.price}" oninput="S.w.price=this.value;regen()">
+      </div>
+      <div class="fld">
+        <label class="fld-lbl">Idadi (pc)</label>
+        <input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()">
+      </div>
+    </div>
+    <div class="og-row">
+      <button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Bei ya zamani</button>
+    </div>
+    <div class="og-field ${S.w.ogOn?'show':''}" id="wOgField">
+      <div class="fld">
+        <label class="fld-lbl">Bei ya Awali (TZS)</label>
+        <input type="number" placeholder="Bei ya zamani" value="${S.w.og}" oninput="S.w.og=this.value;regen()">
+      </div>
+    </div>
+    <div class="fld-lbl" style="margin-top:4px;">Hali ya Stoko</div>
+    <div class="status-row">
+      <button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">✓ Ipo</button>
+      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">⚠ Inakwisha</button>
+      <button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">✕ Haipi</button>
+    </div>
+    <div class="restock-reveal" id="wRestock">
+      <div class="fld">
+        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
+        <input type="text" placeholder="mf. Aprili 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Retail group ──
+function htmlRetailGroup() {
+  return `
+  <div class="fc" id="rCard">
+    <div class="fc-title">🛍️ Bei ya Rejareja</div>
+    <div class="grid2">
+      <div class="fld">
+        <label class="fld-lbl">Bei (TZS)</label>
+        <input type="number" placeholder="5500" value="${S.r.price}" oninput="S.r.price=this.value;regen()">
+      </div>
+      <div class="fld">
+        <label class="fld-lbl">Idadi (ikiwa zaidi ya 1)</label>
+        <input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()">
+      </div>
+    </div>
+    <div class="og-row">
+      <button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Bei ya zamani</button>
+    </div>
+    <div class="og-field ${S.r.ogOn?'show':''}" id="rOgField">
+      <div class="fld">
+        <label class="fld-lbl">Bei ya Awali (TZS)</label>
+        <input type="number" placeholder="Bei ya zamani" value="${S.r.og}" oninput="S.r.og=this.value;regen()">
+      </div>
+    </div>
+    <div class="fld-lbl" style="margin-top:4px;">Hali ya Stoko</div>
+    <div class="status-row">
+      <button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">✓ Ipo</button>
+      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">⚠ Inakwisha</button>
+      <button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">✕ Haipi</button>
+    </div>
+    <div class="restock-reveal" id="rRestock">
+      <div class="fld">
+        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
+        <input type="text" placeholder="mf. Aprili 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Flash group (single) ──
+function htmlFlashGroup() {
+  return `
+  <div class="fc" id="flashCard">
+    <div class="fc-title">⚡ Bei ya Flash</div>
+    <div class="grid2">
+      <div class="fld">
+        <label class="fld-lbl">Bei ya Flash (TZS)</label>
+        <input type="number" placeholder="Bei mpya ya leo" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()">
+      </div>
+      <div class="fld">
+        <label class="fld-lbl">Bei ya Kawaida (TZS)</label>
+        <input type="number" placeholder="Bei ya zamani" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()">
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Flash group (variant mode) ──
+function htmlFlashGroupVariant() {
+  return `
+  <div class="fc" id="flashCard">
+    <div class="fc-title">⚡ Flash Sale — Bei za Varianti</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Weka bei za flash kwa kila varianti hapa chini.</p>
+  </div>`;
+}
+
+// ── Restock headline (Back in Stock) ──
+function htmlRestockHeadline() {
+  return `
+  <div class="fc">
+    <div class="fc-title">🔃 Tarehe ya Kurudi</div>
+    <div class="fld">
+      <label class="fld-lbl">Iliporudishwa / Inakuja</label>
+      <input type="text" placeholder="mf. Imerudishwa Aprili 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()">
+    </div>
+  </div>`;
+}
+
+// ── Variant section ──
+function htmlVariantSection(def) {
+  return `
+  <div class="fc" id="variantSection">
+    <div class="fc-title" id="variantSectionTitle">VARIANTI</div>
+    <div id="variantRows"></div>
+    <button class="add-variant-btn" onclick="addVariant()">+ Ongeza Varianti</button>
+    <div class="restock-reveal" id="variantRestockReveal">
+      <div class="fld">
+        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
+        <input type="text" placeholder="mf. Aprili 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()">
+      </div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// VARIANT MANAGEMENT
+// ═══════════════════════════════════════════════════════
 function addVariant(v = {}) {
-  variants.push({
+  S.variants.push({
     prefix: v.prefix || '',
     size: v.size || '',
     unit: v.unit || 'pc',
     customUnit: v.customUnit || '',
+    wholesale: v.wholesale || '',
+    wholesaleQty: v.wholesaleQty || '',
+    wOg: v.wOg || '',
     retail: v.retail || '',
     rOg: v.rOg || '',
-    wholesale: v.wholesale || '',
-    wOg: v.wOg || '',
-    wholesaleQty: v.wholesaleQty || '',
-    status: v.status || 'in_stock'
+    flashPrice: v.flashPrice || '',
+    flashOg: v.flashOg || '',
+    status: v.status || 'in_stock',
   });
-  renderVariants();
+  renderVariantRows();
+  regen();
 }
 
 function removeVariant(i) {
-  variants.splice(i, 1);
-  renderVariants();
-  updatePreview();
+  S.variants.splice(i, 1);
+  renderVariantRows();
+  regen();
 }
 
-function renderVariants() {
+function renderVariantRows() {
   const container = document.getElementById('variantRows');
+  if (!container) return;
   container.innerHTML = '';
+  const def = REGISTRY.find(r => r.id === S.type);
+  const isFlash = def && def.groups.includes('flash');
 
-  variants.forEach((v, i) => {
-    const card = document.createElement('div');
-    card.className = 'variant-card';
+  S.variants.forEach((v, i) => {
+    const name = buildVName(v);
+    const div = document.createElement('div');
+    div.className = 'variant-card';
 
-    const displayName = buildVariantName(v);
-    card.innerHTML = `
-      <div class="variant-number">VARIANTI ${i + 1}${displayName ? ' — ' + displayName : ''}</div>
-      <button class="variant-del" onclick="removeVariant(${i})">✕</button>
-
-      <div style="margin-top:10px;">
+    let priceHTML = '';
+    if (isFlash) {
+      priceHTML = `
+        <div class="div"></div>
         <div class="grid2">
-          <div class="field">
-            <label class="field-label">Kiambatisho (hiari)</label>
-            <input type="text" placeholder="mf. Spiral, DRUM" value="${v.prefix}"
-              oninput="variants[${i}].prefix=this.value;updateVariantLabel(${i});updatePreview()">
+          <div class="fld">
+            <label class="fld-lbl">Bei ya Flash (TZS)</label>
+            <input type="number" placeholder="Bei flash" value="${v.flashPrice}"
+              oninput="S.variants[${i}].flashPrice=this.value;regen()">
           </div>
-          <div class="field">
-            <label class="field-label">Ukubwa / Nambari</label>
-            <input type="text" placeholder="mf. 12, 14, 90" value="${v.size}"
-              oninput="variants[${i}].size=this.value;updateVariantLabel(${i});updatePreview()">
+          <div class="fld">
+            <label class="fld-lbl">Bei ya Kawaida (TZS)</label>
+            <input type="number" placeholder="Bei zamani" value="${v.flashOg}"
+              oninput="S.variants[${i}].flashOg=this.value;regen()">
           </div>
-        </div>
-
-        <div class="field">
-          <label class="field-label">Kipimo</label>
-          <div class="unit-selector" id="unitSelector_${i}">
-            ${UNITS.map(u => `<button class="unit-chip ${v.unit === u ? 'active' : ''}"
-              onclick="setVariantUnit(${i},'${u}')">${u === '—' ? 'Mwingine' : u}</button>`).join('')}
-          </div>
-          <input type="text" id="customUnit_${i}" placeholder="Andika kipimo chako"
-            value="${v.customUnit}" ${v.unit !== '—' ? 'style="display:none"' : ''}
-            oninput="variants[${i}].customUnit=this.value;updatePreview()">
-        </div>
-
-        <div class="divider"></div>
-
+        </div>`;
+    } else {
+      priceHTML = `
+        <div class="div"></div>
         <div class="grid2">
-          <div class="field">
-            <label class="field-label">Bei Jumla (TZS)</label>
+          <div class="fld">
+            <label class="fld-lbl">Bei Jumla (TZS)</label>
             <input type="number" placeholder="150000" value="${v.wholesale}"
-              oninput="variants[${i}].wholesale=this.value;updatePreview()">
+              oninput="S.variants[${i}].wholesale=this.value;regen()">
           </div>
-          <div class="field">
-            <label class="field-label">Idadi Jumla (pc)</label>
+          <div class="fld">
+            <label class="fld-lbl">Idadi Jumla (pc)</label>
             <input type="number" placeholder="50" value="${v.wholesaleQty}"
-              oninput="variants[${i}].wholesaleQty=this.value;updatePreview()">
+              oninput="S.variants[${i}].wholesaleQty=this.value;regen()">
           </div>
         </div>
-        <div class="field">
-          <label class="field-label">Bei ya Awali Jumla (hiari)</label>
-          <input type="number" placeholder="Bei ya zamani" value="${v.wOg}"
-            oninput="variants[${i}].wOg=this.value;updatePreview()">
+        <div class="fld">
+          <label class="fld-lbl">Bei ya Awali Jumla (hiari)</label>
+          <input type="number" placeholder="Bei zamani" value="${v.wOg}"
+            oninput="S.variants[${i}].wOg=this.value;regen()">
         </div>
-
-        <div class="divider"></div>
-
-        <div class="field">
-          <label class="field-label">Bei Rejareja (TZS)</label>
+        <div class="div"></div>
+        <div class="fld">
+          <label class="fld-lbl">Bei Rejareja (TZS)</label>
           <input type="number" placeholder="4000" value="${v.retail}"
-            oninput="variants[${i}].retail=this.value;updatePreview()">
+            oninput="S.variants[${i}].retail=this.value;regen()">
         </div>
-        <div class="field">
-          <label class="field-label">Bei ya Awali Rejareja (hiari)</label>
-          <input type="number" placeholder="Bei ya zamani" value="${v.rOg}"
-            oninput="variants[${i}].rOg=this.value;updatePreview()">
-        </div>
+        <div class="fld">
+          <label class="fld-lbl">Bei ya Awali Rejareja (hiari)</label>
+          <input type="number" placeholder="Bei zamani" value="${v.rOg}"
+            oninput="S.variants[${i}].rOg=this.value;regen()">
+        </div>`;
+    }
 
-        <div class="field">
-          <label class="field-label">Hali ya Stoko</label>
-          <div class="status-row">
-            <button class="status-btn ${v.status==='in_stock'?'active-green':''}"
-              onclick="setVariantStatus(${i},'in_stock')">✓ Ipo</button>
-            <button class="status-btn ${v.status==='low_stock'?'active-orange':''}"
-              onclick="setVariantStatus(${i},'low_stock')">⚠ Inakwisha</button>
-            <button class="status-btn ${v.status==='out_of_stock'?'active-red':''}"
-              onclick="setVariantStatus(${i},'out_of_stock')">✕ Haipi</button>
-          </div>
+    div.innerHTML = `
+      <div class="v-label" id="vlabel_${i}">VARIANTI ${i+1}${name?' — '+name:''}</div>
+      <button class="v-del" onclick="removeVariant(${i})">✕</button>
+      <div class="grid2">
+        <div class="fld">
+          <label class="fld-lbl">Kiambatisho (hiari)</label>
+          <input type="text" placeholder="mf. Spiral" value="${v.prefix}"
+            oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()">
         </div>
+        <div class="fld">
+          <label class="fld-lbl">Ukubwa / Nambari</label>
+          <input type="text" placeholder="mf. 12, L, 90cm" value="${v.size}"
+            oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()">
+        </div>
+      </div>
+      <div class="fld">
+        <label class="fld-lbl">Kipimo</label>
+        <div class="unit-chips">
+          ${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='—'?'Kingine':u}</button>`).join('')}
+        </div>
+        <input type="text" id="vcu_${i}" placeholder="Andika kipimo" value="${v.customUnit}"
+          style="${v.unit!=='—'?'display:none':''}"
+          oninput="S.variants[${i}].customUnit=this.value;regen()">
+      </div>
+      ${priceHTML}
+      <div class="fld-lbl" style="margin-top:10px;">Hali ya Stoko</div>
+      <div class="status-row">
+        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">✓ Ipo</button>
+        <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">⚠ Inakwisha</button>
+        <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">✕ Haipi</button>
       </div>`;
 
-    container.appendChild(card);
+    container.appendChild(div);
   });
 
-  // Add button after all cards
   checkVariantRestock();
-  updatePreview();
 }
 
-function setVariantUnit(i, unit) {
-  variants[i].unit = unit;
-  const customInput = document.getElementById(`customUnit_${i}`);
-  if (customInput) customInput.style.display = unit === '—' ? 'block' : 'none';
-  renderVariants();
-  updatePreview();
+function updateVLabel(i) {
+  const el = document.getElementById('vlabel_' + i);
+  if (!el) return;
+  const name = buildVName(S.variants[i]);
+  el.textContent = `VARIANTI ${i+1}${name?' — '+name:''}`;
 }
 
-function setVariantStatus(i, status) {
-  variants[i].status = status;
-  renderVariants();
+function setVUnit(i, u) {
+  S.variants[i].unit = u;
+  const ci = document.getElementById('vcu_' + i);
+  if (ci) ci.style.display = u === '—' ? 'block' : 'none';
+  // update chip classes without full rebuild
+  const card = document.getElementById('variantRows').children[i];
+  if (card) {
+    card.querySelectorAll('.uc').forEach((btn, j) => {
+      btn.classList.toggle('on', UNITS[j] === u);
+    });
+  }
+  regen();
+}
+
+function setVStatus(i, st) {
+  S.variants[i].status = st;
+  const card = document.getElementById('variantRows').children[i];
+  if (card) {
+    const btns = card.querySelectorAll('.status-row .st-btn');
+    btns[0].className = 'st-btn' + (st==='in_stock'?' g':'');
+    btns[1].className = 'st-btn' + (st==='low_stock'?' o':'');
+    btns[2].className = 'st-btn' + (st==='out_of_stock'?' r':'');
+  }
   checkVariantRestock();
-  updatePreview();
+  regen();
 }
 
-function buildVariantName(v) {
+function checkVariantRestock() {
+  const el = document.getElementById('variantRestockReveal');
+  if (!el) return;
+  const allOut = S.variants.length > 0 && S.variants.every(v => v.status === 'out_of_stock');
+  el.classList.toggle('show', allOut);
+}
+
+function buildVName(v) {
   const unit = v.unit === '—' ? v.customUnit : v.unit;
   if (!v.size) return v.prefix || '';
-  if (v.prefix) {
-    return unit && unit !== 'pc' ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
+  if (v.prefix) return (unit && unit !== 'pc') ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
+  return (unit && unit !== 'pc') ? `${v.size} ${unit}` : v.size;
+}
+
+// ═══════════════════════════════════════════════════════
+// STATUS & OG HELPERS
+// ═══════════════════════════════════════════════════════
+function setStatus(which, val) {
+  if (which === 'w') S.w.status = val;
+  else S.r.status = val;
+  applyStatus(which, val);
+  checkRestockVisibility();
+  regen();
+}
+
+function applyStatus(which, val) {
+  ['in','low','out'].forEach(s => {
+    const btn = document.getElementById(`${which}St_${s}`);
+    if (!btn) return;
+    btn.className = 'st-btn';
+    if (s==='in' && val==='in_stock') btn.classList.add('g');
+    if (s==='low' && val==='low_stock') btn.classList.add('o');
+    if (s==='out' && val==='out_of_stock') btn.classList.add('r');
+  });
+}
+
+function checkRestockVisibility() {
+  const def = REGISTRY.find(r => r.id === S.type);
+  // only show restock if this type includes wholesale or retail (not back_in_stock which has its own)
+  if (!def || def.groups.includes('restock_headline')) return;
+  const wOut = S.w.status === 'out_of_stock';
+  const rOut = S.r.status === 'out_of_stock';
+  const wr = document.getElementById('wRestock');
+  const rr = document.getElementById('rRestock');
+  if (wr) wr.classList.toggle('show', wOut);
+  if (rr) rr.classList.toggle('show', rOut);
+}
+
+function toggleOg(which) {
+  if (which === 'w') S.w.ogOn = !S.w.ogOn;
+  else S.r.ogOn = !S.r.ogOn;
+  const field = document.getElementById(which + 'OgField');
+  const btn = document.getElementById(which + 'OgBtn');
+  const on = which === 'w' ? S.w.ogOn : S.r.ogOn;
+  if (field) field.classList.toggle('show', on);
+  if (btn) btn.classList.toggle('on', on);
+  if (!on) {
+    if (which === 'w') S.w.og = '';
+    else S.r.og = '';
   }
-  return unit && unit !== 'pc' ? `${v.size} ${unit}` : v.size;
+  regen();
 }
 
-function updateVariantLabel(i) {
-  const card = document.getElementById('variantRows').children[i];
-  if (!card) return;
-  const label = card.querySelector('.variant-number');
-  if (!label) return;
-  const displayName = buildVariantName(variants[i]);
-  label.textContent = `VARIANTI ${i + 1}${displayName ? ' — ' + displayName : ''}`;
-}
-
-// ── CAPTION BUILDER ────────────────────────────────────────
-function val(id) {
-  const el = document.getElementById(id);
-  return el ? el.value.trim() : '';
-}
-
-function fmt(n) {
-  if (!n) return n;
-  return Number(n).toLocaleString('en-US');
-}
-
-function buildCaption() {
-  const name = val('productName') || '—';
-
-  if (productType === 'variant') {
-    return buildVariantCaption(name);
-  } else {
-    return buildSingleCaption(name);
-  }
-}
-
-function buildSingleCaption(name) {
-  const priceW = val('priceWholesale');
-  const unitQty = val('unit');
-  const wOg = val('wOg');
-  const priceR = val('priceRetail');
-  const rQty = val('retailQty') || '1';
-  const rOg = val('rOg');
-  const restock = val('restockDate');
-
-  const showW = priceW && unitQty && wStatus !== 'out_of_stock';
-  const showR = priceR && rStatus !== 'out_of_stock';
-  const bothOut = !showW && !showR && (wStatus === 'out_of_stock' || rStatus === 'out_of_stock');
-
-  let body = '';
-
-  if (bothOut) {
-    body = restock
-      ? `📅 *Inakuja Tena — ${restock}*`
-      : `❌ *Haipatikani Sasa Hivi*`;
-  } else {
-    let wBlock = '';
-    if (showW) {
-      if (wOg) {
-        wBlock = `📦 *Jumla*\n~👉 ${unitQty}pc = TZS ${fmt(wOg)}~\n👉 ${unitQty}pc = *TZS ${fmt(priceW)}*`;
-      } else {
-        wBlock = `📦 *Jumla*\n👉 ${unitQty}pc = *TZS ${fmt(priceW)}*`;
-      }
-      if (wStatus === 'low_stock') wBlock += ` ⚠️`;
-    }
-
-    let rBlock = '';
-    if (showR) {
-      if (rOg) {
-        rBlock = `🛍️ *Rejareja*\n~👉 ${rQty}pc = TZS ${fmt(rOg)}~\n👉 ${rQty}pc = *TZS ${fmt(priceR)}*`;
-      } else {
-        rBlock = `🛍️ *Rejareja*\n👉 ${rQty}pc = *TZS ${fmt(priceR)}*`;
-      }
-      if (rStatus === 'low_stock') rBlock += ` ⚠️`;
-    }
-
-    body = [wBlock, rBlock].filter(Boolean).join('\n\n');
-  }
-
-  return `🛒 *${name}*\n───────────────\n\n${body}\n\n${SIGNATURE}`;
-}
-
-function buildVariantCaption(name) {
-  const activeVariants = variants.filter(v => v.status !== 'out_of_stock');
-
-  if (!activeVariants.length) {
-    const restock = val('variantRestockDate');
-    const msg = restock ? `📅 *Inakuja Tena — ${restock}*` : `❌ *Haipatikani Sasa Hivi*`;
-    return `🛒 *${name}*\n───────────────\n\n${msg}\n\n${SIGNATURE}`;
-  }
-
-  const lines = activeVariants.map(v => {
-    const vName = buildVariantName(v);
-    const hasWOg = v.wOg && v.wholesale;
-    const hasROg = v.rOg && v.retail;
-    const hasStrike = hasWOg || hasROg;
-
-    let block = `💰 *${vName}*\n`;
-
-    if (v.wholesale && v.wholesaleQty) {
-      if (hasWOg) {
-        block += `📦 ~Jumla: ${v.wholesaleQty}pc = TZS ${fmt(v.wOg)}~\n`;
-        block += `📦 Jumla: ${v.wholesaleQty}pc = *TZS ${fmt(v.wholesale)}*`;
-      } else {
-        block += `📦 Jumla: ${v.wholesaleQty}pc = *TZS ${fmt(v.wholesale)}*`;
-      }
-    }
-
-    if (v.retail) {
-      if (v.wholesale && v.wholesaleQty) {
-        block += hasStrike ? '\n\n' : '\n';
-      }
-      if (hasROg) {
-        block += `🛍️ ~Rejareja: 1pc = TZS ${fmt(v.rOg)}~\n`;
-        block += `🛍️ Rejareja: 1pc = *TZS ${fmt(v.retail)}*`;
-      } else {
-        block += `🛍️ Rejareja: 1pc = *TZS ${fmt(v.retail)}*`;
-      }
-    }
-
-    if (v.status === 'low_stock') block += ` ⚠️`;
-
-    return block;
-  }).join('\n\n');
-
-  return `🛒 *${name}*\n───────────────\n\n${lines}\n\n${SIGNATURE}`;
-}
-
-function updatePreview() {
-  document.getElementById('previewBox').textContent = buildCaption();
-}
-
-// ── COPY ALL ───────────────────────────────────────────────
-function copyAll() {
-  const name = val('productName');
-  const today = new Date().toISOString().split('T')[0];
-  const vNames = variants.map(v => buildVariantName(v)).join(', ');
-  const vPrefixes = variants.map(v => v.prefix).join(', ');
-  const vSizes = variants.map(v => v.size).join(', ');
-  const vUnits = variants.map(v => v.unit === '—' ? v.customUnit : v.unit).join(', ');
-  const vRetail = variants.map(v => v.retail).join(', ');
-  const vROg = variants.map(v => v.rOg).join(', ');
-  const vWholesale = variants.map(v => v.wholesale).join(', ');
-  const vWOg = variants.map(v => v.wOg).join(', ');
-  const vWQty = variants.map(v => v.wholesaleQty).join(', ');
-  const vStatus = variants.map(v => v.status).join(', ');
-
-  const wOgChecked = document.getElementById('wOgToggle')?.checked;
-  const rOgChecked = document.getElementById('rOgToggle')?.checked;
-  const fm = `---\nname: ${name}\nproduct_type: ${productType}\nprice_wholesale: ${val('priceWholesale')}\nunit: ${val('unit')}\nw_og: ${wOgChecked ? val('wOg') : ''}\nwholesale_status: ${wStatus}\nprice_retail: ${val('priceRetail')}\nretail_qty: ${val('retailQty')}\nr_og: ${rOgChecked ? val('rOg') : ''}\nretail_status: ${rStatus}\nrestock_date: ${val('restockDate')}\nvariant_restock_date: ${val('variantRestockDate')}\nvariations: ${vNames}\nvariation_prefixes: ${vPrefixes}\nvariation_sizes: ${vSizes}\nvariation_units: ${vUnits}\nvariation_retail: ${vRetail}\nvariation_r_og: ${vROg}\nvariation_wholesale: ${vWholesale}\nvariation_w_og: ${vWOg}\nvariation_wholesale_qty: ${vWQty}\nvariation_status: ${vStatus}\ndate: ${today}\n---`;
-  const noteContent = fm + '\n\n' + `\`\`\`dataviewjs
-const { Modal, Notice } = obsidian;
-const folderPath = dv.current().file.folder;
-const mediaFolder = "_Media";
-const app = this.app;
-const SIGNATURE = \`───────────────\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\\n📞 +255756374915\`;
-
-// ── HELPERS ───────────────────────────────────────────────
-
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
 function fmt(n) {
   if (!n) return n;
   return Number(String(n).replace(/,/g,'')).toLocaleString('en-US');
 }
 
-function parseList(str) {
-  if (!str) return [];
-  return String(str).split(',').map(s => s.trim());
+// ═══════════════════════════════════════════════════════
+// CAPTION BUILDERS
+// ═══════════════════════════════════════════════════════
+
+function getWBlock(useMarkdown=true, mode='standard') {
+  // mode: 'standard' | 'wholesale_only'
+  const price = S.mode==='single' ? S.w.price : null;
+  const qty = S.mode==='single' ? (S.w.qty||'1') : null;
+  const og = S.mode==='single' && S.w.ogOn ? S.w.og : '';
+  const status = S.mode==='single' ? S.w.status : null;
+  if (!price || !qty || status==='out_of_stock') return '';
+  const b = useMarkdown;
+  let line = og
+    ? `📦 ${b?'*':''}Jumla${b?'*':''}\n${b?'~':''}👉 ${qty}pc = TZS ${fmt(og)}${b?'~':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`
+    : `📦 ${b?'*':''}Jumla${b?'*':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`;
+  if (status==='low_stock') line += ' ⚠️';
+  return line;
 }
 
-// ── CAPTION BUILDERS ──────────────────────────────────────
-
-function buildSingleCaption(f, mode = 'standard', flashData = null) {
-  const name = f.name || f.file.name;
-  const priceW = f.price_wholesale;
-  const unitQty = f.unit;
-  const wOg = f.w_og;
-  const priceR = f.price_retail;
-  const rQty = f.retail_qty || '1';
-  const rOg = f.r_og;
-  const wStatus = f.wholesale_status || 'in_stock';
-  const rStatus = f.retail_status || 'in_stock';
-  const restock = f.restock_date;
-
-  const showW = priceW && unitQty && wStatus !== 'out_of_stock';
-  const showR = priceR && rStatus !== 'out_of_stock';
-  const bothOut = !showW && !showR && (wStatus === 'out_of_stock' || rStatus === 'out_of_stock');
-
-  if (mode === 'tiktok') {
-    return \`Unataka bei ya jumla au rejareja? 👀\\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\\n\\nWafanyabiashara na watumiaji wote mnakaribishwa.\\n\\nPiga simu au WhatsApp sasa hivi upate bei yako:\\n📞 +255756374915\\n\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\`;
-  }
-
-  if (mode === 'flash' && flashData) {
-    const fQty = flashData.qty || '1';
-    const fPrice = flashData.price;
-    const fOg = flashData.og;
-    let body = \`🔥 *\${name}*\\n\`;
-    if (fOg) body += \`~👉 \${fQty}pc = TZS \${fmt(fOg)}~\\n\`;
-    body += \`\\n⏰ Offer ya muda mfupi\\n👉 \${fQty}pc = *TZS \${fmt(fPrice)}*\`;
-    if (showW) {
-      let wBlock = wOg
-        ? \`📦 *Jumla*\\n~👉 \${unitQty}pc = TZS \${fmt(wOg)}~\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`
-        : \`📦 *Jumla*\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
-      body += \`\\n\\n\${wBlock}\`;
-    }
-    return \`⚡ *PROMOSHEN YA LEO TU* ⚡\\n───────────────\\n\\n\${body}\\n\\n\${SIGNATURE}\`;
-  }
-
-  let body = '';
-
-  if (bothOut) {
-    body = restock ? \`📅 *Inakuja Tena — \${restock}*\` : \`❌ *Haipatikani Sasa Hivi*\`;
-  } else {
-    let wBlock = '';
-    if (showW) {
-      if (wOg) {
-        wBlock = \`📦 *Jumla*\\n~👉 \${unitQty}pc = TZS \${fmt(wOg)}~\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
-      } else {
-        wBlock = \`📦 *Jumla*\\n👉 \${unitQty}pc = *TZS \${fmt(priceW)}*\`;
-      }
-      if (wStatus === 'low_stock') wBlock += \` ⚠\`;
-    }
-
-    let rBlock = '';
-    if (mode !== 'wholesale' && showR) {
-      if (rOg) {
-        rBlock = \`🛍 *Rejareja*\\n~👉 \${rQty}pc = TZS \${fmt(rOg)}~\\n👉 \${rQty}pc = *TZS \${fmt(priceR)}*\`;
-      } else {
-        rBlock = \`🛍 *Rejareja*\\n👉 \${rQty}pc = *TZS \${fmt(priceR)}*\`;
-      }
-      if (rStatus === 'low_stock') rBlock += \` ⚠\`;
-    }
-
-    body = [wBlock, rBlock].filter(Boolean).join('\\n\\n');
-  }
-
-  if (mode === 'repost') {
-    return \`🛒 *\${name} bado zipo!*\\n───────────────\\n\\n\${body}\\n\\nWateja wengi wanaendelea kuchukua 📦\\nUsisubiri ziishe — chukua zako sasa! 🔥\\n\\n\${SIGNATURE}\`;
-  }
-
-  return \`🛒 *\${name}*\\n───────────────\\n\\n\${body}\\n\\n\${SIGNATURE}\`;
+function getRBlock(useMarkdown=true) {
+  const price = S.mode==='single' ? S.r.price : null;
+  const qty = S.mode==='single' ? (S.r.qty||'1') : null;
+  const og = S.mode==='single' && S.r.ogOn ? S.r.og : '';
+  const status = S.mode==='single' ? S.r.status : null;
+  if (!price || status==='out_of_stock') return '';
+  const b = useMarkdown;
+  let line = og
+    ? `🛍️ ${b?'*':''}Rejareja${b?'*':''}\n${b?'~':''}👉 ${qty}pc = TZS ${fmt(og)}${b?'~':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`
+    : `🛍️ ${b?'*':''}Rejareja${b?'*':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`;
+  if (status==='low_stock') line += ' ⚠️';
+  return line;
 }
 
-function buildVariantCaption(f, mode = 'standard', flashSelections = null) {
-  const name = f.name || f.file.name;
-  const prefixes = parseList(f.variation_prefixes);
-  const sizes = parseList(f.variation_sizes);
-  const units = parseList(f.variation_units);
-  const retails = parseList(f.variation_retail);
-  const rOgs = parseList(f.variation_r_og);
-  const wholesales = parseList(f.variation_wholesale);
-  const wOgs = parseList(f.variation_w_og);
-  const wQtys = parseList(f.variation_wholesale_qty);
-  const statuses = parseList(f.variation_status);
-
-  if (mode === 'tiktok') {
-    return \`Unataka bei ya jumla au rejareja? 👀\\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\\n\\nWafanyabiashara na watumiaji wote mnakaribishwa.\\n\\nPiga simu au WhatsApp sasa hivi upate bei yako:\\n📞 +255756374915\\n\\n🌐 @machimbocomplex\\n📍 Kariakoo | Aggrey & Sikukuu\`;
-  }
-
-  const buildVName = (i) => {
-    const prefix = prefixes[i] || '';
-    const size = sizes[i] || '';
-    const unit = units[i] || 'pc';
-    if (!size) return prefix;
-    if (prefix) return unit && unit !== 'pc' ? \`\${prefix}-\${size} \${unit}\` : \`\${prefix}-\${size}\`;
-    return unit && unit !== 'pc' ? \`\${size} \${unit}\` : size;
-  };
-
-  const activeIdxs = sizes.map((_, i) => i).filter(i => statuses[i] !== 'out_of_stock');
-
-  if (!activeIdxs.length) {
-    return \`🛒 *\${name}*\\n───────────────\\n\\n❌ *Haipatikani Sasa Hivi*\\n\\n\${SIGNATURE}\`;
-  }
-
-  let header = mode === 'flash'
-    ? \`⚡ *PROMOSHEN YA LEO TU* ⚡\`
-    : mode === 'repost'
-    ? \`🛒 *\${name} bado zipo!*\`
-    : \`🛒 *\${name}*\`;
-
-  const lines = activeIdxs.map(i => {
-    const vName = buildVName(i);
-    const isFlashSelected = mode === 'flash' && flashSelections && flashSelections[i];
-    const flashItem = isFlashSelected ? flashSelections[i] : null;
-
-    const wPrice = isFlashSelected && flashItem.wPrice ? flashItem.wPrice : wholesales[i];
-    const wOgPrice = isFlashSelected && flashItem.wOg ? flashItem.wOg : wOgs[i];
-    const rPrice = isFlashSelected && flashItem.rPrice ? flashItem.rPrice : retails[i];
-    const rOgPrice = isFlashSelected && flashItem.rOg ? flashItem.rOg : rOgs[i];
-
-    const hasWOg = wOgPrice && wPrice;
-    const hasROg = rOgPrice && rPrice;
-    const hasStrike = hasWOg || hasROg;
-
-    let block = \`💰 *\${vName}*\\n\`;
-
-    if (wPrice && wQtys[i]) {
-      if (hasWOg) {
-        block += \`📦 ~Jumla: \${wQtys[i]}pc = TZS \${fmt(wOgPrice)}~\\n\`;
-        block += \`📦 Jumla: \${wQtys[i]}pc = *TZS \${fmt(wPrice)}*\`;
-      } else {
-        block += \`📦 Jumla: \${wQtys[i]}pc = *TZS \${fmt(wPrice)}*\`;
+function getVariantLines(useMarkdown=true, isFlash=false, isWholesaleOnly=false) {
+  const active = S.variants.filter(v => v.status !== 'out_of_stock');
+  if (!active.length) return null;
+  const b = useMarkdown;
+  return active.map(v => {
+    const vName = buildVName(v);
+    let block = `💰 ${b?'*':''}${vName}${b?'*':''}\n`;
+    if (isFlash) {
+      if (v.flashOg) block += `${b?'~':''}Bei ya Kawaida: TZS ${fmt(v.flashOg)}${b?'~':''}\n`;
+      if (v.flashPrice) block += `⚡ Bei ya Flash: ${b?'*':''}TZS ${fmt(v.flashPrice)}${b?'*':''}`;
+    } else {
+      if (v.wholesale && v.wholesaleQty) {
+        if (v.wOg) {
+          block += `📦 ${b?'~':''}Jumla: ${v.wholesaleQty}pc = TZS ${fmt(v.wOg)}${b?'~':''}\n`;
+          block += `📦 Jumla: ${v.wholesaleQty}pc = ${b?'*':''}TZS ${fmt(v.wholesale)}${b?'*':''}`;
+        } else {
+          block += `📦 Jumla: ${v.wholesaleQty}pc = ${b?'*':''}TZS ${fmt(v.wholesale)}${b?'*':''}`;
+        }
+      }
+      if (!isWholesaleOnly && v.retail) {
+        if (v.wholesale && v.wholesaleQty) block += '\n';
+        if (v.rOg) {
+          block += `🛍️ ${b?'~':''}Rejareja: 1pc = TZS ${fmt(v.rOg)}${b?'~':''}\n`;
+          block += `🛍️ Rejareja: 1pc = ${b?'*':''}TZS ${fmt(v.retail)}${b?'*':''}`;
+        } else {
+          block += `🛍️ Rejareja: 1pc = ${b?'*':''}TZS ${fmt(v.retail)}${b?'*':''}`;
+        }
       }
     }
-
-    if (mode !== 'wholesale' && rPrice) {
-      block += hasStrike ? '\\n\\n' : '\\n';
-      if (hasROg) {
-        block += \`🛍 ~Rejareja: 1pc = TZS \${fmt(rOgPrice)}~\\n\`;
-        block += \`🛍 Rejareja: 1pc = *TZS \${fmt(rPrice)}*\`;
-      } else {
-        block += \`🛍 Rejareja: 1pc = *TZS \${fmt(rPrice)}*\`;
-      }
-    }
-
-    if (statuses[i] === 'low_stock') block += \` ⚠\`;
-
+    if (v.status === 'low_stock') block += ' ⚠️';
     return block;
-  }).join('\\n\\n');
+  }).join('\n\n');
+}
 
-  let footer = '';
-  if (mode === 'repost') {
-    footer = \`\\n\\nWateja wengi wanaendelea kuchukua 📦\\nUsisubiri ziishe — chukua zako sasa! 🔥\`;
+function getOutOfStockBlock(useMarkdown=true) {
+  const date = S.mode === 'variant' ? S.variantRestock : S.restockDate;
+  if (date) return `📅 ${useMarkdown?'*':''}Inakuja Tena — ${date}${useMarkdown?'*':''}`;
+  return `❌ ${useMarkdown?'*':''}Haipatikani Sasa Hivi${useMarkdown?'*':''}`;
+}
+
+function isAllOut() {
+  if (S.mode === 'variant') return S.variants.length > 0 && S.variants.every(v => v.status === 'out_of_stock');
+  return S.w.status === 'out_of_stock' && S.r.status === 'out_of_stock';
+}
+
+function assembleSingle(header, body, footer='', md=true) {
+  const name = S.name || '—';
+  const h = header || `🛒 ${md?'*':''}${name}${md?'*':''}`;
+  return `${h}\n───────────────\n\n${body}${footer?'\n\n'+footer:''}\n\n${SIGNATURE}`;
+}
+
+// ── 1. Standard ──
+function buildStandard() {
+  const name = S.name || '—';
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true);
+    const body = lines || getOutOfStockBlock();
+    return assembleSingle(`🛒 *${name}*`, body);
   }
-  if (mode === 'flash') {
-    footer = \`\\n\\n⏰ Offer ya muda mfupi\`;
+  const wBlock = getWBlock();
+  const rBlock = getRBlock();
+  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
+  return assembleSingle(`🛒 *${name}*`, body);
+}
+
+// ── 2. Wholesale Only ──
+function buildWholesaleOnly() {
+  const name = S.name || '—';
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true, false, true);
+    const body = lines || getOutOfStockBlock();
+    return assembleSingle(`🛒 *${name}*`, body);
   }
-
-  return \`\${header}\\n───────────────\\n\\n\${lines}\${footer}\\n\\n\${SIGNATURE}\`;
+  const wBlock = getWBlock();
+  const body = wBlock || getOutOfStockBlock();
+  return assembleSingle(`🛒 *${name}*`, body);
 }
 
-function buildCaption(f, mode = 'standard', extra = null) {
-  const type = f.product_type || 'single';
-  if (type === 'variant') return buildVariantCaption(f, mode, extra);
-  return buildSingleCaption(f, mode, extra);
-}
-
-// ── COPY HELPER ───────────────────────────────────────────
-function copyCaption(text, btn) {
-  navigator.clipboard.writeText(text);
-  const orig = btn.textContent;
-  btn.textContent = '✅ Imenakiliwa!';
-  setTimeout(() => btn.textContent = orig, 2000);
-}
-
-// ── MEDIA BUTTONS ─────────────────────────────────────────
-async function getMediaFiles() {
-  const folder = app.vault.getAbstractFileByPath(mediaFolder);
-  if (!folder) return [];
-  return folder.children.filter(f =>
-    f.extension && ["mp4","mov","jpg","jpeg","png","webp"].includes(f.extension.toLowerCase())
+// ── 3. Repost ──
+function buildRepost() {
+  const name = S.name || '—';
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true);
+    const body = lines || getOutOfStockBlock();
+    return assembleSingle(
+      `🛒 *${name} bado zipo!*`,
+      body,
+      `Wateja wengi wanaendelea kuchukua 📦\nUsisubiri ziishe — chukua zako sasa! 🔥`
+    );
+  }
+  const wBlock = getWBlock();
+  const rBlock = getRBlock();
+  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
+  return assembleSingle(
+    `🛒 *${name} bado zipo!*`,
+    body,
+    `Wateja wengi wanaendelea kuchukua 📦\nUsisubiri ziishe — chukua zako sasa! 🔥`
   );
 }
 
-async function getExistingCount(type) {
-  const folder = app.vault.getAbstractFileByPath(folderPath);
-  if (!folder) return 0;
-  return folder.children.filter(f =>
-    f.name && f.name.toLowerCase().startsWith(type.toLowerCase())
-  ).length;
-}
-
-async function handleMedia(type) {
-  const files = await getMediaFiles();
-  if (files.length === 0) { new Notice("Hakuna faili katika _Media."); return; }
-
-  class PickerModal extends Modal {
-    onOpen() {
-      this.titleEl.setText(\`Chagua faili — \${type}\`);
-      files.forEach(file => {
-        const btn = this.contentEl.createEl("button", { text: file.name });
-        btn.style.cssText = "display:block;width:100%;padding:10px;margin-bottom:6px;background:#2a2a2a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;text-align:left;";
-        btn.onclick = async () => {
-          this.close();
-          try {
-            const count = await getExistingCount(type);
-            const ext = file.extension.toLowerCase();
-            const newName = count === 0 ? \`\${type}.\${ext}\` : \`\${type}\${count}.\${ext}\`;
-            const content = await app.vault.readBinary(file);
-            await app.vault.createBinary(\`\${folderPath}/\${newName}\`, content);
-            await app.vault.delete(file);
-            const noteFile = app.vault.getAbstractFileByPath(dv.current().file.path);
-            const noteContent = await app.vault.read(noteFile);
-            await app.vault.modify(noteFile, noteContent + \`\\n![[\${newName}]]\`);
-            new Notice(\`✅ \${newName} imeongezwa.\`);
-          } catch(e) { new Notice(\`❌ \${e.message}\`); }
-        };
-      });
-    }
-    onClose() { this.contentEl.empty(); }
+// ── 4. Flash Sale ──
+function buildFlash() {
+  const name = S.name || '—';
+  const header = `⚡ *PROMOSHEN YA LEO TU* ⚡`;
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true, true);
+    const body = lines
+      ? `🛒 *${name}*\n\n${lines}`
+      : getOutOfStockBlock();
+    return `${header}\n───────────────\n\n${body}\n\n⏰ Offer ya muda mfupi\n\n${SIGNATURE}`;
   }
-  new PickerModal(app).open();
+  const fp = S.flash.price;
+  const fog = S.flash.og;
+  let body = `🛒 *${name}*\n`;
+  if (fog) body += `~Bei ya Kawaida: TZS ${fmt(fog)}~\n`;
+  if (fp) body += `\n⏰ Offer ya muda mfupi\n👉 *TZS ${fmt(fp)}*`;
+  else body += '\n⏰ Offer ya muda mfupi';
+  // show regular wholesale below
+  const wBlock = getWBlock();
+  if (wBlock) body += `\n\n${wBlock}`;
+  return `${header}\n───────────────\n\n${body}\n\n${SIGNATURE}`;
 }
 
-// ── FLASH MODAL ───────────────────────────────────────────
-function openFlashModal(f) {
-  const type = f.product_type || 'single';
-
-  class FlashModal extends Modal {
-    onOpen() {
-      const { contentEl } = this;
-      contentEl.style.cssText = "padding:16px;";
-      contentEl.createEl("h3", { text: "⚡ Promoshen ya Leo" }).style.cssText = "color:#a78bfa;margin-bottom:16px;";
-
-      if (type === 'single') {
-        const ogLabel = contentEl.createEl("label", { text: "Bei ya Awali (TZS)" });
-        ogLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
-        const ogInput = contentEl.createEl("input");
-        ogInput.type = "number";
-        ogInput.placeholder = "Bei ya zamani";
-        ogInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:12px;";
-
-        const priceLabel = contentEl.createEl("label", { text: "Bei ya Flash (TZS)" });
-        priceLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
-        const priceInput = contentEl.createEl("input");
-        priceInput.type = "number";
-        priceInput.placeholder = "Bei mpya ya leo";
-        priceInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:12px;";
-
-        const qtyLabel = contentEl.createEl("label", { text: "Idadi (pc)" });
-        qtyLabel.style.cssText = "font-size:12px;color:#888;display:block;margin-bottom:4px;";
-        const qtyInput = contentEl.createEl("input");
-        qtyInput.type = "number";
-        qtyInput.placeholder = "1";
-        qtyInput.style.cssText = "width:100%;padding:10px;background:#1e1e2e;color:white;border:1px solid #444;border-radius:8px;font-size:14px;margin-bottom:16px;";
-
-        const copyBtn = contentEl.createEl("button", { text: "📋 Nakili Caption ya Flash" });
-        copyBtn.style.cssText = "width:100%;padding:12px;background:#7c3aed;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;";
-        copyBtn.onclick = () => {
-          const caption = buildSingleCaption(f, 'flash', {
-            og: ogInput.value,
-            price: priceInput.value,
-            qty: qtyInput.value || '1'
-          });
-          navigator.clipboard.writeText(caption);
-          copyBtn.textContent = '✅ Imenakiliwa!';
-          setTimeout(() => { copyBtn.textContent = '📋 Nakili Caption ya Flash'; }, 2000);
-        };
-
-      } else {
-        // Variants flash — checklist
-        const sizes = f.variation_sizes ? String(f.variation_sizes).split(',').map(s=>s.trim()) : [];
-        const prefixes = f.variation_prefixes ? String(f.variation_prefixes).split(',').map(s=>s.trim()) : [];
-        const units = f.variation_units ? String(f.variation_units).split(',').map(s=>s.trim()) : [];
-        const statuses = f.variation_status ? String(f.variation_status).split(',').map(s=>s.trim()) : [];
-
-        contentEl.createEl("p", { text: "Chagua varianti za flash:" }).style.cssText = "font-size:12px;color:#888;margin-bottom:10px;";
-
-        const selections = {};
-
-        sizes.forEach((size, i) => {
-          if (statuses[i] === 'out_of_stock') return;
-          const prefix = prefixes[i] || '';
-          const unit = units[i] || 'pc';
-          const vName = prefix
-            ? (unit && unit !== 'pc' ? \`\${prefix}-\${size} \${unit}\` : \`\${prefix}-\${size}\`)
-            : (unit && unit !== 'pc' ? \`\${size} \${unit}\` : size);
-
-          const row = contentEl.createEl("div");
-          row.style.cssText = "background:#1a1a2e;border-radius:8px;padding:10px;margin-bottom:8px;";
-
-          const checkRow = row.createEl("div");
-          checkRow.style.cssText = "display:flex;align-items:center;gap:8px;margin-bottom:8px;";
-          const checkbox = checkRow.createEl("input");
-          checkbox.type = "checkbox";
-          checkbox.style.cssText = "width:16px;height:16px;accent-color:#7c3aed;";
-          checkRow.createEl("span", { text: vName }).style.cssText = "font-weight:600;font-size:14px;";
-
-          const inputs = row.createEl("div");
-          inputs.style.display = "none";
-
-          const makeInput = (placeholder) => {
-            const inp = inputs.createEl("input");
-            inp.type = "number";
-            inp.placeholder = placeholder;
-            inp.style.cssText = "width:100%;padding:8px 10px;background:#0f0f1c;color:white;border:1px solid #333;border-radius:6px;font-size:13px;margin-bottom:6px;";
-            return inp;
-          };
-
-          const wOgInp = makeInput("Bei ya zamani - Jumla (hiari)");
-          const wInp = makeInput("Bei ya flash - Jumla");
-          const rOgInp = makeInput("Bei ya zamani - Rejareja (hiari)");
-          const rInp = makeInput("Bei ya flash - Rejareja");
-
-          checkbox.onchange = () => {
-            inputs.style.display = checkbox.checked ? "block" : "none";
-            if (checkbox.checked) {
-              selections[i] = { wOg: '', wPrice: '', rOg: '', rPrice: '' };
-            } else {
-              delete selections[i];
-            }
-          };
-
-          [wOgInp, wInp, rOgInp, rInp].forEach(inp => {
-            inp.oninput = () => {
-              if (selections[i]) {
-                selections[i].wOg = wOgInp.value;
-                selections[i].wPrice = wInp.value;
-                selections[i].rOg = rOgInp.value;
-                selections[i].rPrice = rInp.value;
-              }
-            };
-          });
-        });
-
-        const copyBtn = contentEl.createEl("button", { text: "📋 Nakili Caption ya Flash" });
-        copyBtn.style.cssText = "width:100%;padding:12px;background:#7c3aed;color:white;border:none;border-radius:8px;font-size:15px;cursor:pointer;margin-top:8px;";
-        copyBtn.onclick = () => {
-          const caption = buildVariantCaption(f, 'flash', selections);
-          navigator.clipboard.writeText(caption);
-          copyBtn.textContent = '✅ Imenakiliwa!';
-          setTimeout(() => { copyBtn.textContent = '📋 Nakili Caption ya Flash'; }, 2000);
-        };
-      }
-    }
-    onClose() { this.contentEl.empty(); }
+// ── 5. New Arrival ──
+function buildNewArrival() {
+  const name = S.name || '—';
+  const isTikTok = S.network === 'tiktok';
+  if (isTikTok) {
+    return `✨ *${name} IMEFIKA!* ✨\n───────────────\n\nBidhaa mpya imefika dukani 🔥\nUnataka bei? Tuandikia moja kwa moja!\n\n${SIGNATURE}`;
   }
-
-  new FlashModal(app).open();
+  const header = `✨ *${name} — IMEFIKA!*`;
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true);
+    const body = lines || getOutOfStockBlock();
+    return assembleSingle(header, `🆕 Bidhaa Mpya Dukani!\n\n${body}`);
+  }
+  const wBlock = getWBlock();
+  const rBlock = getRBlock();
+  const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
+  const body = priceBody
+    ? `🆕 Bidhaa Mpya Dukani!\n\n${priceBody}`
+    : `🆕 Bidhaa Mpya Dukani!`;
+  return assembleSingle(header, body);
 }
 
-// ── PASTE DATA HANDLER ────────────────────────────────────
-async function handlePaste() {
-  try {
-    const text = await navigator.clipboard.readText();
-    if (!text.includes("%%DATA%%")) { new Notice("❌ Hakuna data ya fomu kwenye clipboard."); return; }
-    const dataBlock = text.match(/%%DATA%%([\\s\\S]*?)%%CAPTION%%/)?.[1] ?? "";
-    const captionBlock = text.match(/%%CAPTION%%([\\s\\S]*?)%%END%%/)?.[1]?.trim() ?? "";
-    const noteFile = app.vault.getAbstractFileByPath(dv.current().file.path);
-    let content = await app.vault.read(noteFile);
-    dataBlock.trim().split("\\n").forEach(line => {
-      const colonIdx = line.indexOf(':');
-      if (colonIdx === -1) return;
-      const key = line.slice(0, colonIdx).trim();
-      const value = line.slice(colonIdx + 1).trim();
-      if (!key) return;
-      const regex = new RegExp(\`^\${key}:.*$\`, "m");
-      if (regex.test(content)) {
-        content = content.replace(regex, \`\${key}: \${value}\`);
-      }
-    });
-    const marker = "<!-- caption -->";
-    if (content.includes(marker)) {
-      content = content.replace(/<!-- caption -->[\\s\\S]*?<!-- \\/caption -->/, \`<!-- caption -->\\n\${captionBlock}\\n<!-- /caption -->\`);
-    } else {
-      const fmEnd = content.indexOf("---", 3) + 3;
-      content = content.slice(0, fmEnd) + \`\\n\\n<!-- caption -->\\n\${captionBlock}\\n<!-- /caption -->\` + content.slice(fmEnd);
-    }
-    await app.vault.modify(noteFile, content);
-    new Notice("✅ Data imewekwa.");
-  } catch(e) { new Notice(\`❌ \${e.message}\`); }
+// ── 6. Back in Stock ──
+function buildBackInStock() {
+  const name = S.name || '—';
+  const headline = S.restockHeadline || 'Imerudishwa!';
+  const header = `🔃 *${name} — ${headline}*`;
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(true);
+    const body = lines || `Inakuja hivi karibuni...`;
+    return assembleSingle(header, `✅ Tena Inapatikana!\n\n${body}`);
+  }
+  const wBlock = getWBlock();
+  const rBlock = getRBlock();
+  const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
+  const body = priceBody
+    ? `✅ Tena Inapatikana!\n\n${priceBody}`
+    : `✅ Tena Inapatikana!`;
+  return assembleSingle(header, body);
 }
 
-// ── RENDER ────────────────────────────────────────────────
-const f = dv.current();
+// ── 7. Engagement (TikTok) ──
+function buildEngagement() {
+  const name = S.name || 'bidhaa hii';
+  return `Unataka ${name}? 👀\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\n\nWafanyabiashara na watumiaji wote mnakaribishwa.\n\nPiga simu au WhatsApp sasa hivi upate bei yako:\n📞 +255756374915\n\n${SIGNATURE}`;
+}
 
-// Media row
-const mediaRow = dv.el("div", "");
-mediaRow.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;";
-["Showcase","Godown","Image","Specification"].forEach(type => {
-  const btn = mediaRow.createEl("button", { text: \`+ \${type}\` });
-  btn.style.cssText = "padding:7px 14px;font-size:13px;background:#1e1e2e;color:#a78bfa;border:1px solid #a78bfa;border-radius:6px;cursor:pointer;";
-  btn.onclick = () => handleMedia(type);
-});
+// ── 8. Plain Text ──
+function buildPlain() {
+  const name = S.name || '—';
+  if (S.mode === 'variant') {
+    const lines = getVariantLines(false);
+    const body = lines || getOutOfStockBlock(false);
+    return `${name}\n---------------\n\n${body}\n\n@machimbocomplex\nKariakoo | Aggrey & Sikukuu\n+255756374915`;
+  }
+  const wBlock = getWBlock(false);
+  const rBlock = getRBlock(false);
+  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock(false);
+  return `${name}\n---------------\n\n${body}\n\n@machimbocomplex\nKariakoo | Aggrey & Sikukuu\n+255756374915`;
+}
 
-// Action row
-const actionRow = dv.el("div", "");
-actionRow.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;";
+// ═══════════════════════════════════════════════════════
+// PREVIEW ENGINE
+// ═══════════════════════════════════════════════════════
+function regen() {
+  if (S.previewEdited) return;
+  if (!S.type) {
+    document.getElementById('previewBox').value = 'Chagua mtandao na aina ya caption...';
+    return;
+  }
+  const def = REGISTRY.find(r => r.id === S.type);
+  if (!def) return;
+  const text = def.build();
+  document.getElementById('previewBox').value = text;
+}
 
-const btnStyle = (bg) => \`padding:10px 14px;font-size:13px;font-weight:600;background:\${bg};color:white;border:none;border-radius:8px;cursor:pointer;flex:1;\`;
+function onPreviewEdit() {
+  if (!S.type) return;
+  S.previewEdited = true;
+  document.getElementById('resetPill').classList.add('show');
+}
 
-// Open Form
-const openBtn = actionRow.createEl("button", { text: "⚡ Fomu" });
-openBtn.style.cssText = btnStyle("#7c3aed");
-openBtn.onclick = () => window.open("https://absolutemaster.github.io/barongo-form", "_blank");
+function resetPreview() {
+  S.previewEdited = false;
+  document.getElementById('resetPill').classList.remove('show');
+  regen();
+}
 
-// Paste
-const pasteBtn = actionRow.createEl("button", { text: "📥 Weka" });
-pasteBtn.style.cssText = btnStyle("#0f766e");
-pasteBtn.onclick = handlePaste;
-
-// Standard copy
-const stdBtn = actionRow.createEl("button", { text: "📋 Kawaida" });
-stdBtn.style.cssText = btnStyle("#1d4ed8");
-stdBtn.onclick = () => copyCaption(buildCaption(f, 'standard'), stdBtn);
-
-// Row 2
-const actionRow2 = dv.el("div", "");
-actionRow2.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;";
-
-// Repost
-const repostBtn = actionRow2.createEl("button", { text: "🔄 Repost" });
-repostBtn.style.cssText = btnStyle("#166534");
-repostBtn.onclick = () => copyCaption(buildCaption(f, 'repost'), repostBtn);
-
-// Wholesale only
-const wBtn = actionRow2.createEl("button", { text: "🏭 Jumla" });
-wBtn.style.cssText = btnStyle("#92400e");
-wBtn.onclick = () => copyCaption(buildCaption(f, 'wholesale'), wBtn);
-
-// Flash
-const flashBtn = actionRow2.createEl("button", { text: "⚡ Flash" });
-flashBtn.style.cssText = btnStyle("#b45309");
-flashBtn.onclick = () => openFlashModal(f);
-
-// TikTok
-const ttBtn = actionRow2.createEl("button", { text: "🎵 TikTok" });
-ttBtn.style.cssText = btnStyle("#be185d");
-ttBtn.onclick = () => copyCaption(buildCaption(f, 'tiktok'), ttBtn);
-\`\`\``;
-
-  navigator.clipboard.writeText(noteContent).then(() => {
-    const btn = document.querySelector('.btn-copy');
-    const orig = btn.textContent;
-    btn.textContent = '\u2705 Imenakiliwa!';
-    btn.style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
+// ═══════════════════════════════════════════════════════
+// COPY
+// ═══════════════════════════════════════════════════════
+function doCopy() {
+  const text = document.getElementById('previewBox').value;
+  if (!text || text === 'Chagua mtandao na aina ya caption...') return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ Imenakiliwa!';
+    btn.classList.add('done');
     setTimeout(() => {
-      btn.textContent = orig;
-      btn.style.background = 'linear-gradient(135deg, var(--accent), #9333ea)';
+      btn.textContent = '📋 Nakili Caption';
+      btn.classList.remove('done');
     }, 2500);
   });
 }
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+initNetworks();
 </script>
 </body>
 </html>
