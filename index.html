@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Barongo — Captions</title>
+<title>Rapid Captions</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -35,7 +35,7 @@ body {
   padding-bottom: 60px;
 }
 
-/* ── HEADER ── */
+/* -- HEADER -- */
 .hdr {
   position: sticky;
   top: 0;
@@ -66,6 +66,24 @@ body {
   color: var(--text);
 }
 .hdr-name span { color: var(--a); }
+.hdr-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.settings-btn {
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  color: var(--sub);
+  font-size: 16px;
+  width: 38px; height: 38px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.settings-btn:active { background: var(--s3); }
+.settings-btn.has-config { border-color: var(--a); color: var(--a); }
 .product-row {
   display: flex;
   gap: 8px;
@@ -110,10 +128,23 @@ body {
 }
 .mode-btn.on { background: var(--a); color: #000; }
 
-/* ── WRAP ── */
+/* -- WRAP -- */
 .wrap { padding: 0 16px; max-width: 480px; margin: 0 auto; }
 
-/* ── SECTION BLOCK ── */
+/* -- SETTINGS PANEL -- */
+.settings-panel {
+  display: none;
+  margin-top: 12px;
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 14px;
+  animation: fadeUp 0.2s ease;
+}
+.settings-panel.show { display: block; }
+.settings-panel .fc-title { margin-bottom: 10px; }
+
+/* -- SECTION BLOCK -- */
 .blk {
   margin-top: 18px;
   animation: fadeUp 0.2s ease;
@@ -132,7 +163,7 @@ body {
   margin-bottom: 8px;
 }
 
-/* ── PILLS ── */
+/* -- PILLS -- */
 .pills {
   display: flex;
   flex-wrap: wrap;
@@ -164,7 +195,7 @@ body {
   color: var(--a);
 }
 
-/* ── FIELD CARD ── */
+/* -- FIELD CARD -- */
 .fc {
   background: var(--s1);
   border: 1px solid var(--border);
@@ -183,7 +214,7 @@ body {
 }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* ── INPUT ── */
+/* -- INPUT -- */
 .fld { margin-bottom: 10px; }
 .fld:last-child { margin-bottom: 0; }
 .fld-lbl {
@@ -211,7 +242,7 @@ input[type="number"] {
 input:focus { border-color: var(--a); }
 input::placeholder { color: var(--dim); }
 
-/* ── OG TOGGLE INLINE ── */
+/* -- OG TOGGLE INLINE -- */
 .og-row {
   display: flex;
   align-items: center;
@@ -235,7 +266,7 @@ input::placeholder { color: var(--dim); }
 .og-field { display: none; }
 .og-field.show { display: block; }
 
-/* ── STATUS ── */
+/* -- STATUS -- */
 .status-row { display: flex; gap: 5px; margin-top: 10px; }
 .st-btn {
   flex: 1;
@@ -256,7 +287,7 @@ input::placeholder { color: var(--dim); }
 .st-btn.o { background: rgba(245,158,11,0.12); border-color: var(--orange); color: var(--orange); }
 .st-btn.r { background: rgba(239,80,80,0.12); border-color: var(--red); color: var(--red); }
 
-/* ── RESTOCK ── */
+/* -- RESTOCK -- */
 .restock-reveal {
   display: none;
   margin-top: 10px;
@@ -266,7 +297,7 @@ input::placeholder { color: var(--dim); }
 }
 .restock-reveal.show { display: block; }
 
-/* ── VARIANT ── */
+/* -- VARIANT -- */
 .variant-card {
   background: var(--s2);
   border: 1px solid var(--border);
@@ -328,10 +359,10 @@ input::placeholder { color: var(--dim); }
 }
 .add-variant-btn:active { background: rgba(255,255,255,0.03); }
 
-/* ── DIVIDER ── */
+/* -- DIVIDER -- */
 .div { height: 1px; background: var(--border); margin: 10px 0; }
 
-/* ── PREVIEW ── */
+/* -- PREVIEW -- */
 .preview-wrap {
   margin-top: 18px;
   border-radius: var(--r);
@@ -387,7 +418,7 @@ input::placeholder { color: var(--dim); }
   white-space: pre-wrap;
 }
 
-/* ── COPY BTN ── */
+/* -- COPY BTN -- */
 .copy-btn {
   width: 100%;
   margin-top: 10px;
@@ -407,7 +438,7 @@ input::placeholder { color: var(--dim); }
 .copy-btn:active { transform: scale(0.98); }
 .copy-btn.done { background: var(--green); }
 
-/* ── HIDDEN ── */
+/* -- HIDDEN -- */
 .gone { display: none !important; }
 </style>
 </head>
@@ -415,16 +446,37 @@ input::placeholder { color: var(--dim); }
 
 <div class="hdr">
   <div class="hdr-brand">
-    <div class="hdr-logo">🛒</div>
-    <div class="hdr-name">BARONGO <span>HE</span></div>
+    <div class="hdr-logo">R</div>
+    <div class="hdr-name">RAPID <span>CAPTIONS</span></div>
+    <div style="flex:1"></div>
+    <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Settings">S</button>
   </div>
-  <div class="product-row">
+  <div class="settings-panel" id="settingsPanel">
+    <div class="fc-title">Your Business Info</div>
+    <div class="fld">
+      <label class="fld-lbl">Brand / Handle</label>
+      <input type="text" id="cfgHandle" placeholder="e.g. @yourbrand" oninput="saveCfg()">
+    </div>
+    <div class="fld">
+      <label class="fld-lbl">Location</label>
+      <input type="text" id="cfgLocation" placeholder="e.g. New York, NY" oninput="saveCfg()">
+    </div>
+    <div class="fld">
+      <label class="fld-lbl">Phone / Contact</label>
+      <input type="text" id="cfgPhone" placeholder="e.g. +1 555 123 4567" oninput="saveCfg()">
+    </div>
+    <div class="fld">
+      <label class="fld-lbl">Currency</label>
+      <input type="text" id="cfgCurrency" placeholder="e.g. USD, TZS, KES" value="USD" oninput="saveCfg()">
+    </div>
+  </div>
+  <div class="product-row" style="margin-top:12px;">
     <div class="product-name-wrap">
-      <input type="text" id="productName" placeholder="Jina la bidhaa..." oninput="S.name=this.value;regen()">
+      <input type="text" id="productName" placeholder="Product name..." oninput="S.name=this.value;regen()">
     </div>
     <div class="mode-toggle">
-      <button class="mode-btn on" id="modeSingle" onclick="setMode('single')">Moja</button>
-      <button class="mode-btn" id="modeVariant" onclick="setMode('variant')">Varianti</button>
+      <button class="mode-btn on" id="modeSingle" onclick="setMode('single')">Single</button>
+      <button class="mode-btn" id="modeVariant" onclick="setMode('variant')">Variants</button>
     </div>
   </div>
 </div>
@@ -433,13 +485,13 @@ input::placeholder { color: var(--dim); }
 
   <!-- NETWORK -->
   <div class="blk" id="netBlk">
-    <div class="blk-label">Mtandao</div>
+    <div class="blk-label">Platform</div>
     <div class="pills" id="netPills"></div>
   </div>
 
   <!-- CAPTION TYPE -->
   <div class="blk gone" id="typeBlk">
-    <div class="blk-label">Aina ya Caption</div>
+    <div class="blk-label">Caption Type</div>
     <div class="pills" id="typePills"></div>
   </div>
 
@@ -453,19 +505,17 @@ input::placeholder { color: var(--dim); }
         <div class="preview-dot"></div>
         Preview
       </div>
-      <button class="reset-pill" id="resetPill" onclick="resetPreview()">↺ Reset</button>
+      <button class="reset-pill" id="resetPill" onclick="resetPreview()">Reset</button>
     </div>
-    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Chagua mtandao na aina ya caption...</textarea>
+    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Pick a platform and caption type...</textarea>
   </div>
 
-  <button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 Nakili Caption</button>
+  <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy Caption</button>
 
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
+// ===== STATE =====
 const S = {
   network: null,
   type: null,
@@ -481,36 +531,80 @@ const S = {
   previewEdited: false,
 };
 
-const UNITS = ['pc','kg','g','Ltrs','ml','cm','inch','—'];
+const CFG = loadCfg();
 
-const SIGNATURE = `───────────────\n🌐 @machimbocomplex\n📍 Kariakoo | Aggrey & Sikukuu\n📞 +255756374915`;
+function loadCfg() {
+  try {
+    const raw = localStorage.getItem('rc_cfg');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { handle: '', location: '', phone: '', currency: 'USD' };
+}
 
-// ═══════════════════════════════════════════════════════
-// NETWORKS
-// ═══════════════════════════════════════════════════════
+function saveCfg() {
+  CFG.handle = document.getElementById('cfgHandle').value;
+  CFG.location = document.getElementById('cfgLocation').value;
+  CFG.phone = document.getElementById('cfgPhone').value;
+  CFG.currency = document.getElementById('cfgCurrency').value || 'USD';
+  localStorage.setItem('rc_cfg', JSON.stringify(CFG));
+  updateSettingsBtn();
+  regen();
+}
+
+function initCfgFields() {
+  document.getElementById('cfgHandle').value = CFG.handle || '';
+  document.getElementById('cfgLocation').value = CFG.location || '';
+  document.getElementById('cfgPhone').value = CFG.phone || '';
+  document.getElementById('cfgCurrency').value = CFG.currency || 'USD';
+  updateSettingsBtn();
+}
+
+function updateSettingsBtn() {
+  const btn = document.getElementById('settingsBtn');
+  const has = CFG.handle || CFG.location || CFG.phone;
+  btn.classList.toggle('has-config', !!has);
+}
+
+function toggleSettings() {
+  document.getElementById('settingsPanel').classList.toggle('show');
+}
+
+function getSignature() {
+  const parts = [];
+  if (CFG.handle) parts.push(CFG.handle);
+  if (CFG.location) parts.push(CFG.location);
+  if (CFG.phone) parts.push(CFG.phone);
+  if (!parts.length) return '';
+  return '\n' + parts.join(' | ');
+}
+
+function getCurrency() { return CFG.currency || 'USD'; }
+
+const UNITS = ['pc','kg','g','L','ml','cm','inch','--'];
+
+// ===== NETWORKS =====
 const NETWORKS = [
-  { id: 'whatsapp',  label: 'WhatsApp',  e: '💬' },
-  { id: 'telegram',  label: 'Telegram',  e: '✈️' },
-  { id: 'tiktok',    label: 'TikTok',    e: '🎵' },
-  { id: 'any',       label: 'Yoyote',    e: '◈'  },
+  { id: 'whatsapp',  label: 'WhatsApp',  e: 'WA' },
+  { id: 'telegram',  label: 'Telegram',  e: 'TG' },
+  { id: 'tiktok',    label: 'TikTok',    e: 'TT' },
+  { id: 'instagram', label: 'Instagram', e: 'IG' },
+  { id: 'any',       label: 'Any',       e: '*'  },
 ];
 
-// ═══════════════════════════════════════════════════════
-// CAPTION REGISTRY
-// ═══════════════════════════════════════════════════════
+// ===== CAPTION REGISTRY =====
 const REGISTRY = [
   {
     id: 'standard',
     label: 'Standard',
-    e: '📋',
-    nets: ['whatsapp','telegram','any'],
+    e: 'STD',
+    nets: ['whatsapp','telegram','instagram','any'],
     groups: ['wholesale','retail'],
     build: buildStandard,
   },
   {
     id: 'wholesale_only',
-    label: 'Jumla Tu',
-    e: '📦',
+    label: 'Wholesale Only',
+    e: 'W',
     nets: ['whatsapp','telegram','any'],
     groups: ['wholesale'],
     build: buildWholesaleOnly,
@@ -518,56 +612,54 @@ const REGISTRY = [
   {
     id: 'repost',
     label: 'Repost',
-    e: '🔄',
-    nets: ['whatsapp','telegram','any'],
+    e: 'RP',
+    nets: ['whatsapp','telegram','instagram','any'],
     groups: ['wholesale','retail'],
     build: buildRepost,
   },
   {
     id: 'flash',
     label: 'Flash Sale',
-    e: '⚡',
-    nets: ['whatsapp','telegram','any'],
+    e: 'FS',
+    nets: ['whatsapp','telegram','instagram','any'],
     groups: ['flash','wholesale'],
     build: buildFlash,
   },
   {
     id: 'new_arrival',
-    label: 'Bidhaa Mpya',
-    e: '✨',
-    nets: ['whatsapp','telegram','tiktok','any'],
+    label: 'New Arrival',
+    e: 'NEW',
+    nets: ['whatsapp','telegram','tiktok','instagram','any'],
     groups: ['wholesale','retail'],
     build: buildNewArrival,
   },
   {
     id: 'back_in_stock',
-    label: 'Imerudishwa',
-    e: '🔃',
-    nets: ['whatsapp','telegram','any'],
+    label: 'Back in Stock',
+    e: 'BIS',
+    nets: ['whatsapp','telegram','instagram','any'],
     groups: ['restock_headline','wholesale','retail'],
     build: buildBackInStock,
   },
   {
     id: 'engagement',
     label: 'Engagement',
-    e: '🎯',
-    nets: ['tiktok','any'],
+    e: 'ENG',
+    nets: ['tiktok','instagram','any'],
     groups: [],
     build: buildEngagement,
   },
   {
     id: 'plain',
     label: 'Plain Text',
-    e: '📄',
+    e: 'TXT',
     nets: ['any'],
     groups: ['wholesale','retail'],
     build: buildPlain,
   },
 ];
 
-// ═══════════════════════════════════════════════════════
-// NETWORK & TYPE SELECTION
-// ═══════════════════════════════════════════════════════
+// ===== NETWORK & TYPE SELECTION =====
 function initNetworks() {
   const el = document.getElementById('netPills');
   el.innerHTML = NETWORKS.map(n =>
@@ -579,12 +671,9 @@ function selectNetwork(id) {
   S.network = id;
   document.querySelectorAll('#netPills .pill').forEach(b => b.classList.remove('on'));
   document.getElementById('net_' + id).classList.add('on');
-  // if current type not valid for new network, clear it
   if (S.type) {
     const def = REGISTRY.find(r => r.id === S.type);
-    if (!def || !def.nets.includes(id)) {
-      S.type = null;
-    }
+    if (!def || !def.nets.includes(id)) S.type = null;
   }
   renderTypePills();
   document.getElementById('typeBlk').classList.remove('gone');
@@ -607,9 +696,7 @@ function selectType(id) {
   regen();
 }
 
-// ═══════════════════════════════════════════════════════
-// PRODUCT MODE
-// ═══════════════════════════════════════════════════════
+// ===== PRODUCT MODE =====
 function setMode(m) {
   S.mode = m;
   document.getElementById('modeSingle').classList.toggle('on', m === 'single');
@@ -618,9 +705,7 @@ function setMode(m) {
   regen();
 }
 
-// ═══════════════════════════════════════════════════════
-// FIELD RENDERING ENGINE
-// ═══════════════════════════════════════════════════════
+// ===== FIELD RENDERING =====
 function renderFields() {
   const area = document.getElementById('fieldsArea');
   if (!S.type) { area.innerHTML = ''; return; }
@@ -630,16 +715,11 @@ function renderFields() {
   let html = '<div class="blk" id="fieldsInner">';
 
   if (S.mode === 'variant') {
-    // variant mode: show variant builder for all types that need price groups
     const needsPrices = def.groups.some(g => ['wholesale','retail','flash'].includes(g));
     if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
     if (def.groups.includes('flash')) html += htmlFlashGroupVariant();
     if (needsPrices) html += htmlVariantSection(def);
-    else if (!needsPrices && def.groups.length === 0) {
-      // engagement etc — no fields needed
-    }
   } else {
-    // single mode
     if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
     if (def.groups.includes('flash')) html += htmlFlashGroup();
     if (def.groups.includes('wholesale')) html += htmlWholesaleGroup();
@@ -649,7 +729,6 @@ function renderFields() {
   html += '</div>';
   area.innerHTML = html;
 
-  // restore status button states
   if (S.mode === 'single') {
     applyStatus('w', S.w.status);
     applyStatus('r', S.r.status);
@@ -661,142 +740,134 @@ function renderFields() {
   }
 }
 
-// ── Wholesale group ──
 function htmlWholesaleGroup() {
   return `
   <div class="fc" id="wCard">
-    <div class="fc-title">📦 Bei ya Jumla</div>
+    <div class="fc-title">Wholesale Price</div>
     <div class="grid2">
       <div class="fld">
-        <label class="fld-lbl">Bei (TZS)</label>
-        <input type="number" placeholder="150000" value="${S.w.price}" oninput="S.w.price=this.value;regen()">
+        <label class="fld-lbl">Price (${getCurrency()})</label>
+        <input type="number" placeholder="150" value="${S.w.price}" oninput="S.w.price=this.value;regen()">
       </div>
       <div class="fld">
-        <label class="fld-lbl">Idadi (pc)</label>
+        <label class="fld-lbl">Quantity (pc)</label>
         <input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()">
       </div>
     </div>
     <div class="og-row">
-      <button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Bei ya zamani</button>
+      <button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Old price</button>
     </div>
     <div class="og-field ${S.w.ogOn?'show':''}" id="wOgField">
       <div class="fld">
-        <label class="fld-lbl">Bei ya Awali (TZS)</label>
-        <input type="number" placeholder="Bei ya zamani" value="${S.w.og}" oninput="S.w.og=this.value;regen()">
+        <label class="fld-lbl">Original Price (${getCurrency()})</label>
+        <input type="number" placeholder="Old price" value="${S.w.og}" oninput="S.w.og=this.value;regen()">
       </div>
     </div>
-    <div class="fld-lbl" style="margin-top:4px;">Hali ya Stoko</div>
+    <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
     <div class="status-row">
-      <button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">✓ Ipo</button>
-      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">⚠ Inakwisha</button>
-      <button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">✕ Haipi</button>
+      <button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">In Stock</button>
+      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">Low Stock</button>
+      <button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">Out</button>
     </div>
     <div class="restock-reveal" id="wRestock">
       <div class="fld">
-        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
-        <input type="text" placeholder="mf. Aprili 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
+        <label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
       </div>
     </div>
   </div>`;
 }
 
-// ── Retail group ──
 function htmlRetailGroup() {
   return `
   <div class="fc" id="rCard">
-    <div class="fc-title">🛍️ Bei ya Rejareja</div>
+    <div class="fc-title">Retail Price</div>
     <div class="grid2">
       <div class="fld">
-        <label class="fld-lbl">Bei (TZS)</label>
-        <input type="number" placeholder="5500" value="${S.r.price}" oninput="S.r.price=this.value;regen()">
+        <label class="fld-lbl">Price (${getCurrency()})</label>
+        <input type="number" placeholder="5.50" value="${S.r.price}" oninput="S.r.price=this.value;regen()">
       </div>
       <div class="fld">
-        <label class="fld-lbl">Idadi (ikiwa zaidi ya 1)</label>
+        <label class="fld-lbl">Quantity (if &gt; 1)</label>
         <input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()">
       </div>
     </div>
     <div class="og-row">
-      <button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Bei ya zamani</button>
+      <button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Old price</button>
     </div>
     <div class="og-field ${S.r.ogOn?'show':''}" id="rOgField">
       <div class="fld">
-        <label class="fld-lbl">Bei ya Awali (TZS)</label>
-        <input type="number" placeholder="Bei ya zamani" value="${S.r.og}" oninput="S.r.og=this.value;regen()">
+        <label class="fld-lbl">Original Price (${getCurrency()})</label>
+        <input type="number" placeholder="Old price" value="${S.r.og}" oninput="S.r.og=this.value;regen()">
       </div>
     </div>
-    <div class="fld-lbl" style="margin-top:4px;">Hali ya Stoko</div>
+    <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
     <div class="status-row">
-      <button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">✓ Ipo</button>
-      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">⚠ Inakwisha</button>
-      <button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">✕ Haipi</button>
+      <button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">In Stock</button>
+      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">Low Stock</button>
+      <button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">Out</button>
     </div>
     <div class="restock-reveal" id="rRestock">
       <div class="fld">
-        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
-        <input type="text" placeholder="mf. Aprili 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
+        <label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
       </div>
     </div>
   </div>`;
 }
 
-// ── Flash group (single) ──
 function htmlFlashGroup() {
   return `
   <div class="fc" id="flashCard">
-    <div class="fc-title">⚡ Bei ya Flash</div>
+    <div class="fc-title">Flash Sale Price</div>
     <div class="grid2">
       <div class="fld">
-        <label class="fld-lbl">Bei ya Flash (TZS)</label>
-        <input type="number" placeholder="Bei mpya ya leo" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()">
+        <label class="fld-lbl">Flash Price (${getCurrency()})</label>
+        <input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()">
       </div>
       <div class="fld">
-        <label class="fld-lbl">Bei ya Kawaida (TZS)</label>
-        <input type="number" placeholder="Bei ya zamani" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()">
+        <label class="fld-lbl">Original Price (${getCurrency()})</label>
+        <input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()">
       </div>
     </div>
   </div>`;
 }
 
-// ── Flash group (variant mode) ──
 function htmlFlashGroupVariant() {
   return `
   <div class="fc" id="flashCard">
-    <div class="fc-title">⚡ Flash Sale — Bei za Varianti</div>
-    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Weka bei za flash kwa kila varianti hapa chini.</p>
+    <div class="fc-title">Flash Sale — Per Variant</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Set flash prices on each variant below.</p>
   </div>`;
 }
 
-// ── Restock headline (Back in Stock) ──
 function htmlRestockHeadline() {
   return `
   <div class="fc">
-    <div class="fc-title">🔃 Tarehe ya Kurudi</div>
+    <div class="fc-title">Restock Info</div>
     <div class="fld">
-      <label class="fld-lbl">Iliporudishwa / Inakuja</label>
-      <input type="text" placeholder="mf. Imerudishwa Aprili 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()">
+      <label class="fld-lbl">Headline</label>
+      <input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()">
     </div>
   </div>`;
 }
 
-// ── Variant section ──
 function htmlVariantSection(def) {
   return `
   <div class="fc" id="variantSection">
-    <div class="fc-title" id="variantSectionTitle">VARIANTI</div>
+    <div class="fc-title" id="variantSectionTitle">VARIANTS</div>
     <div id="variantRows"></div>
-    <button class="add-variant-btn" onclick="addVariant()">+ Ongeza Varianti</button>
+    <button class="add-variant-btn" onclick="addVariant()">+ Add Variant</button>
     <div class="restock-reveal" id="variantRestockReveal">
       <div class="fld">
-        <label class="fld-lbl">Tarehe ya Kuja Tena</label>
-        <input type="text" placeholder="mf. Aprili 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()">
+        <label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()">
       </div>
     </div>
   </div>`;
 }
 
-// ═══════════════════════════════════════════════════════
-// VARIANT MANAGEMENT
-// ═══════════════════════════════════════════════════════
+// ===== VARIANT MANAGEMENT =====
 function addVariant(v = {}) {
   S.variants.push({
     prefix: v.prefix || '',
@@ -840,13 +911,13 @@ function renderVariantRows() {
         <div class="div"></div>
         <div class="grid2">
           <div class="fld">
-            <label class="fld-lbl">Bei ya Flash (TZS)</label>
-            <input type="number" placeholder="Bei flash" value="${v.flashPrice}"
+            <label class="fld-lbl">Flash Price (${getCurrency()})</label>
+            <input type="number" placeholder="Sale price" value="${v.flashPrice}"
               oninput="S.variants[${i}].flashPrice=this.value;regen()">
           </div>
           <div class="fld">
-            <label class="fld-lbl">Bei ya Kawaida (TZS)</label>
-            <input type="number" placeholder="Bei zamani" value="${v.flashOg}"
+            <label class="fld-lbl">Original Price (${getCurrency()})</label>
+            <input type="number" placeholder="Was price" value="${v.flashOg}"
               oninput="S.variants[${i}].flashOg=this.value;regen()">
           </div>
         </div>`;
@@ -855,64 +926,64 @@ function renderVariantRows() {
         <div class="div"></div>
         <div class="grid2">
           <div class="fld">
-            <label class="fld-lbl">Bei Jumla (TZS)</label>
-            <input type="number" placeholder="150000" value="${v.wholesale}"
+            <label class="fld-lbl">Wholesale (${getCurrency()})</label>
+            <input type="number" placeholder="150" value="${v.wholesale}"
               oninput="S.variants[${i}].wholesale=this.value;regen()">
           </div>
           <div class="fld">
-            <label class="fld-lbl">Idadi Jumla (pc)</label>
+            <label class="fld-lbl">Wholesale Qty (pc)</label>
             <input type="number" placeholder="50" value="${v.wholesaleQty}"
               oninput="S.variants[${i}].wholesaleQty=this.value;regen()">
           </div>
         </div>
         <div class="fld">
-          <label class="fld-lbl">Bei ya Awali Jumla (hiari)</label>
-          <input type="number" placeholder="Bei zamani" value="${v.wOg}"
+          <label class="fld-lbl">Old Wholesale Price (optional)</label>
+          <input type="number" placeholder="Was price" value="${v.wOg}"
             oninput="S.variants[${i}].wOg=this.value;regen()">
         </div>
         <div class="div"></div>
         <div class="fld">
-          <label class="fld-lbl">Bei Rejareja (TZS)</label>
-          <input type="number" placeholder="4000" value="${v.retail}"
+          <label class="fld-lbl">Retail (${getCurrency()})</label>
+          <input type="number" placeholder="4.00" value="${v.retail}"
             oninput="S.variants[${i}].retail=this.value;regen()">
         </div>
         <div class="fld">
-          <label class="fld-lbl">Bei ya Awali Rejareja (hiari)</label>
-          <input type="number" placeholder="Bei zamani" value="${v.rOg}"
+          <label class="fld-lbl">Old Retail Price (optional)</label>
+          <input type="number" placeholder="Was price" value="${v.rOg}"
             oninput="S.variants[${i}].rOg=this.value;regen()">
         </div>`;
     }
 
     div.innerHTML = `
-      <div class="v-label" id="vlabel_${i}">VARIANTI ${i+1}${name?' — '+name:''}</div>
-      <button class="v-del" onclick="removeVariant(${i})">✕</button>
+      <div class="v-label" id="vlabel_${i}">VARIANT ${i+1}${name?' — '+name:''}</div>
+      <button class="v-del" onclick="removeVariant(${i})">x</button>
       <div class="grid2">
         <div class="fld">
-          <label class="fld-lbl">Kiambatisho (hiari)</label>
-          <input type="text" placeholder="mf. Spiral" value="${v.prefix}"
+          <label class="fld-lbl">Prefix (optional)</label>
+          <input type="text" placeholder="e.g. Spiral" value="${v.prefix}"
             oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()">
         </div>
         <div class="fld">
-          <label class="fld-lbl">Ukubwa / Nambari</label>
-          <input type="text" placeholder="mf. 12, L, 90cm" value="${v.size}"
+          <label class="fld-lbl">Size / Number</label>
+          <input type="text" placeholder="e.g. 12, L, 90cm" value="${v.size}"
             oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()">
         </div>
       </div>
       <div class="fld">
-        <label class="fld-lbl">Kipimo</label>
+        <label class="fld-lbl">Unit</label>
         <div class="unit-chips">
-          ${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='—'?'Kingine':u}</button>`).join('')}
+          ${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}
         </div>
-        <input type="text" id="vcu_${i}" placeholder="Andika kipimo" value="${v.customUnit}"
-          style="${v.unit!=='—'?'display:none':''}"
+        <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}"
+          style="${v.unit!=='--'?'display:none':''}"
           oninput="S.variants[${i}].customUnit=this.value;regen()">
       </div>
       ${priceHTML}
-      <div class="fld-lbl" style="margin-top:10px;">Hali ya Stoko</div>
+      <div class="fld-lbl" style="margin-top:10px;">Stock Status</div>
       <div class="status-row">
-        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">✓ Ipo</button>
-        <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">⚠ Inakwisha</button>
-        <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">✕ Haipi</button>
+        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In Stock</button>
+        <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">Low</button>
+        <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">Out</button>
       </div>`;
 
     container.appendChild(div);
@@ -925,14 +996,13 @@ function updateVLabel(i) {
   const el = document.getElementById('vlabel_' + i);
   if (!el) return;
   const name = buildVName(S.variants[i]);
-  el.textContent = `VARIANTI ${i+1}${name?' — '+name:''}`;
+  el.textContent = `VARIANT ${i+1}${name?' — '+name:''}`;
 }
 
 function setVUnit(i, u) {
   S.variants[i].unit = u;
   const ci = document.getElementById('vcu_' + i);
-  if (ci) ci.style.display = u === '—' ? 'block' : 'none';
-  // update chip classes without full rebuild
+  if (ci) ci.style.display = u === '--' ? 'block' : 'none';
   const card = document.getElementById('variantRows').children[i];
   if (card) {
     card.querySelectorAll('.uc').forEach((btn, j) => {
@@ -963,15 +1033,13 @@ function checkVariantRestock() {
 }
 
 function buildVName(v) {
-  const unit = v.unit === '—' ? v.customUnit : v.unit;
+  const unit = v.unit === '--' ? v.customUnit : v.unit;
   if (!v.size) return v.prefix || '';
   if (v.prefix) return (unit && unit !== 'pc') ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
   return (unit && unit !== 'pc') ? `${v.size} ${unit}` : v.size;
 }
 
-// ═══════════════════════════════════════════════════════
-// STATUS & OG HELPERS
-// ═══════════════════════════════════════════════════════
+// ===== STATUS & OG HELPERS =====
 function setStatus(which, val) {
   if (which === 'w') S.w.status = val;
   else S.r.status = val;
@@ -993,7 +1061,6 @@ function applyStatus(which, val) {
 
 function checkRestockVisibility() {
   const def = REGISTRY.find(r => r.id === S.type);
-  // only show restock if this type includes wholesale or retail (not back_in_stock which has its own)
   if (!def || def.groups.includes('restock_headline')) return;
   const wOut = S.w.status === 'out_of_stock';
   const rOut = S.r.status === 'out_of_stock';
@@ -1018,20 +1085,17 @@ function toggleOg(which) {
   regen();
 }
 
-// ═══════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════
+// ===== HELPERS =====
 function fmt(n) {
   if (!n) return n;
   return Number(String(n).replace(/,/g,'')).toLocaleString('en-US');
 }
 
-// ═══════════════════════════════════════════════════════
-// CAPTION BUILDERS
-// ═══════════════════════════════════════════════════════
+const C = () => getCurrency();
 
-function getWBlock(useMarkdown=true, mode='standard') {
-  // mode: 'standard' | 'wholesale_only'
+// ===== CAPTION BUILDERS =====
+
+function getWBlock(useMarkdown=true) {
   const price = S.mode==='single' ? S.w.price : null;
   const qty = S.mode==='single' ? (S.w.qty||'1') : null;
   const og = S.mode==='single' && S.w.ogOn ? S.w.og : '';
@@ -1039,9 +1103,9 @@ function getWBlock(useMarkdown=true, mode='standard') {
   if (!price || !qty || status==='out_of_stock') return '';
   const b = useMarkdown;
   let line = og
-    ? `📦 ${b?'*':''}Jumla${b?'*':''}\n${b?'~':''}👉 ${qty}pc = TZS ${fmt(og)}${b?'~':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`
-    : `📦 ${b?'*':''}Jumla${b?'*':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`;
-  if (status==='low_stock') line += ' ⚠️';
+    ? `Wholesale\n${b?'~':''}${qty}pc = ${C()} ${fmt(og)}${b?'~':''}\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`
+    : `Wholesale\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`;
+  if (status==='low_stock') line += ' [LOW STOCK]';
   return line;
 }
 
@@ -1053,9 +1117,9 @@ function getRBlock(useMarkdown=true) {
   if (!price || status==='out_of_stock') return '';
   const b = useMarkdown;
   let line = og
-    ? `🛍️ ${b?'*':''}Rejareja${b?'*':''}\n${b?'~':''}👉 ${qty}pc = TZS ${fmt(og)}${b?'~':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`
-    : `🛍️ ${b?'*':''}Rejareja${b?'*':''}\n👉 ${qty}pc = ${b?'*':''}TZS ${fmt(price)}${b?'*':''}`;
-  if (status==='low_stock') line += ' ⚠️';
+    ? `Retail\n${b?'~':''}${qty}pc = ${C()} ${fmt(og)}${b?'~':''}\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`
+    : `Retail\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`;
+  if (status==='low_stock') line += ' [LOW STOCK]';
   return line;
 }
 
@@ -1065,38 +1129,38 @@ function getVariantLines(useMarkdown=true, isFlash=false, isWholesaleOnly=false)
   const b = useMarkdown;
   return active.map(v => {
     const vName = buildVName(v);
-    let block = `💰 ${b?'*':''}${vName}${b?'*':''}\n`;
+    let block = `${b?'*':''}${vName}${b?'*':''}\n`;
     if (isFlash) {
-      if (v.flashOg) block += `${b?'~':''}Bei ya Kawaida: TZS ${fmt(v.flashOg)}${b?'~':''}\n`;
-      if (v.flashPrice) block += `⚡ Bei ya Flash: ${b?'*':''}TZS ${fmt(v.flashPrice)}${b?'*':''}`;
+      if (v.flashOg) block += `${b?'~':''}Was: ${C()} ${fmt(v.flashOg)}${b?'~':''}\n`;
+      if (v.flashPrice) block += `Flash: ${b?'*':''}${C()} ${fmt(v.flashPrice)}${b?'*':''}`;
     } else {
       if (v.wholesale && v.wholesaleQty) {
         if (v.wOg) {
-          block += `📦 ${b?'~':''}Jumla: ${v.wholesaleQty}pc = TZS ${fmt(v.wOg)}${b?'~':''}\n`;
-          block += `📦 Jumla: ${v.wholesaleQty}pc = ${b?'*':''}TZS ${fmt(v.wholesale)}${b?'*':''}`;
+          block += `${b?'~':''}Wholesale: ${v.wholesaleQty}pc = ${C()} ${fmt(v.wOg)}${b?'~':''}\n`;
+          block += `Wholesale: ${v.wholesaleQty}pc = ${b?'*':''}${C()} ${fmt(v.wholesale)}${b?'*':''}`;
         } else {
-          block += `📦 Jumla: ${v.wholesaleQty}pc = ${b?'*':''}TZS ${fmt(v.wholesale)}${b?'*':''}`;
+          block += `Wholesale: ${v.wholesaleQty}pc = ${b?'*':''}${C()} ${fmt(v.wholesale)}${b?'*':''}`;
         }
       }
       if (!isWholesaleOnly && v.retail) {
         if (v.wholesale && v.wholesaleQty) block += '\n';
         if (v.rOg) {
-          block += `🛍️ ${b?'~':''}Rejareja: 1pc = TZS ${fmt(v.rOg)}${b?'~':''}\n`;
-          block += `🛍️ Rejareja: 1pc = ${b?'*':''}TZS ${fmt(v.retail)}${b?'*':''}`;
+          block += `${b?'~':''}Retail: 1pc = ${C()} ${fmt(v.rOg)}${b?'~':''}\n`;
+          block += `Retail: 1pc = ${b?'*':''}${C()} ${fmt(v.retail)}${b?'*':''}`;
         } else {
-          block += `🛍️ Rejareja: 1pc = ${b?'*':''}TZS ${fmt(v.retail)}${b?'*':''}`;
+          block += `Retail: 1pc = ${b?'*':''}${C()} ${fmt(v.retail)}${b?'*':''}`;
         }
       }
     }
-    if (v.status === 'low_stock') block += ' ⚠️';
+    if (v.status === 'low_stock') block += ' [LOW STOCK]';
     return block;
   }).join('\n\n');
 }
 
 function getOutOfStockBlock(useMarkdown=true) {
   const date = S.mode === 'variant' ? S.variantRestock : S.restockDate;
-  if (date) return `📅 ${useMarkdown?'*':''}Inakuja Tena — ${date}${useMarkdown?'*':''}`;
-  return `❌ ${useMarkdown?'*':''}Haipatikani Sasa Hivi${useMarkdown?'*':''}`;
+  if (date) return `Restocking — ${useMarkdown?'*':''}${date}${useMarkdown?'*':''}`;
+  return `${useMarkdown?'*':''}Out of Stock${useMarkdown?'*':''}`;
 }
 
 function isAllOut() {
@@ -1105,151 +1169,156 @@ function isAllOut() {
 }
 
 function assembleSingle(header, body, footer='', md=true) {
-  const name = S.name || '—';
-  const h = header || `🛒 ${md?'*':''}${name}${md?'*':''}`;
-  return `${h}\n───────────────\n\n${body}${footer?'\n\n'+footer:''}\n\n${SIGNATURE}`;
+  const sig = getSignature();
+  return `${header}\n───────────────\n\n${body}${footer?'\n\n'+footer:''}${sig?'\n\n───────────────'+sig:''}`;
 }
 
-// ── 1. Standard ──
+// 1. Standard
 function buildStandard() {
   const name = S.name || '—';
   if (S.mode === 'variant') {
     const lines = getVariantLines(true);
     const body = lines || getOutOfStockBlock();
-    return assembleSingle(`🛒 *${name}*`, body);
+    return assembleSingle(`*${name}*`, body);
   }
   const wBlock = getWBlock();
   const rBlock = getRBlock();
   const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
-  return assembleSingle(`🛒 *${name}*`, body);
+  return assembleSingle(`*${name}*`, body);
 }
 
-// ── 2. Wholesale Only ──
+// 2. Wholesale Only
 function buildWholesaleOnly() {
   const name = S.name || '—';
   if (S.mode === 'variant') {
     const lines = getVariantLines(true, false, true);
     const body = lines || getOutOfStockBlock();
-    return assembleSingle(`🛒 *${name}*`, body);
+    return assembleSingle(`*${name}*`, body);
   }
   const wBlock = getWBlock();
   const body = wBlock || getOutOfStockBlock();
-  return assembleSingle(`🛒 *${name}*`, body);
+  return assembleSingle(`*${name}*`, body);
 }
 
-// ── 3. Repost ──
+// 3. Repost
 function buildRepost() {
   const name = S.name || '—';
   if (S.mode === 'variant') {
     const lines = getVariantLines(true);
     const body = lines || getOutOfStockBlock();
     return assembleSingle(
-      `🛒 *${name} bado zipo!*`,
+      `*${name} — still available!*`,
       body,
-      `Wateja wengi wanaendelea kuchukua 📦\nUsisubiri ziishe — chukua zako sasa! 🔥`
+      `Selling fast — grab yours now!`
     );
   }
   const wBlock = getWBlock();
   const rBlock = getRBlock();
   const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
   return assembleSingle(
-    `🛒 *${name} bado zipo!*`,
+    `*${name} — still available!*`,
     body,
-    `Wateja wengi wanaendelea kuchukua 📦\nUsisubiri ziishe — chukua zako sasa! 🔥`
+    `Selling fast — grab yours now!`
   );
 }
 
-// ── 4. Flash Sale ──
+// 4. Flash Sale
 function buildFlash() {
   const name = S.name || '—';
-  const header = `⚡ *PROMOSHEN YA LEO TU* ⚡`;
+  const header = `*FLASH SALE — TODAY ONLY*`;
+  const sig = getSignature();
+  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
   if (S.mode === 'variant') {
     const lines = getVariantLines(true, true);
     const body = lines
-      ? `🛒 *${name}*\n\n${lines}`
+      ? `*${name}*\n\n${lines}`
       : getOutOfStockBlock();
-    return `${header}\n───────────────\n\n${body}\n\n⏰ Offer ya muda mfupi\n\n${SIGNATURE}`;
+    return `${header}\n───────────────\n\n${body}\n\nLimited time offer${sigBlock}`;
   }
   const fp = S.flash.price;
   const fog = S.flash.og;
-  let body = `🛒 *${name}*\n`;
-  if (fog) body += `~Bei ya Kawaida: TZS ${fmt(fog)}~\n`;
-  if (fp) body += `\n⏰ Offer ya muda mfupi\n👉 *TZS ${fmt(fp)}*`;
-  else body += '\n⏰ Offer ya muda mfupi';
-  // show regular wholesale below
+  let body = `*${name}*\n`;
+  if (fog) body += `~Was: ${C()} ${fmt(fog)}~\n`;
+  if (fp) body += `\nLimited time offer\n*${C()} ${fmt(fp)}*`;
+  else body += '\nLimited time offer';
   const wBlock = getWBlock();
   if (wBlock) body += `\n\n${wBlock}`;
-  return `${header}\n───────────────\n\n${body}\n\n${SIGNATURE}`;
+  return `${header}\n───────────────\n\n${body}${sigBlock}`;
 }
 
-// ── 5. New Arrival ──
+// 5. New Arrival
 function buildNewArrival() {
   const name = S.name || '—';
   const isTikTok = S.network === 'tiktok';
+  const sig = getSignature();
+  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
   if (isTikTok) {
-    return `✨ *${name} IMEFIKA!* ✨\n───────────────\n\nBidhaa mpya imefika dukani 🔥\nUnataka bei? Tuandikia moja kwa moja!\n\n${SIGNATURE}`;
+    return `*${name} — JUST ARRIVED!*\n───────────────\n\nBrand new in store!\nWant the price? DM us now!${sigBlock}`;
   }
-  const header = `✨ *${name} — IMEFIKA!*`;
+  const header = `*${name} — JUST ARRIVED!*`;
   if (S.mode === 'variant') {
     const lines = getVariantLines(true);
     const body = lines || getOutOfStockBlock();
-    return assembleSingle(header, `🆕 Bidhaa Mpya Dukani!\n\n${body}`);
+    return assembleSingle(header, `New in store!\n\n${body}`);
   }
   const wBlock = getWBlock();
   const rBlock = getRBlock();
   const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
   const body = priceBody
-    ? `🆕 Bidhaa Mpya Dukani!\n\n${priceBody}`
-    : `🆕 Bidhaa Mpya Dukani!`;
+    ? `New in store!\n\n${priceBody}`
+    : `New in store!`;
   return assembleSingle(header, body);
 }
 
-// ── 6. Back in Stock ──
+// 6. Back in Stock
 function buildBackInStock() {
   const name = S.name || '—';
-  const headline = S.restockHeadline || 'Imerudishwa!';
-  const header = `🔃 *${name} — ${headline}*`;
+  const headline = S.restockHeadline || 'Back in Stock!';
+  const header = `*${name} — ${headline}*`;
   if (S.mode === 'variant') {
     const lines = getVariantLines(true);
-    const body = lines || `Inakuja hivi karibuni...`;
-    return assembleSingle(header, `✅ Tena Inapatikana!\n\n${body}`);
+    const body = lines || `Coming soon...`;
+    return assembleSingle(header, `Available again!\n\n${body}`);
   }
   const wBlock = getWBlock();
   const rBlock = getRBlock();
   const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
   const body = priceBody
-    ? `✅ Tena Inapatikana!\n\n${priceBody}`
-    : `✅ Tena Inapatikana!`;
+    ? `Available again!\n\n${priceBody}`
+    : `Available again!`;
   return assembleSingle(header, body);
 }
 
-// ── 7. Engagement (TikTok) ──
+// 7. Engagement
 function buildEngagement() {
-  const name = S.name || 'bidhaa hii';
-  return `Unataka ${name}? 👀\nTuambie bajeti yako — tutakupa CHIMBO la bei chee 🔥\n\nWafanyabiashara na watumiaji wote mnakaribishwa.\n\nPiga simu au WhatsApp sasa hivi upate bei yako:\n📞 +255756374915\n\n${SIGNATURE}`;
+  const name = S.name || 'this';
+  const sig = getSignature();
+  const contact = CFG.phone ? `\nReach out now: ${CFG.phone}` : '';
+  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
+  return `Want ${name}?\nTell us your budget — we'll make it work!\n\nWholesale & retail welcome.${contact}${sigBlock}`;
 }
 
-// ── 8. Plain Text ──
+// 8. Plain Text
 function buildPlain() {
   const name = S.name || '—';
+  const sig = getSignature();
+  const sigLine = sig ? `\n${sig.trim()}` : '';
   if (S.mode === 'variant') {
     const lines = getVariantLines(false);
     const body = lines || getOutOfStockBlock(false);
-    return `${name}\n---------------\n\n${body}\n\n@machimbocomplex\nKariakoo | Aggrey & Sikukuu\n+255756374915`;
+    return `${name}\n---------------\n\n${body}${sigLine?'\n\n'+sigLine:''}`;
   }
   const wBlock = getWBlock(false);
   const rBlock = getRBlock(false);
   const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock(false);
-  return `${name}\n---------------\n\n${body}\n\n@machimbocomplex\nKariakoo | Aggrey & Sikukuu\n+255756374915`;
+  return `${name}\n---------------\n\n${body}${sigLine?'\n\n'+sigLine:''}`;
 }
 
-// ═══════════════════════════════════════════════════════
-// PREVIEW ENGINE
-// ═══════════════════════════════════════════════════════
+// ===== PREVIEW ENGINE =====
 function regen() {
   if (S.previewEdited) return;
   if (!S.type) {
-    document.getElementById('previewBox').value = 'Chagua mtandao na aina ya caption...';
+    document.getElementById('previewBox').value = 'Pick a platform and caption type...';
     return;
   }
   const def = REGISTRY.find(r => r.id === S.type);
@@ -1270,27 +1339,24 @@ function resetPreview() {
   regen();
 }
 
-// ═══════════════════════════════════════════════════════
-// COPY
-// ═══════════════════════════════════════════════════════
+// ===== COPY =====
 function doCopy() {
   const text = document.getElementById('previewBox').value;
-  if (!text || text === 'Chagua mtandao na aina ya caption...') return;
+  if (!text || text === 'Pick a platform and caption type...') return;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copyBtn');
-    btn.textContent = '✅ Imenakiliwa!';
+    btn.textContent = 'Copied!';
     btn.classList.add('done');
     setTimeout(() => {
-      btn.textContent = '📋 Nakili Caption';
+      btn.textContent = 'Copy Caption';
       btn.classList.remove('done');
     }, 2500);
   });
 }
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
+// ===== INIT =====
 initNetworks();
+initCfgFields();
 </script>
 </body>
 </html>
