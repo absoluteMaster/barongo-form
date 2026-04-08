@@ -35,422 +35,237 @@ body {
   padding-bottom: 60px;
 }
 
-/* -- HEADER -- */
 .hdr {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: sticky; top: 0; z-index: 50;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
   padding: 14px 16px 12px;
 }
-.hdr-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+.hdr-top {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
 }
 .hdr-logo {
-  width: 30px; height: 30px;
-  background: var(--a);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px;
+  width: 30px; height: 30px; background: var(--a); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; font-size: 15px;
+  font-family: 'Syne', sans-serif; font-weight: 800; color: #000;
 }
 .hdr-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text);
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--text);
 }
 .hdr-name span { color: var(--a); }
-.hdr-right {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
 .settings-btn {
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  color: var(--sub);
-  font-size: 16px;
-  width: 38px; height: 38px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
+  margin-left: auto;
+  background: var(--s2); border: 1px solid var(--border); border-radius: var(--r2);
+  color: var(--sub); font-size: 14px; width: 38px; height: 38px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
 }
 .settings-btn:active { background: var(--s3); }
 .settings-btn.has-config { border-color: var(--a); color: var(--a); }
-.product-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+
+.settings-panel {
+  display: none; margin-bottom: 12px; background: var(--s1);
+  border: 1px solid var(--border); border-radius: var(--r); padding: 14px;
+  animation: fadeUp 0.2s ease;
 }
-.product-name-wrap { flex: 1; position: relative; }
+.settings-panel.show { display: block; }
+
+.controls-row {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
+}
+.product-name-wrap { flex: 1; }
 .product-name-wrap input {
-  width: 100%;
-  background: var(--s2);
-  border: 1px solid var(--border2);
-  border-radius: var(--r2);
-  color: var(--text);
-  font-family: 'Figtree', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 10px 14px;
-  outline: none;
+  width: 100%; background: var(--s2); border: 1px solid var(--border2);
+  border-radius: var(--r2); color: var(--text); font-family: 'Figtree', sans-serif;
+  font-size: 15px; font-weight: 600; padding: 10px 14px; outline: none;
   transition: border-color 0.15s;
 }
 .product-name-wrap input:focus { border-color: var(--a); }
 .product-name-wrap input::placeholder { color: var(--dim); font-weight: 400; }
-.mode-toggle {
-  display: flex;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.mode-btn {
-  padding: 10px 13px;
-  font-family: 'Syne', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  background: none;
-  border: none;
-  color: var(--dim);
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.mode-btn.on { background: var(--a); color: #000; }
 
-/* -- WRAP -- */
+.toggle-group {
+  display: flex; background: var(--s2); border: 1px solid var(--border);
+  border-radius: var(--r2); overflow: hidden; flex-shrink: 0;
+}
+.tgl-btn {
+  padding: 10px 11px; font-family: 'Syne', sans-serif; font-size: 10px;
+  font-weight: 700; letter-spacing: 0.3px; background: none; border: none;
+  color: var(--dim); cursor: pointer; transition: all 0.15s; white-space: nowrap;
+}
+.tgl-btn.on { background: var(--a); color: #000; }
+
 .wrap { padding: 0 16px; max-width: 480px; margin: 0 auto; }
 
-/* -- SETTINGS PANEL -- */
-.settings-panel {
-  display: none;
-  margin-top: 12px;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 14px;
-  animation: fadeUp 0.2s ease;
-}
-.settings-panel.show { display: block; }
-.settings-panel .fc-title { margin-bottom: 10px; }
-
-/* -- SECTION BLOCK -- */
-.blk {
-  margin-top: 18px;
-  animation: fadeUp 0.2s ease;
-}
+.blk { margin-top: 18px; animation: fadeUp 0.2s ease; }
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .blk-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 8px;
+  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px;
 }
 
-/* -- PILLS -- */
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
+.pills { display: flex; flex-wrap: wrap; gap: 6px; }
 .pill {
-  padding: 8px 14px;
-  font-family: 'Syne', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  color: var(--sub);
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
+  padding: 8px 14px; font-family: 'Syne', sans-serif; font-size: 12px;
+  font-weight: 600; letter-spacing: 0.3px; background: var(--s2);
+  border: 1px solid var(--border); border-radius: 30px; color: var(--sub);
+  cursor: pointer; transition: all 0.15s; white-space: nowrap;
 }
 .pill:active { transform: scale(0.96); }
-.pill.on {
-  background: var(--a);
-  border-color: var(--a);
-  color: #000;
-}
-.pill.on2 {
-  background: transparent;
-  border-color: var(--a);
-  color: var(--a);
-}
+.pill.on { background: var(--a); border-color: var(--a); color: #000; }
 
-/* -- FIELD CARD -- */
 .fc {
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 14px;
-  margin-bottom: 10px;
+  background: var(--s1); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 14px; margin-bottom: 10px;
 }
 .fc-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--a);
-  margin-bottom: 12px;
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--a); margin-bottom: 12px;
 }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* -- INPUT -- */
 .fld { margin-bottom: 10px; }
 .fld:last-child { margin-bottom: 0; }
 .fld-lbl {
-  font-size: 11px;
-  color: var(--dim);
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  margin-bottom: 5px;
-  display: block;
+  font-size: 11px; color: var(--dim); font-weight: 600;
+  letter-spacing: 0.3px; margin-bottom: 5px; display: block;
 }
-input[type="text"],
-input[type="number"] {
-  width: 100%;
-  padding: 10px 12px;
-  background: var(--s2);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  font-size: 14px;
-  font-family: 'Figtree', sans-serif;
-  outline: none;
-  transition: border-color 0.15s;
+input[type="text"], input[type="number"], textarea.field-ta {
+  width: 100%; padding: 10px 12px; background: var(--s2); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px;
+  font-family: 'Figtree', sans-serif; outline: none; transition: border-color 0.15s;
   -webkit-appearance: none;
 }
-input:focus { border-color: var(--a); }
-input::placeholder { color: var(--dim); }
+textarea.field-ta { resize: vertical; min-height: 60px; }
+input:focus, textarea.field-ta:focus { border-color: var(--a); }
+input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
 
-/* -- OG TOGGLE INLINE -- */
-.og-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
+.og-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .og-toggle-btn {
-  font-size: 11px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--dim);
-  background: none;
-  border: 1px dashed var(--border2);
-  border-radius: 20px;
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: all 0.15s;
+  font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--dim); background: none;
+  border: 1px dashed var(--border2); border-radius: 20px; padding: 4px 10px;
+  cursor: pointer; transition: all 0.15s;
 }
 .og-toggle-btn.on { color: var(--a2); border-color: var(--a2); border-style: solid; }
 .og-field { display: none; }
 .og-field.show { display: block; }
 
-/* -- STATUS -- */
 .status-row { display: flex; gap: 5px; margin-top: 10px; }
 .st-btn {
-  flex: 1;
-  padding: 7px 4px;
-  font-size: 11px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--s2);
-  color: var(--dim);
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: center;
+  flex: 1; padding: 7px 4px; font-size: 11px; font-family: 'Syne', sans-serif;
+  font-weight: 700; letter-spacing: 0.3px; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--s2); color: var(--dim); cursor: pointer;
+  transition: all 0.15s; text-align: center;
 }
 .st-btn.g { background: rgba(62,207,106,0.12); border-color: var(--green); color: var(--green); }
 .st-btn.o { background: rgba(245,158,11,0.12); border-color: var(--orange); color: var(--orange); }
 .st-btn.r { background: rgba(239,80,80,0.12); border-color: var(--red); color: var(--red); }
 
-/* -- RESTOCK -- */
 .restock-reveal {
-  display: none;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-  animation: fadeUp 0.2s ease;
+  display: none; margin-top: 10px; padding-top: 10px;
+  border-top: 1px solid var(--border); animation: fadeUp 0.2s ease;
 }
 .restock-reveal.show { display: block; }
 
-/* -- VARIANT -- */
 .variant-card {
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 13px;
-  margin-bottom: 8px;
-  position: relative;
-  animation: fadeUp 0.2s ease;
+  background: var(--s2); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 13px; margin-bottom: 8px; position: relative; animation: fadeUp 0.2s ease;
 }
 .v-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--a);
-  margin-bottom: 10px;
-  padding-right: 32px;
+  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; color: var(--a); margin-bottom: 10px; padding-right: 32px;
 }
 .v-del {
-  position: absolute;
-  top: 10px; right: 10px;
-  background: rgba(239,80,80,0.1);
-  border: none;
-  color: var(--red);
-  width: 26px; height: 26px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(239,80,80,0.1); border: none; color: var(--red);
+  width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 13px;
   display: flex; align-items: center; justify-content: center;
 }
 .unit-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
 .uc {
-  padding: 4px 9px;
-  font-size: 11px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  background: var(--s1);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--dim);
-  cursor: pointer;
-  transition: all 0.15s;
+  padding: 4px 9px; font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700;
+  background: var(--s1); border: 1px solid var(--border); border-radius: 20px;
+  color: var(--dim); cursor: pointer; transition: all 0.15s;
 }
 .uc.on { background: rgba(232,160,32,0.15); border-color: var(--a); color: var(--a); }
 .add-variant-btn {
-  width: 100%;
-  padding: 11px;
-  background: transparent;
-  border: 1px dashed var(--border2);
-  border-radius: var(--r);
-  color: var(--sub);
-  font-family: 'Syne', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-top: 4px;
+  width: 100%; padding: 11px; background: transparent;
+  border: 1px dashed var(--border2); border-radius: var(--r); color: var(--sub);
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.5px; cursor: pointer; transition: all 0.15s; margin-top: 4px;
 }
 .add-variant-btn:active { background: rgba(255,255,255,0.03); }
 
-/* -- DIVIDER -- */
 .div { height: 1px; background: var(--border); margin: 10px 0; }
 
-/* -- PREVIEW -- */
 .preview-wrap {
-  margin-top: 18px;
-  border-radius: var(--r);
-  overflow: hidden;
+  margin-top: 18px; border-radius: var(--r); overflow: hidden;
   border: 1px solid var(--border2);
 }
 .preview-head {
-  background: var(--s2);
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background: var(--s2); padding: 9px 14px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
 }
 .preview-head-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Syne', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--dim);
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
 }
 .preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--a); }
-.reset-pill {
-  font-size: 10px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  color: var(--a2);
-  background: rgba(212,76,32,0.1);
-  border: 1px solid var(--a2);
-  border-radius: 20px;
-  padding: 3px 10px;
-  cursor: pointer;
+.preview-right { display: flex; align-items: center; gap: 10px; }
+.char-counter {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim);
   display: none;
+}
+.char-counter.show { display: block; }
+.char-counter.warn { color: var(--orange); }
+.char-counter.over { color: var(--red); font-weight: 700; }
+.reset-pill {
+  font-size: 10px; font-family: 'Syne', sans-serif; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--a2); background: rgba(212,76,32,0.1);
+  border: 1px solid var(--a2); border-radius: 20px; padding: 3px 10px;
+  cursor: pointer; display: none;
 }
 .reset-pill.show { display: block; }
 #previewBox {
-  width: 100%;
-  min-height: 140px;
-  padding: 14px;
-  background: var(--s1);
-  color: #c8c5bc;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  line-height: 1.85;
-  border: none;
-  outline: none;
-  resize: vertical;
+  width: 100%; min-height: 140px; padding: 14px; background: var(--s1);
+  color: #c8c5bc; font-family: 'DM Mono', monospace; font-size: 12px;
+  line-height: 1.85; border: none; outline: none; resize: vertical;
   white-space: pre-wrap;
 }
 
-/* -- COPY BTN -- */
 .copy-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 16px;
-  background: var(--a);
-  color: #000;
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border: none;
-  border-radius: var(--r);
-  cursor: pointer;
-  transition: all 0.15s;
+  width: 100%; margin-top: 10px; padding: 16px; background: var(--a); color: #000;
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
+  letter-spacing: 1px; text-transform: uppercase; border: none;
+  border-radius: var(--r); cursor: pointer; transition: all 0.15s;
 }
 .copy-btn:active { transform: scale(0.98); }
 .copy-btn.done { background: var(--green); }
 
-/* -- HIDDEN -- */
 .gone { display: none !important; }
+
+/* star rating */
+.stars { display: flex; gap: 4px; margin-bottom: 8px; }
+.star-btn {
+  font-size: 20px; background: none; border: none; cursor: pointer;
+  color: var(--dim); transition: color 0.1s;
+}
+.star-btn.on { color: var(--a); }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="hdr-brand">
+  <div class="hdr-top">
     <div class="hdr-logo">R</div>
     <div class="hdr-name">RAPID <span>CAPTIONS</span></div>
-    <div style="flex:1"></div>
-    <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Settings">S</button>
+    <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Settings">&#9881;</button>
   </div>
+
   <div class="settings-panel" id="settingsPanel">
     <div class="fc-title">Your Business Info</div>
     <div class="fld">
@@ -470,891 +285,969 @@ input::placeholder { color: var(--dim); }
       <input type="text" id="cfgCurrency" placeholder="e.g. USD, TZS, KES" value="USD" oninput="saveCfg()">
     </div>
   </div>
-  <div class="product-row" style="margin-top:12px;">
+
+  <div class="controls-row">
     <div class="product-name-wrap">
       <input type="text" id="productName" placeholder="Product name..." oninput="S.name=this.value;regen()">
     </div>
-    <div class="mode-toggle">
-      <button class="mode-btn on" id="modeSingle" onclick="setMode('single')">Single</button>
-      <button class="mode-btn" id="modeVariant" onclick="setMode('variant')">Variants</button>
+    <div class="toggle-group" id="modeToggle">
+      <button class="tgl-btn on" id="modeSingle" onclick="setMode('single')">Single</button>
+      <button class="tgl-btn" id="modeVariant" onclick="setMode('variant')">Variants</button>
+    </div>
+  </div>
+  <div class="controls-row">
+    <div class="toggle-group" id="toneToggle" style="width:100%;">
+      <button class="tgl-btn" id="toneHype" onclick="setTone('hype')" style="flex:1;">&#128293; Hype</button>
+      <button class="tgl-btn on" id="toneBalanced" onclick="setTone('balanced')" style="flex:1;">&#9878;&#65039; Balanced</button>
+      <button class="tgl-btn" id="tonePro" onclick="setTone('pro')" style="flex:1;">&#127913; Pro</button>
     </div>
   </div>
 </div>
 
 <div class="wrap">
-
-  <!-- NETWORK -->
   <div class="blk" id="netBlk">
     <div class="blk-label">Platform</div>
     <div class="pills" id="netPills"></div>
   </div>
 
-  <!-- CAPTION TYPE -->
   <div class="blk gone" id="typeBlk">
     <div class="blk-label">Caption Type</div>
     <div class="pills" id="typePills"></div>
   </div>
 
-  <!-- DYNAMIC FIELDS -->
   <div id="fieldsArea"></div>
 
-  <!-- PREVIEW -->
   <div class="preview-wrap" id="previewWrap">
     <div class="preview-head">
       <div class="preview-head-left">
         <div class="preview-dot"></div>
         Preview
       </div>
-      <button class="reset-pill" id="resetPill" onclick="resetPreview()">Reset</button>
+      <div class="preview-right">
+        <span class="char-counter" id="charCounter"></span>
+        <button class="reset-pill" id="resetPill" onclick="resetPreview()">Reset</button>
+      </div>
     </div>
     <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Pick a platform and caption type...</textarea>
   </div>
 
   <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy Caption</button>
-
 </div>
 
 <script>
-// ===== STATE =====
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
 const S = {
-  network: null,
-  type: null,
-  mode: 'single',
-  name: '',
-  w: { price: '', qty: '', og: '', ogOn: false, status: 'in_stock' },
-  r: { price: '', qty: '', og: '', ogOn: false, status: 'in_stock' },
-  flash: { price: '', og: '' },
-  restockDate: '',
-  restockHeadline: '',
-  variants: [],
-  variantRestock: '',
+  network: null, type: null, mode: 'single', tone: 'balanced', name: '',
+  w: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
+  r: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
+  flash: { price:'', og:'' },
+  restockDate: '', restockHeadline: '',
+  variants: [], variantRestock: '',
+  // new type fields
+  bundle: { item2:'', comboPrice:'', savings:'' },
+  drop: {},  // uses w/r with ogOn forced
+  lastQty: '',
+  review: { quote:'', reviewer:'', stars:0 },
   previewEdited: false,
 };
 
-const CFG = loadCfg();
-
-function loadCfg() {
-  try {
-    const raw = localStorage.getItem('rc_cfg');
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return { handle: '', location: '', phone: '', currency: 'USD' };
-}
+// ═══════════════════════════════════════
+// CONFIG (localStorage)
+// ═══════════════════════════════════════
+const CFG = (() => {
+  try { const r = localStorage.getItem('rc_cfg'); if(r) return JSON.parse(r); } catch(e){}
+  return { handle:'', location:'', phone:'', currency:'USD', tone:'balanced' };
+})();
 
 function saveCfg() {
   CFG.handle = document.getElementById('cfgHandle').value;
   CFG.location = document.getElementById('cfgLocation').value;
   CFG.phone = document.getElementById('cfgPhone').value;
   CFG.currency = document.getElementById('cfgCurrency').value || 'USD';
+  CFG.tone = S.tone;
   localStorage.setItem('rc_cfg', JSON.stringify(CFG));
   updateSettingsBtn();
   regen();
 }
-
 function initCfgFields() {
-  document.getElementById('cfgHandle').value = CFG.handle || '';
-  document.getElementById('cfgLocation').value = CFG.location || '';
-  document.getElementById('cfgPhone').value = CFG.phone || '';
-  document.getElementById('cfgCurrency').value = CFG.currency || 'USD';
+  document.getElementById('cfgHandle').value = CFG.handle||'';
+  document.getElementById('cfgLocation').value = CFG.location||'';
+  document.getElementById('cfgPhone').value = CFG.phone||'';
+  document.getElementById('cfgCurrency').value = CFG.currency||'USD';
+  if (CFG.tone) { S.tone = CFG.tone; setTone(S.tone); }
   updateSettingsBtn();
 }
-
 function updateSettingsBtn() {
   const btn = document.getElementById('settingsBtn');
-  const has = CFG.handle || CFG.location || CFG.phone;
-  btn.classList.toggle('has-config', !!has);
+  btn.classList.toggle('has-config', !!(CFG.handle||CFG.location||CFG.phone));
+}
+function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('show'); }
+function CC() { return CFG.currency||'USD'; }
+
+// ═══════════════════════════════════════
+// EMOJI REGISTRY
+// ═══════════════════════════════════════
+const EM = {
+  header_product:    { hype:'🛒🔥', balanced:'🛒', pro:'' },
+  header_flash:      { hype:'⚡🔥', balanced:'⚡', pro:'' },
+  header_new:        { hype:'✨🆕', balanced:'✨', pro:'' },
+  header_restock:    { hype:'🔄✅', balanced:'🔄', pro:'' },
+  header_repost:     { hype:'📢🔥', balanced:'📢', pro:'' },
+  header_bundle:     { hype:'🎁🔥', balanced:'🎁', pro:'' },
+  header_drop:       { hype:'📉🔥', balanced:'📉', pro:'' },
+  header_last:       { hype:'🚨🔥', balanced:'🚨', pro:'' },
+  header_review:     { hype:'⭐🔥', balanced:'⭐', pro:'' },
+  section_wholesale: { hype:'📦💰', balanced:'📦', pro:'' },
+  section_retail:    { hype:'🛍️💰', balanced:'🛍️', pro:'' },
+  price_arrow:       { hype:'👉🔥', balanced:'👉', pro:'•' },
+  status_in:         { hype:'✅🟢', balanced:'✅', pro:'' },
+  status_low:        { hype:'⚠️🔥', balanced:'⚠️', pro:'' },
+  status_out:        { hype:'❌😱', balanced:'❌', pro:'' },
+  cta_order:         { hype:'🏃💨', balanced:'👇', pro:'' },
+  cta_dm:            { hype:'💬🔥', balanced:'💬', pro:'' },
+  sig_handle:        { hype:'🌐', balanced:'🌐', pro:'' },
+  sig_location:      { hype:'📍', balanced:'📍', pro:'' },
+  sig_phone:         { hype:'📞', balanced:'📞', pro:'' },
+  fire:              { hype:'🔥', balanced:'', pro:'' },
+  star:              { hype:'⭐', balanced:'⭐', pro:'' },
+  divider:           { hype:'🔥🔥🔥🔥🔥🔥🔥🔥🔥', balanced:'───────────────', pro:'───────────────' },
+};
+
+function E(role) {
+  const t = S.tone;
+  // platform can downgrade tone
+  let effective = t;
+  if (S.network === 'tiktok' || S.network === 'twitter') effective = 'pro'; // minimal emojis
+  else if (S.network === 'instagram' && t === 'hype') effective = 'balanced'; // cap IG at balanced
+  else if (S.network === 'facebook' && t === 'hype') effective = 'balanced';
+  else if (S.network === 'any') effective = 'pro'; // plain = no emojis
+  const entry = EM[role];
+  if (!entry) return '';
+  return entry[effective] || '';
 }
 
-function toggleSettings() {
-  document.getElementById('settingsPanel').classList.toggle('show');
+function Ep(role) {
+  // "pure" emoji lookup ignoring platform caps — for signature
+  const entry = EM[role];
+  if (!entry) return '';
+  return entry[S.tone] || '';
 }
 
-function getSignature() {
-  const parts = [];
-  if (CFG.handle) parts.push(CFG.handle);
-  if (CFG.location) parts.push(CFG.location);
-  if (CFG.phone) parts.push(CFG.phone);
-  if (!parts.length) return '';
-  return '\n' + parts.join(' | ');
-}
+// ═══════════════════════════════════════
+// PLATFORM CONFIG
+// ═══════════════════════════════════════
+const PLATFORMS = {
+  whatsapp:  { label:'💬 WhatsApp',  md:true,  maxLen:0,    short:false },
+  telegram:  { label:'✈️ Telegram',  md:true,  maxLen:0,    short:false },
+  instagram: { label:'📸 Instagram', md:false, maxLen:2200, short:false },
+  tiktok:    { label:'🎵 TikTok',    md:false, maxLen:150,  short:true  },
+  facebook:  { label:'👥 Facebook',  md:false, maxLen:500,  short:false },
+  twitter:   { label:'𝕏 Twitter',    md:false, maxLen:280,  short:true  },
+  any:       { label:'📄 Plain',     md:false, maxLen:0,    short:false },
+};
 
-function getCurrency() { return CFG.currency || 'USD'; }
+function useMd() { return PLATFORMS[S.network]?.md; }
+function isShort() { return PLATFORMS[S.network]?.short; }
+function maxLen() { return PLATFORMS[S.network]?.maxLen || 0; }
+
+function B(text) { return useMd() ? `*${text}*` : text; }
+function STR(text) { return useMd() ? `~${text}~` : text; }
+
+// ═══════════════════════════════════════
+// NETWORKS & TYPES
+// ═══════════════════════════════════════
+const NETWORKS = Object.keys(PLATFORMS);
+
+const REGISTRY = [
+  { id:'standard',       label:'Standard',       nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildStandard },
+  { id:'wholesale_only', label:'Wholesale Only',  nets:['whatsapp','telegram','facebook','any'], groups:['wholesale'], build:buildWholesaleOnly },
+  { id:'repost',         label:'Repost',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['wholesale','retail'], build:buildRepost },
+  { id:'flash',          label:'Flash Sale',      nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['flash','wholesale'], build:buildFlash },
+  { id:'new_arrival',    label:'New Arrival',     nets:['whatsapp','telegram','tiktok','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildNewArrival },
+  { id:'back_in_stock',  label:'Back in Stock',   nets:['whatsapp','telegram','instagram','facebook','any'], groups:['restock_headline','wholesale','retail'], build:buildBackInStock },
+  { id:'engagement',     label:'Engagement',      nets:['tiktok','instagram','facebook','twitter','any'], groups:[], build:buildEngagement },
+  { id:'plain',          label:'Plain Text',      nets:['any'], groups:['wholesale','retail'], build:buildPlain },
+  { id:'bundle',         label:'Bundle Deal',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['bundle','wholesale','retail'], build:buildBundle },
+  { id:'price_drop',     label:'Price Drop',      nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildPriceDrop },
+  { id:'last_pieces',    label:'Last Pieces',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
+  { id:'review',         label:'Review',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
+];
 
 const UNITS = ['pc','kg','g','L','ml','cm','inch','--'];
 
-// ===== NETWORKS =====
-const NETWORKS = [
-  { id: 'whatsapp',  label: 'WhatsApp',  e: 'WA' },
-  { id: 'telegram',  label: 'Telegram',  e: 'TG' },
-  { id: 'tiktok',    label: 'TikTok',    e: 'TT' },
-  { id: 'instagram', label: 'Instagram', e: 'IG' },
-  { id: 'any',       label: 'Any',       e: '*'  },
-];
+// ═══════════════════════════════════════
+// TONE
+// ═══════════════════════════════════════
+function setTone(t) {
+  S.tone = t;
+  ['Hype','Balanced','Pro'].forEach(n => {
+    document.getElementById('tone'+n).classList.toggle('on', n.toLowerCase() === t || (n==='Pro' && t==='pro'));
+  });
+  CFG.tone = t;
+  try { localStorage.setItem('rc_cfg', JSON.stringify(CFG)); } catch(e){}
+  regen();
+}
 
-// ===== CAPTION REGISTRY =====
-const REGISTRY = [
-  {
-    id: 'standard',
-    label: 'Standard',
-    e: 'STD',
-    nets: ['whatsapp','telegram','instagram','any'],
-    groups: ['wholesale','retail'],
-    build: buildStandard,
-  },
-  {
-    id: 'wholesale_only',
-    label: 'Wholesale Only',
-    e: 'W',
-    nets: ['whatsapp','telegram','any'],
-    groups: ['wholesale'],
-    build: buildWholesaleOnly,
-  },
-  {
-    id: 'repost',
-    label: 'Repost',
-    e: 'RP',
-    nets: ['whatsapp','telegram','instagram','any'],
-    groups: ['wholesale','retail'],
-    build: buildRepost,
-  },
-  {
-    id: 'flash',
-    label: 'Flash Sale',
-    e: 'FS',
-    nets: ['whatsapp','telegram','instagram','any'],
-    groups: ['flash','wholesale'],
-    build: buildFlash,
-  },
-  {
-    id: 'new_arrival',
-    label: 'New Arrival',
-    e: 'NEW',
-    nets: ['whatsapp','telegram','tiktok','instagram','any'],
-    groups: ['wholesale','retail'],
-    build: buildNewArrival,
-  },
-  {
-    id: 'back_in_stock',
-    label: 'Back in Stock',
-    e: 'BIS',
-    nets: ['whatsapp','telegram','instagram','any'],
-    groups: ['restock_headline','wholesale','retail'],
-    build: buildBackInStock,
-  },
-  {
-    id: 'engagement',
-    label: 'Engagement',
-    e: 'ENG',
-    nets: ['tiktok','instagram','any'],
-    groups: [],
-    build: buildEngagement,
-  },
-  {
-    id: 'plain',
-    label: 'Plain Text',
-    e: 'TXT',
-    nets: ['any'],
-    groups: ['wholesale','retail'],
-    build: buildPlain,
-  },
-];
-
-// ===== NETWORK & TYPE SELECTION =====
+// ═══════════════════════════════════════
+// NETWORK & TYPE SELECTION
+// ═══════════════════════════════════════
 function initNetworks() {
-  const el = document.getElementById('netPills');
-  el.innerHTML = NETWORKS.map(n =>
-    `<button class="pill" onclick="selectNetwork('${n.id}')" id="net_${n.id}">${n.e} ${n.label}</button>`
+  document.getElementById('netPills').innerHTML = NETWORKS.map(id =>
+    `<button class="pill" onclick="selectNetwork('${id}')" id="net_${id}">${PLATFORMS[id].label}</button>`
   ).join('');
 }
 
 function selectNetwork(id) {
   S.network = id;
   document.querySelectorAll('#netPills .pill').forEach(b => b.classList.remove('on'));
-  document.getElementById('net_' + id).classList.add('on');
+  document.getElementById('net_'+id).classList.add('on');
   if (S.type) {
     const def = REGISTRY.find(r => r.id === S.type);
     if (!def || !def.nets.includes(id)) S.type = null;
   }
   renderTypePills();
   document.getElementById('typeBlk').classList.remove('gone');
+  updateCharCounter();
 }
 
 function renderTypePills() {
   const el = document.getElementById('typePills');
-  const available = REGISTRY.filter(r => r.nets.includes(S.network));
-  el.innerHTML = available.map(r =>
-    `<button class="pill ${S.type === r.id ? 'on' : ''}" onclick="selectType('${r.id}')" id="type_${r.id}">${r.e} ${r.label}</button>`
+  const avail = REGISTRY.filter(r => r.nets.includes(S.network));
+  el.innerHTML = avail.map(r =>
+    `<button class="pill ${S.type===r.id?'on':''}" onclick="selectType('${r.id}')" id="type_${r.id}">${r.label}</button>`
   ).join('');
 }
 
 function selectType(id) {
   S.type = id;
   document.querySelectorAll('#typePills .pill').forEach(b => b.classList.remove('on'));
-  const btn = document.getElementById('type_' + id);
+  const btn = document.getElementById('type_'+id);
   if (btn) btn.classList.add('on');
   renderFields();
   regen();
 }
 
-// ===== PRODUCT MODE =====
 function setMode(m) {
   S.mode = m;
-  document.getElementById('modeSingle').classList.toggle('on', m === 'single');
-  document.getElementById('modeVariant').classList.toggle('on', m === 'variant');
+  document.getElementById('modeSingle').classList.toggle('on', m==='single');
+  document.getElementById('modeVariant').classList.toggle('on', m==='variant');
   if (S.type) renderFields();
   regen();
 }
 
-// ===== FIELD RENDERING =====
+// ═══════════════════════════════════════
+// FIELD RENDERING
+// ═══════════════════════════════════════
 function renderFields() {
   const area = document.getElementById('fieldsArea');
-  if (!S.type) { area.innerHTML = ''; return; }
-  const def = REGISTRY.find(r => r.id === S.type);
-  if (!def) { area.innerHTML = ''; return; }
-
+  if (!S.type) { area.innerHTML=''; return; }
+  const def = REGISTRY.find(r=>r.id===S.type);
+  if (!def) { area.innerHTML=''; return; }
   let html = '<div class="blk" id="fieldsInner">';
-
-  if (S.mode === 'variant') {
-    const needsPrices = def.groups.some(g => ['wholesale','retail','flash'].includes(g));
+  if (S.mode==='variant') {
+    const needsPrices = def.groups.some(g=>['wholesale','retail','flash'].includes(g));
     if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
+    if (def.groups.includes('testimonial')) html += htmlTestimonial();
+    if (def.groups.includes('bundle')) html += htmlBundleFields();
+    if (def.groups.includes('last_qty')) html += htmlLastQty();
     if (def.groups.includes('flash')) html += htmlFlashGroupVariant();
     if (needsPrices) html += htmlVariantSection(def);
   } else {
     if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
+    if (def.groups.includes('testimonial')) html += htmlTestimonial();
+    if (def.groups.includes('bundle')) html += htmlBundleFields();
+    if (def.groups.includes('last_qty')) html += htmlLastQty();
     if (def.groups.includes('flash')) html += htmlFlashGroup();
     if (def.groups.includes('wholesale')) html += htmlWholesaleGroup();
     if (def.groups.includes('retail')) html += htmlRetailGroup();
   }
-
   html += '</div>';
   area.innerHTML = html;
-
-  if (S.mode === 'single') {
-    applyStatus('w', S.w.status);
-    applyStatus('r', S.r.status);
-    if (S.w.ogOn) { const f = document.getElementById('wOgField'); if(f) f.classList.add('show'); }
-    if (S.r.ogOn) { const f = document.getElementById('rOgField'); if(f) f.classList.add('show'); }
+  if (S.mode==='single') {
+    applyStatus('w',S.w.status);
+    applyStatus('r',S.r.status);
+    if(S.w.ogOn){const f=document.getElementById('wOgField');if(f)f.classList.add('show');}
+    if(S.r.ogOn){const f=document.getElementById('rOgField');if(f)f.classList.add('show');}
     checkRestockVisibility();
   } else {
     renderVariantRows();
   }
+  // restore star rating
+  if (def.groups.includes('testimonial')) applyStars(S.review.stars);
 }
 
 function htmlWholesaleGroup() {
-  return `
-  <div class="fc" id="wCard">
-    <div class="fc-title">Wholesale Price</div>
+  return `<div class="fc" id="wCard">
+    <div class="fc-title">${E('section_wholesale')} Wholesale Price</div>
     <div class="grid2">
-      <div class="fld">
-        <label class="fld-lbl">Price (${getCurrency()})</label>
-        <input type="number" placeholder="150" value="${S.w.price}" oninput="S.w.price=this.value;regen()">
-      </div>
-      <div class="fld">
-        <label class="fld-lbl">Quantity (pc)</label>
-        <input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Price (${CC()})</label>
+        <input type="number" placeholder="150" value="${S.w.price}" oninput="S.w.price=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">Qty (pc)</label>
+        <input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()"></div>
     </div>
-    <div class="og-row">
-      <button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Old price</button>
-    </div>
+    <div class="og-row"><button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Old price</button></div>
     <div class="og-field ${S.w.ogOn?'show':''}" id="wOgField">
-      <div class="fld">
-        <label class="fld-lbl">Original Price (${getCurrency()})</label>
-        <input type="number" placeholder="Old price" value="${S.w.og}" oninput="S.w.og=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
+        <input type="number" placeholder="Old price" value="${S.w.og}" oninput="S.w.og=this.value;regen()"></div>
     </div>
     <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
     <div class="status-row">
       <button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">In Stock</button>
-      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">Low Stock</button>
+      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">Low</button>
       <button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">Out</button>
     </div>
     <div class="restock-reveal" id="wRestock">
-      <div class="fld">
-        <label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div>
     </div>
   </div>`;
 }
 
 function htmlRetailGroup() {
-  return `
-  <div class="fc" id="rCard">
-    <div class="fc-title">Retail Price</div>
+  return `<div class="fc" id="rCard">
+    <div class="fc-title">${E('section_retail')} Retail Price</div>
     <div class="grid2">
-      <div class="fld">
-        <label class="fld-lbl">Price (${getCurrency()})</label>
-        <input type="number" placeholder="5.50" value="${S.r.price}" oninput="S.r.price=this.value;regen()">
-      </div>
-      <div class="fld">
-        <label class="fld-lbl">Quantity (if &gt; 1)</label>
-        <input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Price (${CC()})</label>
+        <input type="number" placeholder="5.50" value="${S.r.price}" oninput="S.r.price=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">Qty (if &gt; 1)</label>
+        <input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()"></div>
     </div>
-    <div class="og-row">
-      <button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Old price</button>
-    </div>
+    <div class="og-row"><button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Old price</button></div>
     <div class="og-field ${S.r.ogOn?'show':''}" id="rOgField">
-      <div class="fld">
-        <label class="fld-lbl">Original Price (${getCurrency()})</label>
-        <input type="number" placeholder="Old price" value="${S.r.og}" oninput="S.r.og=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
+        <input type="number" placeholder="Old price" value="${S.r.og}" oninput="S.r.og=this.value;regen()"></div>
     </div>
     <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
     <div class="status-row">
       <button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">In Stock</button>
-      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">Low Stock</button>
+      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">Low</button>
       <button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">Out</button>
     </div>
     <div class="restock-reveal" id="rRestock">
-      <div class="fld">
-        <label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()">
-      </div>
+      <div class="fld"><label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div>
     </div>
   </div>`;
 }
 
 function htmlFlashGroup() {
-  return `
-  <div class="fc" id="flashCard">
-    <div class="fc-title">Flash Sale Price</div>
+  return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale Price</div>
     <div class="grid2">
-      <div class="fld">
-        <label class="fld-lbl">Flash Price (${getCurrency()})</label>
-        <input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()">
-      </div>
-      <div class="fld">
-        <label class="fld-lbl">Original Price (${getCurrency()})</label>
-        <input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()">
-      </div>
-    </div>
-  </div>`;
+      <div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label>
+        <input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">Original Price (${CC()})</label>
+        <input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()"></div>
+    </div></div>`;
 }
-
 function htmlFlashGroupVariant() {
-  return `
-  <div class="fc" id="flashCard">
-    <div class="fc-title">Flash Sale — Per Variant</div>
-    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Set flash prices on each variant below.</p>
-  </div>`;
+  return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale — Per Variant</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Set flash prices on each variant below.</p></div>`;
 }
-
 function htmlRestockHeadline() {
-  return `
-  <div class="fc">
-    <div class="fc-title">Restock Info</div>
-    <div class="fld">
-      <label class="fld-lbl">Headline</label>
-      <input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()">
-    </div>
-  </div>`;
+  return `<div class="fc"><div class="fc-title">${E('header_restock')} Restock Info</div>
+    <div class="fld"><label class="fld-lbl">Headline</label>
+      <input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()"></div></div>`;
+}
+function htmlBundleFields() {
+  return `<div class="fc"><div class="fc-title">${E('header_bundle')} Bundle Details</div>
+    <div class="fld"><label class="fld-lbl">Second Item Name</label>
+      <input type="text" placeholder="e.g. Phone Case" value="${S.bundle.item2}" oninput="S.bundle.item2=this.value;regen()"></div>
+    <div class="grid2">
+      <div class="fld"><label class="fld-lbl">Combo Price (${CC()})</label>
+        <input type="number" placeholder="Bundle price" value="${S.bundle.comboPrice}" oninput="S.bundle.comboPrice=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">You Save (${CC()})</label>
+        <input type="number" placeholder="Savings amount" value="${S.bundle.savings}" oninput="S.bundle.savings=this.value;regen()"></div>
+    </div></div>`;
+}
+function htmlLastQty() {
+  return `<div class="fc"><div class="fc-title">${E('header_last')} Remaining Stock</div>
+    <div class="fld"><label class="fld-lbl">Pieces Left</label>
+      <input type="number" placeholder="e.g. 5" value="${S.lastQty}" oninput="S.lastQty=this.value;regen()"></div></div>`;
+}
+function htmlTestimonial() {
+  return `<div class="fc"><div class="fc-title">${E('header_review')} Customer Review</div>
+    <div class="fld"><label class="fld-lbl">Rating</label>
+      <div class="stars" id="starsWrap">
+        ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setStar(${n})">&#9733;</button>`).join('')}
+      </div></div>
+    <div class="fld"><label class="fld-lbl">Quote / Testimonial</label>
+      <textarea class="field-ta" placeholder="What the customer said..." oninput="S.review.quote=this.value;regen()">${S.review.quote}</textarea></div>
+    <div class="fld"><label class="fld-lbl">Reviewer Name (optional)</label>
+      <input type="text" placeholder="e.g. Sarah M." value="${S.review.reviewer}" oninput="S.review.reviewer=this.value;regen()"></div></div>`;
+}
+function setStar(n) {
+  S.review.stars = (S.review.stars === n) ? 0 : n;
+  applyStars(S.review.stars);
+  regen();
+}
+function applyStars(n) {
+  const wrap = document.getElementById('starsWrap');
+  if (!wrap) return;
+  wrap.querySelectorAll('.star-btn').forEach((btn,i) => btn.classList.toggle('on', i<n));
 }
 
-function htmlVariantSection(def) {
-  return `
-  <div class="fc" id="variantSection">
+function htmlVariantSection() {
+  return `<div class="fc" id="variantSection">
     <div class="fc-title" id="variantSectionTitle">VARIANTS</div>
     <div id="variantRows"></div>
     <button class="add-variant-btn" onclick="addVariant()">+ Add Variant</button>
     <div class="restock-reveal" id="variantRestockReveal">
-      <div class="fld">
-        <label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()">
-      </div>
-    </div>
-  </div>`;
+      <div class="fld"><label class="fld-lbl">Restock Date</label>
+        <input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()"></div>
+    </div></div>`;
 }
 
-// ===== VARIANT MANAGEMENT =====
-function addVariant(v = {}) {
+// ═══════════════════════════════════════
+// VARIANT MANAGEMENT
+// ═══════════════════════════════════════
+function addVariant(v={}) {
   S.variants.push({
-    prefix: v.prefix || '',
-    size: v.size || '',
-    unit: v.unit || 'pc',
-    customUnit: v.customUnit || '',
-    wholesale: v.wholesale || '',
-    wholesaleQty: v.wholesaleQty || '',
-    wOg: v.wOg || '',
-    retail: v.retail || '',
-    rOg: v.rOg || '',
-    flashPrice: v.flashPrice || '',
-    flashOg: v.flashOg || '',
-    status: v.status || 'in_stock',
+    prefix:v.prefix||'', size:v.size||'', unit:v.unit||'pc', customUnit:v.customUnit||'',
+    wholesale:v.wholesale||'', wholesaleQty:v.wholesaleQty||'', wOg:v.wOg||'',
+    retail:v.retail||'', rOg:v.rOg||'',
+    flashPrice:v.flashPrice||'', flashOg:v.flashOg||'',
+    status:v.status||'in_stock',
   });
-  renderVariantRows();
-  regen();
+  renderVariantRows(); regen();
 }
-
-function removeVariant(i) {
-  S.variants.splice(i, 1);
-  renderVariantRows();
-  regen();
-}
+function removeVariant(i) { S.variants.splice(i,1); renderVariantRows(); regen(); }
 
 function renderVariantRows() {
-  const container = document.getElementById('variantRows');
-  if (!container) return;
-  container.innerHTML = '';
-  const def = REGISTRY.find(r => r.id === S.type);
+  const c = document.getElementById('variantRows');
+  if (!c) return;
+  c.innerHTML='';
+  const def = REGISTRY.find(r=>r.id===S.type);
   const isFlash = def && def.groups.includes('flash');
-
-  S.variants.forEach((v, i) => {
+  S.variants.forEach((v,i) => {
     const name = buildVName(v);
     const div = document.createElement('div');
-    div.className = 'variant-card';
-
-    let priceHTML = '';
+    div.className='variant-card';
+    let priceHTML='';
     if (isFlash) {
-      priceHTML = `
-        <div class="div"></div>
-        <div class="grid2">
-          <div class="fld">
-            <label class="fld-lbl">Flash Price (${getCurrency()})</label>
-            <input type="number" placeholder="Sale price" value="${v.flashPrice}"
-              oninput="S.variants[${i}].flashPrice=this.value;regen()">
-          </div>
-          <div class="fld">
-            <label class="fld-lbl">Original Price (${getCurrency()})</label>
-            <input type="number" placeholder="Was price" value="${v.flashOg}"
-              oninput="S.variants[${i}].flashOg=this.value;regen()">
-          </div>
-        </div>`;
+      priceHTML=`<div class="div"></div><div class="grid2">
+        <div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label>
+          <input type="number" placeholder="Sale" value="${v.flashPrice}" oninput="S.variants[${i}].flashPrice=this.value;regen()"></div>
+        <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
+          <input type="number" placeholder="Was" value="${v.flashOg}" oninput="S.variants[${i}].flashOg=this.value;regen()"></div></div>`;
     } else {
-      priceHTML = `
+      priceHTML=`<div class="div"></div><div class="grid2">
+        <div class="fld"><label class="fld-lbl">Wholesale (${CC()})</label>
+          <input type="number" placeholder="150" value="${v.wholesale}" oninput="S.variants[${i}].wholesale=this.value;regen()"></div>
+        <div class="fld"><label class="fld-lbl">W. Qty (pc)</label>
+          <input type="number" placeholder="50" value="${v.wholesaleQty}" oninput="S.variants[${i}].wholesaleQty=this.value;regen()"></div></div>
+        <div class="fld"><label class="fld-lbl">Old W. Price (opt)</label>
+          <input type="number" placeholder="Was" value="${v.wOg}" oninput="S.variants[${i}].wOg=this.value;regen()"></div>
         <div class="div"></div>
-        <div class="grid2">
-          <div class="fld">
-            <label class="fld-lbl">Wholesale (${getCurrency()})</label>
-            <input type="number" placeholder="150" value="${v.wholesale}"
-              oninput="S.variants[${i}].wholesale=this.value;regen()">
-          </div>
-          <div class="fld">
-            <label class="fld-lbl">Wholesale Qty (pc)</label>
-            <input type="number" placeholder="50" value="${v.wholesaleQty}"
-              oninput="S.variants[${i}].wholesaleQty=this.value;regen()">
-          </div>
-        </div>
-        <div class="fld">
-          <label class="fld-lbl">Old Wholesale Price (optional)</label>
-          <input type="number" placeholder="Was price" value="${v.wOg}"
-            oninput="S.variants[${i}].wOg=this.value;regen()">
-        </div>
-        <div class="div"></div>
-        <div class="fld">
-          <label class="fld-lbl">Retail (${getCurrency()})</label>
-          <input type="number" placeholder="4.00" value="${v.retail}"
-            oninput="S.variants[${i}].retail=this.value;regen()">
-        </div>
-        <div class="fld">
-          <label class="fld-lbl">Old Retail Price (optional)</label>
-          <input type="number" placeholder="Was price" value="${v.rOg}"
-            oninput="S.variants[${i}].rOg=this.value;regen()">
-        </div>`;
+        <div class="fld"><label class="fld-lbl">Retail (${CC()})</label>
+          <input type="number" placeholder="4.00" value="${v.retail}" oninput="S.variants[${i}].retail=this.value;regen()"></div>
+        <div class="fld"><label class="fld-lbl">Old R. Price (opt)</label>
+          <input type="number" placeholder="Was" value="${v.rOg}" oninput="S.variants[${i}].rOg=this.value;regen()"></div>`;
     }
-
-    div.innerHTML = `
+    div.innerHTML=`
       <div class="v-label" id="vlabel_${i}">VARIANT ${i+1}${name?' — '+name:''}</div>
       <button class="v-del" onclick="removeVariant(${i})">x</button>
       <div class="grid2">
-        <div class="fld">
-          <label class="fld-lbl">Prefix (optional)</label>
-          <input type="text" placeholder="e.g. Spiral" value="${v.prefix}"
-            oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()">
-        </div>
-        <div class="fld">
-          <label class="fld-lbl">Size / Number</label>
-          <input type="text" placeholder="e.g. 12, L, 90cm" value="${v.size}"
-            oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()">
-        </div>
-      </div>
-      <div class="fld">
-        <label class="fld-lbl">Unit</label>
-        <div class="unit-chips">
-          ${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}
-        </div>
-        <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}"
-          style="${v.unit!=='--'?'display:none':''}"
-          oninput="S.variants[${i}].customUnit=this.value;regen()">
-      </div>
+        <div class="fld"><label class="fld-lbl">Prefix (opt)</label>
+          <input type="text" placeholder="e.g. Spiral" value="${v.prefix}" oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()"></div>
+        <div class="fld"><label class="fld-lbl">Size / Number</label>
+          <input type="text" placeholder="e.g. 12, L" value="${v.size}" oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()"></div></div>
+      <div class="fld"><label class="fld-lbl">Unit</label>
+        <div class="unit-chips">${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}</div>
+        <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}" style="${v.unit!=='--'?'display:none':''}" oninput="S.variants[${i}].customUnit=this.value;regen()"></div>
       ${priceHTML}
-      <div class="fld-lbl" style="margin-top:10px;">Stock Status</div>
+      <div class="fld-lbl" style="margin-top:10px;">Stock</div>
       <div class="status-row">
-        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In Stock</button>
+        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In</button>
         <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">Low</button>
         <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">Out</button>
       </div>`;
-
-    container.appendChild(div);
+    c.appendChild(div);
   });
-
   checkVariantRestock();
 }
 
 function updateVLabel(i) {
-  const el = document.getElementById('vlabel_' + i);
-  if (!el) return;
-  const name = buildVName(S.variants[i]);
-  el.textContent = `VARIANT ${i+1}${name?' — '+name:''}`;
+  const el=document.getElementById('vlabel_'+i); if(!el)return;
+  el.textContent=`VARIANT ${i+1}${buildVName(S.variants[i])?' — '+buildVName(S.variants[i]):''}`;
 }
-
-function setVUnit(i, u) {
-  S.variants[i].unit = u;
-  const ci = document.getElementById('vcu_' + i);
-  if (ci) ci.style.display = u === '--' ? 'block' : 'none';
-  const card = document.getElementById('variantRows').children[i];
-  if (card) {
-    card.querySelectorAll('.uc').forEach((btn, j) => {
-      btn.classList.toggle('on', UNITS[j] === u);
-    });
-  }
+function setVUnit(i,u) {
+  S.variants[i].unit=u;
+  const ci=document.getElementById('vcu_'+i); if(ci) ci.style.display=u==='--'?'block':'none';
+  const card=document.getElementById('variantRows').children[i];
+  if(card) card.querySelectorAll('.uc').forEach((btn,j)=>btn.classList.toggle('on',UNITS[j]===u));
   regen();
 }
-
-function setVStatus(i, st) {
-  S.variants[i].status = st;
-  const card = document.getElementById('variantRows').children[i];
-  if (card) {
-    const btns = card.querySelectorAll('.status-row .st-btn');
-    btns[0].className = 'st-btn' + (st==='in_stock'?' g':'');
-    btns[1].className = 'st-btn' + (st==='low_stock'?' o':'');
-    btns[2].className = 'st-btn' + (st==='out_of_stock'?' r':'');
-  }
-  checkVariantRestock();
-  regen();
+function setVStatus(i,st) {
+  S.variants[i].status=st;
+  const card=document.getElementById('variantRows').children[i];
+  if(card){const b=card.querySelectorAll('.status-row .st-btn');
+    b[0].className='st-btn'+(st==='in_stock'?' g':'');
+    b[1].className='st-btn'+(st==='low_stock'?' o':'');
+    b[2].className='st-btn'+(st==='out_of_stock'?' r':'');}
+  checkVariantRestock(); regen();
 }
-
 function checkVariantRestock() {
-  const el = document.getElementById('variantRestockReveal');
-  if (!el) return;
-  const allOut = S.variants.length > 0 && S.variants.every(v => v.status === 'out_of_stock');
-  el.classList.toggle('show', allOut);
+  const el=document.getElementById('variantRestockReveal'); if(!el)return;
+  el.classList.toggle('show', S.variants.length>0 && S.variants.every(v=>v.status==='out_of_stock'));
 }
-
 function buildVName(v) {
-  const unit = v.unit === '--' ? v.customUnit : v.unit;
-  if (!v.size) return v.prefix || '';
-  if (v.prefix) return (unit && unit !== 'pc') ? `${v.prefix}-${v.size} ${unit}` : `${v.prefix}-${v.size}`;
-  return (unit && unit !== 'pc') ? `${v.size} ${unit}` : v.size;
+  const unit=v.unit==='--'?v.customUnit:v.unit;
+  if(!v.size) return v.prefix||'';
+  if(v.prefix) return (unit&&unit!=='pc')?`${v.prefix}-${v.size} ${unit}`:`${v.prefix}-${v.size}`;
+  return (unit&&unit!=='pc')?`${v.size} ${unit}`:v.size;
 }
 
-// ===== STATUS & OG HELPERS =====
-function setStatus(which, val) {
-  if (which === 'w') S.w.status = val;
-  else S.r.status = val;
-  applyStatus(which, val);
-  checkRestockVisibility();
-  regen();
+// ═══════════════════════════════════════
+// STATUS & OG HELPERS
+// ═══════════════════════════════════════
+function setStatus(w,val) {
+  if(w==='w')S.w.status=val; else S.r.status=val;
+  applyStatus(w,val); checkRestockVisibility(); regen();
 }
-
-function applyStatus(which, val) {
-  ['in','low','out'].forEach(s => {
-    const btn = document.getElementById(`${which}St_${s}`);
-    if (!btn) return;
-    btn.className = 'st-btn';
-    if (s==='in' && val==='in_stock') btn.classList.add('g');
-    if (s==='low' && val==='low_stock') btn.classList.add('o');
-    if (s==='out' && val==='out_of_stock') btn.classList.add('r');
+function applyStatus(w,val) {
+  ['in','low','out'].forEach(s=>{
+    const btn=document.getElementById(`${w}St_${s}`); if(!btn)return;
+    btn.className='st-btn';
+    if(s==='in'&&val==='in_stock')btn.classList.add('g');
+    if(s==='low'&&val==='low_stock')btn.classList.add('o');
+    if(s==='out'&&val==='out_of_stock')btn.classList.add('r');
   });
 }
-
 function checkRestockVisibility() {
-  const def = REGISTRY.find(r => r.id === S.type);
-  if (!def || def.groups.includes('restock_headline')) return;
-  const wOut = S.w.status === 'out_of_stock';
-  const rOut = S.r.status === 'out_of_stock';
-  const wr = document.getElementById('wRestock');
-  const rr = document.getElementById('rRestock');
-  if (wr) wr.classList.toggle('show', wOut);
-  if (rr) rr.classList.toggle('show', rOut);
+  const def=REGISTRY.find(r=>r.id===S.type);
+  if(!def||def.groups.includes('restock_headline'))return;
+  const wr=document.getElementById('wRestock');
+  const rr=document.getElementById('rRestock');
+  if(wr)wr.classList.toggle('show',S.w.status==='out_of_stock');
+  if(rr)rr.classList.toggle('show',S.r.status==='out_of_stock');
 }
-
-function toggleOg(which) {
-  if (which === 'w') S.w.ogOn = !S.w.ogOn;
-  else S.r.ogOn = !S.r.ogOn;
-  const field = document.getElementById(which + 'OgField');
-  const btn = document.getElementById(which + 'OgBtn');
-  const on = which === 'w' ? S.w.ogOn : S.r.ogOn;
-  if (field) field.classList.toggle('show', on);
-  if (btn) btn.classList.toggle('on', on);
-  if (!on) {
-    if (which === 'w') S.w.og = '';
-    else S.r.og = '';
-  }
+function toggleOg(w) {
+  if(w==='w')S.w.ogOn=!S.w.ogOn; else S.r.ogOn=!S.r.ogOn;
+  const f=document.getElementById(w+'OgField');
+  const btn=document.getElementById(w+'OgBtn');
+  const on=w==='w'?S.w.ogOn:S.r.ogOn;
+  if(f)f.classList.toggle('show',on);
+  if(btn)btn.classList.toggle('on',on);
+  if(!on){if(w==='w')S.w.og='';else S.r.og='';}
   regen();
 }
 
-// ===== HELPERS =====
-function fmt(n) {
-  if (!n) return n;
-  return Number(String(n).replace(/,/g,'')).toLocaleString('en-US');
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function fmt(n) { if(!n)return n; return Number(String(n).replace(/,/g,'')).toLocaleString('en-US'); }
+
+// ═══════════════════════════════════════
+// SIGNATURE (platform-aware)
+// ═══════════════════════════════════════
+function getSig() {
+  const h=CFG.handle, l=CFG.location, p=CFG.phone;
+  if(!h&&!l&&!p) return '';
+  const net = S.network;
+  // TikTok / Twitter: just handle
+  if(net==='tiktok'||net==='twitter') return h ? `\n${h}` : '';
+  // Instagram: single line before hashtags
+  if(net==='instagram') {
+    return '\n'+[h,l,p].filter(Boolean).join(' | ');
+  }
+  // WhatsApp / Telegram: emoji-prefixed block
+  if(net==='whatsapp'||net==='telegram') {
+    const div = E('divider')||'───────────────';
+    let lines = [`\n${div}`];
+    if(h) lines.push(`${Ep('sig_handle')} ${h}`.trim());
+    if(l) lines.push(`${Ep('sig_location')} ${l}`.trim());
+    if(p) lines.push(`${Ep('sig_phone')} ${p}`.trim());
+    return lines.join('\n');
+  }
+  // Facebook / Plain: simple line
+  return '\n'+[h,l,p].filter(Boolean).join(' | ');
 }
 
-const C = () => getCurrency();
-
-// ===== CAPTION BUILDERS =====
-
-function getWBlock(useMarkdown=true) {
-  const price = S.mode==='single' ? S.w.price : null;
-  const qty = S.mode==='single' ? (S.w.qty||'1') : null;
-  const og = S.mode==='single' && S.w.ogOn ? S.w.og : '';
-  const status = S.mode==='single' ? S.w.status : null;
-  if (!price || !qty || status==='out_of_stock') return '';
-  const b = useMarkdown;
+// ═══════════════════════════════════════
+// CAPTION BUILDING BLOCKS
+// ═══════════════════════════════════════
+function getWBlock() {
+  const price=S.mode==='single'?S.w.price:null;
+  const qty=S.mode==='single'?(S.w.qty||'1'):null;
+  const og=S.mode==='single'&&S.w.ogOn?S.w.og:'';
+  const status=S.mode==='single'?S.w.status:null;
+  if(!price||!qty||status==='out_of_stock') return '';
+  const sw=E('section_wholesale'), pa=E('price_arrow');
   let line = og
-    ? `Wholesale\n${b?'~':''}${qty}pc = ${C()} ${fmt(og)}${b?'~':''}\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`
-    : `Wholesale\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`;
-  if (status==='low_stock') line += ' [LOW STOCK]';
-  return line;
+    ? `${sw} ${B('Wholesale')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
+    : `${sw} ${B('Wholesale')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
+  if(status==='low_stock') line+=` ${E('status_low')}`;
+  return line.replace(/^ /,'');
 }
 
-function getRBlock(useMarkdown=true) {
-  const price = S.mode==='single' ? S.r.price : null;
-  const qty = S.mode==='single' ? (S.r.qty||'1') : null;
-  const og = S.mode==='single' && S.r.ogOn ? S.r.og : '';
-  const status = S.mode==='single' ? S.r.status : null;
-  if (!price || status==='out_of_stock') return '';
-  const b = useMarkdown;
+function getRBlock() {
+  const price=S.mode==='single'?S.r.price:null;
+  const qty=S.mode==='single'?(S.r.qty||'1'):null;
+  const og=S.mode==='single'&&S.r.ogOn?S.r.og:'';
+  const status=S.mode==='single'?S.r.status:null;
+  if(!price||status==='out_of_stock') return '';
+  const sr=E('section_retail'), pa=E('price_arrow');
   let line = og
-    ? `Retail\n${b?'~':''}${qty}pc = ${C()} ${fmt(og)}${b?'~':''}\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`
-    : `Retail\n${qty}pc = ${b?'*':''}${C()} ${fmt(price)}${b?'*':''}`;
-  if (status==='low_stock') line += ' [LOW STOCK]';
-  return line;
+    ? `${sr} ${B('Retail')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
+    : `${sr} ${B('Retail')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
+  if(status==='low_stock') line+=` ${E('status_low')}`;
+  return line.replace(/^ /,'');
 }
 
-function getVariantLines(useMarkdown=true, isFlash=false, isWholesaleOnly=false) {
-  const active = S.variants.filter(v => v.status !== 'out_of_stock');
-  if (!active.length) return null;
-  const b = useMarkdown;
-  return active.map(v => {
-    const vName = buildVName(v);
-    let block = `${b?'*':''}${vName}${b?'*':''}\n`;
-    if (isFlash) {
-      if (v.flashOg) block += `${b?'~':''}Was: ${C()} ${fmt(v.flashOg)}${b?'~':''}\n`;
-      if (v.flashPrice) block += `Flash: ${b?'*':''}${C()} ${fmt(v.flashPrice)}${b?'*':''}`;
+function getVariantLines(isFlash=false, isWholesaleOnly=false) {
+  const active=S.variants.filter(v=>v.status!=='out_of_stock');
+  if(!active.length) return null;
+  const pa=E('price_arrow');
+  return active.map(v=>{
+    const vName=buildVName(v);
+    let block=`${E('fire')} ${B(vName)}\n`.replace(/^ /,'');
+    if(isFlash){
+      if(v.flashOg) block+=`${STR(`Was: ${CC()} ${fmt(v.flashOg)}`)}\n`;
+      if(v.flashPrice) block+=`${E('header_flash')} Flash: ${B(`${CC()} ${fmt(v.flashPrice)}`)}`.replace(/^ /,'');
     } else {
-      if (v.wholesale && v.wholesaleQty) {
-        if (v.wOg) {
-          block += `${b?'~':''}Wholesale: ${v.wholesaleQty}pc = ${C()} ${fmt(v.wOg)}${b?'~':''}\n`;
-          block += `Wholesale: ${v.wholesaleQty}pc = ${b?'*':''}${C()} ${fmt(v.wholesale)}${b?'*':''}`;
-        } else {
-          block += `Wholesale: ${v.wholesaleQty}pc = ${b?'*':''}${C()} ${fmt(v.wholesale)}${b?'*':''}`;
-        }
+      if(v.wholesale&&v.wholesaleQty){
+        if(v.wOg){ block+=`${E('section_wholesale')} ${STR(`Wholesale: ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}\n`.replace(/^ /,'');
+          block+=`${E('section_wholesale')} Wholesale: ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,'');
+        } else { block+=`${E('section_wholesale')} Wholesale: ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,''); }
       }
-      if (!isWholesaleOnly && v.retail) {
-        if (v.wholesale && v.wholesaleQty) block += '\n';
-        if (v.rOg) {
-          block += `${b?'~':''}Retail: 1pc = ${C()} ${fmt(v.rOg)}${b?'~':''}\n`;
-          block += `Retail: 1pc = ${b?'*':''}${C()} ${fmt(v.retail)}${b?'*':''}`;
-        } else {
-          block += `Retail: 1pc = ${b?'*':''}${C()} ${fmt(v.retail)}${b?'*':''}`;
-        }
+      if(!isWholesaleOnly&&v.retail){
+        if(v.wholesale&&v.wholesaleQty) block+='\n';
+        if(v.rOg){ block+=`${E('section_retail')} ${STR(`Retail: 1pc = ${CC()} ${fmt(v.rOg)}`)}\n`.replace(/^ /,'');
+          block+=`${E('section_retail')} Retail: 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,'');
+        } else { block+=`${E('section_retail')} Retail: 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,''); }
       }
     }
-    if (v.status === 'low_stock') block += ' [LOW STOCK]';
+    if(v.status==='low_stock') block+=` ${E('status_low')}`;
     return block;
   }).join('\n\n');
 }
 
-function getOutOfStockBlock(useMarkdown=true) {
-  const date = S.mode === 'variant' ? S.variantRestock : S.restockDate;
-  if (date) return `Restocking — ${useMarkdown?'*':''}${date}${useMarkdown?'*':''}`;
-  return `${useMarkdown?'*':''}Out of Stock${useMarkdown?'*':''}`;
+function getOutOfStockBlock() {
+  const date=S.mode==='variant'?S.variantRestock:S.restockDate;
+  if(date) return `${E('status_out')} Restocking — ${B(date)}`.replace(/^ /,'');
+  return `${E('status_out')} ${B('Out of Stock')}`.replace(/^ /,'');
 }
 
 function isAllOut() {
-  if (S.mode === 'variant') return S.variants.length > 0 && S.variants.every(v => v.status === 'out_of_stock');
-  return S.w.status === 'out_of_stock' && S.r.status === 'out_of_stock';
+  if(S.mode==='variant') return S.variants.length>0&&S.variants.every(v=>v.status==='out_of_stock');
+  return S.w.status==='out_of_stock'&&S.r.status==='out_of_stock';
 }
 
-function assembleSingle(header, body, footer='', md=true) {
-  const sig = getSignature();
-  return `${header}\n───────────────\n\n${body}${footer?'\n\n'+footer:''}${sig?'\n\n───────────────'+sig:''}`;
+function hypeText(normal, hypeVer) { return S.tone==='hype'?hypeVer:normal; }
+
+function assembleSingle(header, body, footer='') {
+  const div = E('divider')||'───────────────';
+  const sig = getSig();
+  let out = `${header}\n${div}\n\n${body}`;
+  if(footer) out+=`\n\n${footer}`;
+  if(sig) out+=`\n${sig}`;
+  return out;
 }
 
-// 1. Standard
+// ═══════════════════════════════════════
+// SHORT PLATFORM BUILDERS (TikTok, X)
+// ═══════════════════════════════════════
+function buildShort(hook, cta) {
+  const name=S.name||'this';
+  const sig=getSig();
+  return `${hook}\n${cta}${sig}`;
+}
+
+// ═══════════════════════════════════════
+// CAPTION BUILDERS
+// ═══════════════════════════════════════
+
 function buildStandard() {
-  const name = S.name || '—';
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true);
-    const body = lines || getOutOfStockBlock();
-    return assembleSingle(`*${name}*`, body);
+  const name=S.name||'—';
+  if(isShort()) return buildShort(
+    `${E('header_product')} ${name}`.trim(),
+    hypeText('DM for prices','DM NOW for prices! '+E('fire'))
+  );
+  const h=`${E('header_product')} ${B(name)}`.trim();
+  if(S.mode==='variant'){
+    return assembleSingle(h, getVariantLines()||getOutOfStockBlock());
   }
-  const wBlock = getWBlock();
-  const rBlock = getRBlock();
-  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
-  return assembleSingle(`*${name}*`, body);
+  const body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
+  return assembleSingle(h, body);
 }
 
-// 2. Wholesale Only
 function buildWholesaleOnly() {
-  const name = S.name || '—';
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true, false, true);
-    const body = lines || getOutOfStockBlock();
-    return assembleSingle(`*${name}*`, body);
-  }
-  const wBlock = getWBlock();
-  const body = wBlock || getOutOfStockBlock();
-  return assembleSingle(`*${name}*`, body);
+  const name=S.name||'—';
+  if(isShort()) return buildShort(
+    `${E('section_wholesale')} ${name} — Wholesale`.trim(),
+    hypeText('DM for bulk pricing','BULK DEALS — DM now! '+E('fire'))
+  );
+  const h=`${E('header_product')} ${B(name)}`.trim();
+  if(S.mode==='variant') return assembleSingle(h, getVariantLines(false,true)||getOutOfStockBlock());
+  return assembleSingle(h, getWBlock()||getOutOfStockBlock());
 }
 
-// 3. Repost
 function buildRepost() {
-  const name = S.name || '—';
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true);
-    const body = lines || getOutOfStockBlock();
-    return assembleSingle(
-      `*${name} — still available!*`,
-      body,
-      `Selling fast — grab yours now!`
+  const name=S.name||'—';
+  const cta=hypeText(
+    `${E('cta_order')} ${hypeText('Order now','SELLING FAST — grab yours NOW!')}`.trim(),
+    `${E('cta_order')} SELLING FAST — grab yours NOW! ${E('fire')}`.trim()
+  );
+  if(isShort()) return buildShort(
+    `${E('header_repost')} ${name} — still available!`.trim(), cta
+  );
+  const h=`${E('header_repost')} ${B(`${name} — ${hypeText('still available!','STILL AVAILABLE!')}`)}`.trim();
+  if(S.mode==='variant') return assembleSingle(h, getVariantLines()||getOutOfStockBlock(), cta);
+  const body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
+  return assembleSingle(h, body, cta);
+}
+
+function buildFlash() {
+  const name=S.name||'—';
+  const flashHead=`${E('header_flash')} ${B(hypeText('FLASH SALE — TODAY ONLY','FLASH SALE — TODAY ONLY!'))} ${E('header_flash')}`.trim();
+  if(isShort()){
+    const fp=S.flash.price?` ${CC()} ${fmt(S.flash.price)}`:'';
+    return buildShort(flashHead, `${name}${fp}\n${hypeText('Limited time','GRAB IT NOW! '+E('fire'))}`);
+  }
+  const div=E('divider')||'───────────────';
+  const sig=getSig();
+  if(S.mode==='variant'){
+    const lines=getVariantLines(true);
+    const body=lines?`${E('header_product')} ${B(name)}\n\n${lines}`.trim():getOutOfStockBlock();
+    let out=`${flashHead}\n${div}\n\n${body}\n\n${hypeText('Limited time offer','⏰ LIMITED TIME — ACT NOW!')}`;
+    if(sig) out+=`\n${sig}`;
+    return out;
+  }
+  let body=`${E('header_product')} ${B(name)}\n`.trim();
+  if(S.flash.og) body+=`\n${STR(`Was: ${CC()} ${fmt(S.flash.og)}`)}`;
+  if(S.flash.price) body+=`\n${E('header_flash')} ${hypeText('Now:','NOW ONLY:')} ${B(`${CC()} ${fmt(S.flash.price)}`)}`.trim();
+  const wBlock=getWBlock();
+  if(wBlock) body+=`\n\n${wBlock}`;
+  body+=`\n\n${hypeText('Limited time offer','⏰ LIMITED TIME — ACT NOW!')}`;
+  let out=`${flashHead}\n${div}\n\n${body}`;
+  if(sig) out+=`\n${sig}`;
+  return out;
+}
+
+function buildNewArrival() {
+  const name=S.name||'—';
+  if(isShort()) return buildShort(
+    `${E('header_new')} ${name} — ${hypeText('JUST ARRIVED!','JUST DROPPED!')}`.trim(),
+    hypeText('DM for price','Want it? DM NOW! '+E('fire'))
+  );
+  const h=`${E('header_new')} ${B(`${name} — ${hypeText('Just Arrived!','JUST ARRIVED!')}`)}`.trim();
+  const intro=`${hypeText('New in store!','🆕 BRAND NEW IN STORE!')}`;
+  if(S.mode==='variant') return assembleSingle(h, `${intro}\n\n${getVariantLines()||getOutOfStockBlock()}`);
+  const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+  return assembleSingle(h, priceBody?`${intro}\n\n${priceBody}`:intro);
+}
+
+function buildBackInStock() {
+  const name=S.name||'—';
+  const headline=S.restockHeadline||hypeText('Back in Stock!','BACK IN STOCK!');
+  if(isShort()) return buildShort(
+    `${E('header_restock')} ${name} — ${headline}`.trim(),
+    hypeText('Available again','IT\'S BACK! Get yours '+E('fire'))
+  );
+  const h=`${E('header_restock')} ${B(`${name} — ${headline}`)}`.trim();
+  const intro=`${E('status_in')} ${hypeText('Available again!','AVAILABLE AGAIN!')}`.trim();
+  if(S.mode==='variant') return assembleSingle(h, `${intro}\n\n${getVariantLines()||'Coming soon...'}`);
+  const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+  return assembleSingle(h, priceBody?`${intro}\n\n${priceBody}`:intro);
+}
+
+function buildEngagement() {
+  const name=S.name||'this';
+  if(isShort()) return buildShort(
+    `${hypeText('Want '+name+'?','Want '+name+'? 👀')}`,
+    hypeText('DM your budget','Tell us your budget — we\'ll make it work! '+E('fire'))
+  );
+  const h=hypeText(`Want ${name}?`,`Want ${name}? 👀🔥`);
+  const body=hypeText(
+    'Tell us your budget — we\'ll make it work!\n\nWholesale and retail welcome.',
+    'Tell us your budget — we\'ll give you the BEST deal! 💰🔥\n\nWholesale and retail ALL welcome!'
+  );
+  const cta=CFG.phone?`\n${E('sig_phone')} ${CFG.phone}`.trim():'';
+  const sig=getSig();
+  return `${h}\n${E('divider')||'───────────────'}\n\n${body}${cta}${sig?'\n'+sig:''}`;
+}
+
+function buildPlain() {
+  const name=S.name||'—';
+  // Plain always uses pro tone (no emojis, no markdown)
+  const origTone=S.tone; S.tone='pro';
+  let body;
+  if(S.mode==='variant'){
+    body=getVariantLines()||getOutOfStockBlock();
+  } else {
+    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
+  }
+  S.tone=origTone;
+  const parts=[CFG.handle,CFG.location,CFG.phone].filter(Boolean);
+  const sig=parts.length?'\n\n'+parts.join(' | '):'';
+  return `${name}\n---------------\n\n${body}${sig}`;
+}
+
+function buildBundle() {
+  const name=S.name||'—';
+  const item2=S.bundle.item2||'Item 2';
+  const combo=S.bundle.comboPrice;
+  const savings=S.bundle.savings;
+  if(isShort()){
+    let short=`${E('header_bundle')} ${name} + ${item2}`.trim();
+    if(combo) short+=` = ${CC()} ${fmt(combo)}`;
+    if(savings) short+=` (save ${CC()} ${fmt(savings)}${E('fire')})`.trim();
+    return buildShort(short, hypeText('DM to order','GET THIS DEAL NOW! '+E('fire')));
+  }
+  const h=`${E('header_bundle')} ${B(`${name} + ${item2}`)}`.trim();
+  let bundleBody=`${hypeText('Bundle Deal','🎁 BUNDLE DEAL')}`;
+  if(combo) bundleBody+=`\n${E('price_arrow')} Combo: ${B(`${CC()} ${fmt(combo)}`)}`.replace(/^ /,'');
+  if(savings) bundleBody+=`\n${hypeText(`Save ${CC()} ${fmt(savings)}`,`💰 YOU SAVE ${CC()} ${fmt(savings)}!`)}`;
+  if(S.mode==='variant') {
+    const lines=getVariantLines();
+    if(lines) bundleBody+=`\n\n${lines}`;
+  } else {
+    const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+    if(priceBody) bundleBody+=`\n\n${priceBody}`;
+  }
+  return assembleSingle(h, bundleBody);
+}
+
+function buildPriceDrop() {
+  const name=S.name||'—';
+  if(isShort()){
+    return buildShort(
+      `${E('header_drop')} ${name} — PRICE DROP`.trim(),
+      hypeText('Check new prices','NEW LOW PRICES — DM now! '+E('fire'))
     );
   }
-  const wBlock = getWBlock();
-  const rBlock = getRBlock();
-  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock();
-  return assembleSingle(
-    `*${name} — still available!*`,
-    body,
-    `Selling fast — grab yours now!`
+  const h=`${E('header_drop')} ${B(`${name} — ${hypeText('Price Drop!','PRICE DROP!')}`)}`.trim();
+  // Force show old prices
+  const origWOg=S.w.ogOn, origROg=S.r.ogOn;
+  S.w.ogOn=!!S.w.og; S.r.ogOn=!!S.r.og;
+  let body;
+  if(S.mode==='variant') {
+    body=getVariantLines()||getOutOfStockBlock();
+  } else {
+    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
+  }
+  S.w.ogOn=origWOg; S.r.ogOn=origROg;
+  const cta=hypeText('New prices now live!',`${E('fire')} NEW LOW PRICES — don't miss out!`);
+  return assembleSingle(h, body, cta);
+}
+
+function buildLastPieces() {
+  const name=S.name||'—';
+  const qty=S.lastQty;
+  const qtyText=qty?`Only ${qty} left!`:'Last pieces!';
+  if(isShort()) return buildShort(
+    `${E('header_last')} ${name} — ${qtyText}`.trim(),
+    hypeText('DM before it\'s gone','ALMOST GONE — DM NOW! '+E('fire'))
   );
-}
-
-// 4. Flash Sale
-function buildFlash() {
-  const name = S.name || '—';
-  const header = `*FLASH SALE — TODAY ONLY*`;
-  const sig = getSignature();
-  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true, true);
-    const body = lines
-      ? `*${name}*\n\n${lines}`
-      : getOutOfStockBlock();
-    return `${header}\n───────────────\n\n${body}\n\nLimited time offer${sigBlock}`;
+  const h=`${E('header_last')} ${B(`${name} — ${hypeText(qtyText,qtyText.toUpperCase())}`)}`.trim();
+  const urgency=hypeText(
+    `${E('status_low')} ${qtyText} Don't miss out.`.trim(),
+    `${E('status_low')} ${qtyText.toUpperCase()} GET YOURS BEFORE THEY'RE GONE! ${E('fire')}`.trim()
+  );
+  let body;
+  if(S.mode==='variant'){
+    body=getVariantLines()||getOutOfStockBlock();
+  } else {
+    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
   }
-  const fp = S.flash.price;
-  const fog = S.flash.og;
-  let body = `*${name}*\n`;
-  if (fog) body += `~Was: ${C()} ${fmt(fog)}~\n`;
-  if (fp) body += `\nLimited time offer\n*${C()} ${fmt(fp)}*`;
-  else body += '\nLimited time offer';
-  const wBlock = getWBlock();
-  if (wBlock) body += `\n\n${wBlock}`;
-  return `${header}\n───────────────\n\n${body}${sigBlock}`;
+  return assembleSingle(h, `${urgency}\n\n${body}`);
 }
 
-// 5. New Arrival
-function buildNewArrival() {
-  const name = S.name || '—';
-  const isTikTok = S.network === 'tiktok';
-  const sig = getSignature();
-  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
-  if (isTikTok) {
-    return `*${name} — JUST ARRIVED!*\n───────────────\n\nBrand new in store!\nWant the price? DM us now!${sigBlock}`;
+function buildReview() {
+  const name=S.name||'—';
+  const q=S.review.quote||'Great product!';
+  const reviewer=S.review.reviewer;
+  const stars=S.review.stars;
+  const starStr=stars?E('star').repeat(stars)||('★'.repeat(stars)):'';
+  if(isShort()) return buildShort(
+    `${E('header_review')} "${q.slice(0,60)}${q.length>60?'...':''}"`.trim(),
+    `${name}${reviewer?' — '+reviewer:''}${getSig()}`
+  );
+  const h=`${E('header_review')} ${B(name)} — Customer Review`.trim();
+  let reviewBody='';
+  if(starStr) reviewBody+=`${starStr}\n`;
+  reviewBody+=`"${q}"`;
+  if(reviewer) reviewBody+=`\n— ${reviewer}`;
+  let priceBody;
+  if(S.mode==='variant'){
+    priceBody=getVariantLines();
+  } else {
+    priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
   }
-  const header = `*${name} — JUST ARRIVED!*`;
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true);
-    const body = lines || getOutOfStockBlock();
-    return assembleSingle(header, `New in store!\n\n${body}`);
-  }
-  const wBlock = getWBlock();
-  const rBlock = getRBlock();
-  const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
-  const body = priceBody
-    ? `New in store!\n\n${priceBody}`
-    : `New in store!`;
-  return assembleSingle(header, body);
+  const full=priceBody?`${reviewBody}\n\n${priceBody}`:reviewBody;
+  return assembleSingle(h, full);
 }
 
-// 6. Back in Stock
-function buildBackInStock() {
-  const name = S.name || '—';
-  const headline = S.restockHeadline || 'Back in Stock!';
-  const header = `*${name} — ${headline}*`;
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(true);
-    const body = lines || `Coming soon...`;
-    return assembleSingle(header, `Available again!\n\n${body}`);
-  }
-  const wBlock = getWBlock();
-  const rBlock = getRBlock();
-  const priceBody = [wBlock, rBlock].filter(Boolean).join('\n\n');
-  const body = priceBody
-    ? `Available again!\n\n${priceBody}`
-    : `Available again!`;
-  return assembleSingle(header, body);
+// ═══════════════════════════════════════
+// INSTAGRAM HASHTAG APPEND
+// ═══════════════════════════════════════
+function maybeAddHashtags(text) {
+  if(S.network!=='instagram') return text;
+  const name=(S.name||'product').toLowerCase().replace(/[^a-z0-9]/g,'');
+  const tags=['#'+name,'#shopnow','#deals','#wholesale','#retail'].filter(t=>t!=='#');
+  return text+'\n.\n.\n.\n'+tags.join(' ');
 }
 
-// 7. Engagement
-function buildEngagement() {
-  const name = S.name || 'this';
-  const sig = getSignature();
-  const contact = CFG.phone ? `\nReach out now: ${CFG.phone}` : '';
-  const sigBlock = sig ? `\n\n───────────────${sig}` : '';
-  return `Want ${name}?\nTell us your budget — we'll make it work!\n\nWholesale & retail welcome.${contact}${sigBlock}`;
-}
-
-// 8. Plain Text
-function buildPlain() {
-  const name = S.name || '—';
-  const sig = getSignature();
-  const sigLine = sig ? `\n${sig.trim()}` : '';
-  if (S.mode === 'variant') {
-    const lines = getVariantLines(false);
-    const body = lines || getOutOfStockBlock(false);
-    return `${name}\n---------------\n\n${body}${sigLine?'\n\n'+sigLine:''}`;
-  }
-  const wBlock = getWBlock(false);
-  const rBlock = getRBlock(false);
-  const body = [wBlock, rBlock].filter(Boolean).join('\n\n') || getOutOfStockBlock(false);
-  return `${name}\n---------------\n\n${body}${sigLine?'\n\n'+sigLine:''}`;
-}
-
-// ===== PREVIEW ENGINE =====
+// ═══════════════════════════════════════
+// PREVIEW ENGINE
+// ═══════════════════════════════════════
 function regen() {
-  if (S.previewEdited) return;
-  if (!S.type) {
-    document.getElementById('previewBox').value = 'Pick a platform and caption type...';
-    return;
+  if(S.previewEdited) return;
+  if(!S.type){
+    document.getElementById('previewBox').value='Pick a platform and caption type...';
+    updateCharCounter(); return;
   }
-  const def = REGISTRY.find(r => r.id === S.type);
-  if (!def) return;
-  const text = def.build();
-  document.getElementById('previewBox').value = text;
+  const def=REGISTRY.find(r=>r.id===S.type);
+  if(!def) return;
+  let text=def.build();
+  // clean up double spaces from empty emojis
+  text=text.replace(/  +/g,' ').replace(/^ /gm,'');
+  text=maybeAddHashtags(text);
+  document.getElementById('previewBox').value=text;
+  updateCharCounter();
 }
 
 function onPreviewEdit() {
-  if (!S.type) return;
-  S.previewEdited = true;
+  if(!S.type)return;
+  S.previewEdited=true;
   document.getElementById('resetPill').classList.add('show');
+  updateCharCounter();
 }
-
 function resetPreview() {
-  S.previewEdited = false;
+  S.previewEdited=false;
   document.getElementById('resetPill').classList.remove('show');
   regen();
 }
 
-// ===== COPY =====
+function updateCharCounter() {
+  const el=document.getElementById('charCounter');
+  const ml=maxLen();
+  if(!ml){ el.classList.remove('show'); return; }
+  const len=document.getElementById('previewBox').value.length;
+  el.textContent=`${len}/${ml}`;
+  el.classList.add('show');
+  el.classList.toggle('warn', len>ml*0.8 && len<=ml);
+  el.classList.toggle('over', len>ml);
+}
+
+// ═══════════════════════════════════════
+// COPY
+// ═══════════════════════════════════════
 function doCopy() {
-  const text = document.getElementById('previewBox').value;
-  if (!text || text === 'Pick a platform and caption type...') return;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.textContent = 'Copied!';
-    btn.classList.add('done');
-    setTimeout(() => {
-      btn.textContent = 'Copy Caption';
-      btn.classList.remove('done');
-    }, 2500);
+  const text=document.getElementById('previewBox').value;
+  if(!text||text==='Pick a platform and caption type...') return;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('copyBtn');
+    btn.textContent='Copied!'; btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent='Copy Caption'; btn.classList.remove('done'); },2500);
   });
 }
 
-// ===== INIT =====
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
 initNetworks();
 initCfgFields();
 </script>
