@@ -7,253 +7,107 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0b0b0b;
-  --s1: #141414;
-  --s2: #1c1c1c;
-  --s3: #252525;
-  --border: #2e2e2e;
-  --border2: #3a3a3a;
-  --a: #e8a020;
-  --a2: #d44c20;
-  --text: #ede9e0;
-  --sub: #888880;
-  --dim: #555550;
-  --green: #3ecf6a;
-  --orange: #f59e0b;
-  --red: #ef5050;
-  --r: 10px;
-  --r2: 7px;
+  --bg: #0b0b0b; --s1: #141414; --s2: #1c1c1c; --s3: #252525;
+  --border: #2e2e2e; --border2: #3a3a3a;
+  --a: #e8a020; --a2: #d44c20;
+  --text: #ede9e0; --sub: #888880; --dim: #555550;
+  --green: #3ecf6a; --orange: #f59e0b; --red: #ef5050;
+  --r: 10px; --r2: 7px;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); font-family: 'Figtree', sans-serif; min-height: 100vh; padding-bottom: 60px; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Figtree', sans-serif;
-  min-height: 100vh;
-  padding-bottom: 60px;
-}
-
-.hdr {
-  position: sticky; top: 0; z-index: 50;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 16px 12px;
-}
-.hdr-top {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
-}
-.hdr-logo {
-  width: 30px; height: 30px; background: var(--a); border-radius: 7px;
-  display: flex; align-items: center; justify-content: center; font-size: 15px;
-  font-family: 'Syne', sans-serif; font-weight: 800; color: #000;
-}
-.hdr-name {
-  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase; color: var(--text);
-}
+.hdr { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--border); padding: 14px 16px 12px; }
+.hdr-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.hdr-logo { width: 30px; height: 30px; background: var(--a); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; color: #000; font-size: 15px; }
+.hdr-name { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
 .hdr-name span { color: var(--a); }
-.settings-btn {
-  margin-left: auto;
-  background: var(--s2); border: 1px solid var(--border); border-radius: var(--r2);
-  color: var(--sub); font-size: 14px; width: 38px; height: 38px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
-}
-.settings-btn:active { background: var(--s3); }
+.settings-btn { margin-left: auto; background: var(--s2); border: 1px solid var(--border); border-radius: var(--r2); color: var(--sub); font-size: 14px; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .settings-btn.has-config { border-color: var(--a); color: var(--a); }
 
-.settings-panel {
-  display: none; margin-bottom: 12px; background: var(--s1);
-  border: 1px solid var(--border); border-radius: var(--r); padding: 14px;
-  animation: fadeUp 0.2s ease;
-}
+.settings-panel { display: none; margin-bottom: 10px; background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; animation: fadeUp 0.2s ease; }
 .settings-panel.show { display: block; }
 
-.controls-row {
-  display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
-}
+.controls-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
 .product-name-wrap { flex: 1; }
-.product-name-wrap input {
-  width: 100%; background: var(--s2); border: 1px solid var(--border2);
-  border-radius: var(--r2); color: var(--text); font-family: 'Figtree', sans-serif;
-  font-size: 15px; font-weight: 600; padding: 10px 14px; outline: none;
-  transition: border-color 0.15s;
-}
+.product-name-wrap input { width: 100%; background: var(--s2); border: 1px solid var(--border2); border-radius: var(--r2); color: var(--text); font-family: 'Figtree', sans-serif; font-size: 15px; font-weight: 600; padding: 10px 14px; outline: none; }
 .product-name-wrap input:focus { border-color: var(--a); }
 .product-name-wrap input::placeholder { color: var(--dim); font-weight: 400; }
 
-.toggle-group {
-  display: flex; background: var(--s2); border: 1px solid var(--border);
-  border-radius: var(--r2); overflow: hidden; flex-shrink: 0;
-}
-.tgl-btn {
-  padding: 10px 11px; font-family: 'Syne', sans-serif; font-size: 10px;
-  font-weight: 700; letter-spacing: 0.3px; background: none; border: none;
-  color: var(--dim); cursor: pointer; transition: all 0.15s; white-space: nowrap;
-}
+.toggle-group { display: flex; background: var(--s2); border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; flex-shrink: 0; }
+.tgl-btn { padding: 10px 11px; font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; background: none; border: none; color: var(--dim); cursor: pointer; white-space: nowrap; }
 .tgl-btn.on { background: var(--a); color: #000; }
 
 .wrap { padding: 0 16px; max-width: 480px; margin: 0 auto; }
-
 .blk { margin-top: 18px; animation: fadeUp 0.2s ease; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.blk-label {
-  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px;
-}
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.blk-label { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
 
 .pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill {
-  padding: 8px 14px; font-family: 'Syne', sans-serif; font-size: 12px;
-  font-weight: 600; letter-spacing: 0.3px; background: var(--s2);
-  border: 1px solid var(--border); border-radius: 30px; color: var(--sub);
-  cursor: pointer; transition: all 0.15s; white-space: nowrap;
-}
+.pill { padding: 8px 14px; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600; background: var(--s2); border: 1px solid var(--border); border-radius: 30px; color: var(--sub); cursor: pointer; white-space: nowrap; }
 .pill:active { transform: scale(0.96); }
 .pill.on { background: var(--a); border-color: var(--a); color: #000; }
 
-.fc {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 14px; margin-bottom: 10px;
-}
-.fc-title {
-  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase; color: var(--a); margin-bottom: 12px;
-}
+.fc { background: var(--s1); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 10px; }
+.fc-title { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--a); margin-bottom: 12px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 .fld { margin-bottom: 10px; }
 .fld:last-child { margin-bottom: 0; }
-.fld-lbl {
-  font-size: 11px; color: var(--dim); font-weight: 600;
-  letter-spacing: 0.3px; margin-bottom: 5px; display: block;
-}
-input[type="text"], input[type="number"], textarea.field-ta {
-  width: 100%; padding: 10px 12px; background: var(--s2); color: var(--text);
-  border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px;
-  font-family: 'Figtree', sans-serif; outline: none; transition: border-color 0.15s;
-  -webkit-appearance: none;
-}
+.fld-lbl { font-size: 11px; color: var(--dim); font-weight: 600; letter-spacing: 0.3px; margin-bottom: 5px; display: block; }
+input[type="text"], input[type="number"], textarea.field-ta { width: 100%; padding: 10px 12px; background: var(--s2); color: var(--text); border: 1px solid var(--border); border-radius: var(--r2); font-size: 14px; font-family: 'Figtree', sans-serif; outline: none; -webkit-appearance: none; }
 textarea.field-ta { resize: vertical; min-height: 60px; }
 input:focus, textarea.field-ta:focus { border-color: var(--a); }
 input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
 
 .og-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.og-toggle-btn {
-  font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700;
-  letter-spacing: 0.5px; color: var(--dim); background: none;
-  border: 1px dashed var(--border2); border-radius: 20px; padding: 4px 10px;
-  cursor: pointer; transition: all 0.15s;
-}
+.og-toggle-btn { font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700; color: var(--dim); background: none; border: 1px dashed var(--border2); border-radius: 20px; padding: 4px 10px; cursor: pointer; }
 .og-toggle-btn.on { color: var(--a2); border-color: var(--a2); border-style: solid; }
 .og-field { display: none; }
 .og-field.show { display: block; }
 
 .status-row { display: flex; gap: 5px; margin-top: 10px; }
-.st-btn {
-  flex: 1; padding: 7px 4px; font-size: 11px; font-family: 'Syne', sans-serif;
-  font-weight: 700; letter-spacing: 0.3px; border: 1px solid var(--border);
-  border-radius: 6px; background: var(--s2); color: var(--dim); cursor: pointer;
-  transition: all 0.15s; text-align: center;
-}
+.st-btn { flex: 1; padding: 7px 4px; font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700; border: 1px solid var(--border); border-radius: 6px; background: var(--s2); color: var(--dim); cursor: pointer; text-align: center; }
 .st-btn.g { background: rgba(62,207,106,0.12); border-color: var(--green); color: var(--green); }
 .st-btn.o { background: rgba(245,158,11,0.12); border-color: var(--orange); color: var(--orange); }
 .st-btn.r { background: rgba(239,80,80,0.12); border-color: var(--red); color: var(--red); }
 
-.restock-reveal {
-  display: none; margin-top: 10px; padding-top: 10px;
-  border-top: 1px solid var(--border); animation: fadeUp 0.2s ease;
-}
+.restock-reveal { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
 .restock-reveal.show { display: block; }
 
-.variant-card {
-  background: var(--s2); border: 1px solid var(--border); border-radius: var(--r);
-  padding: 13px; margin-bottom: 8px; position: relative; animation: fadeUp 0.2s ease;
-}
-.v-label {
-  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-  letter-spacing: 1px; color: var(--a); margin-bottom: 10px; padding-right: 32px;
-}
-.v-del {
-  position: absolute; top: 10px; right: 10px;
-  background: rgba(239,80,80,0.1); border: none; color: var(--red);
-  width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 13px;
-  display: flex; align-items: center; justify-content: center;
-}
+.variant-card { background: var(--s2); border: 1px solid var(--border); border-radius: var(--r); padding: 13px; margin-bottom: 8px; position: relative; }
+.v-label { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--a); margin-bottom: 10px; padding-right: 32px; }
+.v-del { position: absolute; top: 10px; right: 10px; background: rgba(239,80,80,0.1); border: none; color: var(--red); width: 26px; height: 26px; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; }
 .unit-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
-.uc {
-  padding: 4px 9px; font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700;
-  background: var(--s1); border: 1px solid var(--border); border-radius: 20px;
-  color: var(--dim); cursor: pointer; transition: all 0.15s;
-}
+.uc { padding: 4px 9px; font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700; background: var(--s1); border: 1px solid var(--border); border-radius: 20px; color: var(--dim); cursor: pointer; }
 .uc.on { background: rgba(232,160,32,0.15); border-color: var(--a); color: var(--a); }
-.add-variant-btn {
-  width: 100%; padding: 11px; background: transparent;
-  border: 1px dashed var(--border2); border-radius: var(--r); color: var(--sub);
-  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
-  letter-spacing: 0.5px; cursor: pointer; transition: all 0.15s; margin-top: 4px;
-}
-.add-variant-btn:active { background: rgba(255,255,255,0.03); }
+.add-variant-btn { width: 100%; padding: 11px; background: transparent; border: 1px dashed var(--border2); border-radius: var(--r); color: var(--sub); font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 4px; }
 
 .div { height: 1px; background: var(--border); margin: 10px 0; }
 
-.preview-wrap {
-  margin-top: 18px; border-radius: var(--r); overflow: hidden;
-  border: 1px solid var(--border2);
-}
-.preview-head {
-  background: var(--s2); padding: 9px 14px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.preview-head-left {
-  display: flex; align-items: center; gap: 8px;
-  font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
-}
+.preview-wrap { margin-top: 18px; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border2); }
+.preview-head { background: var(--s2); padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.preview-head-left { display: flex; align-items: center; gap: 8px; font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--dim); }
 .preview-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--a); }
 .preview-right { display: flex; align-items: center; gap: 10px; }
-.char-counter {
-  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim);
-  display: none;
-}
+.char-counter { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--dim); display: none; }
 .char-counter.show { display: block; }
 .char-counter.warn { color: var(--orange); }
 .char-counter.over { color: var(--red); font-weight: 700; }
-.reset-pill {
-  font-size: 10px; font-family: 'Syne', sans-serif; font-weight: 700;
-  letter-spacing: 0.5px; color: var(--a2); background: rgba(212,76,32,0.1);
-  border: 1px solid var(--a2); border-radius: 20px; padding: 3px 10px;
-  cursor: pointer; display: none;
-}
+.reset-pill { font-size: 10px; font-family: 'Syne', sans-serif; font-weight: 700; color: var(--a2); background: rgba(212,76,32,0.1); border: 1px solid var(--a2); border-radius: 20px; padding: 3px 10px; cursor: pointer; display: none; }
 .reset-pill.show { display: block; }
-#previewBox {
-  width: 100%; min-height: 140px; padding: 14px; background: var(--s1);
-  color: #c8c5bc; font-family: 'DM Mono', monospace; font-size: 12px;
-  line-height: 1.85; border: none; outline: none; resize: vertical;
-  white-space: pre-wrap;
-}
+#previewBox { width: 100%; min-height: 140px; padding: 14px; background: var(--s1); color: #c8c5bc; font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.85; border: none; outline: none; resize: vertical; white-space: pre-wrap; }
 
-.copy-btn {
-  width: 100%; margin-top: 10px; padding: 16px; background: var(--a); color: #000;
-  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
-  letter-spacing: 1px; text-transform: uppercase; border: none;
-  border-radius: var(--r); cursor: pointer; transition: all 0.15s;
-}
+.btn-row { display: flex; gap: 8px; margin-top: 10px; }
+.copy-btn { flex: 1; padding: 16px; background: var(--a); color: #000; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; border: none; border-radius: var(--r); cursor: pointer; }
 .copy-btn:active { transform: scale(0.98); }
 .copy-btn.done { background: var(--green); }
+.clear-btn { padding: 16px 20px; background: var(--s2); color: var(--sub); font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; border: 1px solid var(--border); border-radius: var(--r); cursor: pointer; }
+.clear-btn:active { background: var(--s3); }
 
 .gone { display: none !important; }
-
-/* star rating */
 .stars { display: flex; gap: 4px; margin-bottom: 8px; }
-.star-btn {
-  font-size: 20px; background: none; border: none; cursor: pointer;
-  color: var(--dim); transition: color 0.1s;
-}
+.star-btn { font-size: 20px; background: none; border: none; cursor: pointer; color: var(--dim); }
 .star-btn.on { color: var(--a); }
 </style>
 </head>
@@ -268,38 +122,36 @@ input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
 
   <div class="settings-panel" id="settingsPanel">
     <div class="fc-title">Your Business Info</div>
-    <div class="fld">
-      <label class="fld-lbl">Brand / Handle</label>
-      <input type="text" id="cfgHandle" placeholder="e.g. @yourbrand" oninput="saveCfg()">
-    </div>
-    <div class="fld">
-      <label class="fld-lbl">Location</label>
-      <input type="text" id="cfgLocation" placeholder="e.g. New York, NY" oninput="saveCfg()">
-    </div>
-    <div class="fld">
-      <label class="fld-lbl">Phone / Contact</label>
-      <input type="text" id="cfgPhone" placeholder="e.g. +1 555 123 4567" oninput="saveCfg()">
-    </div>
-    <div class="fld">
-      <label class="fld-lbl">Currency</label>
-      <input type="text" id="cfgCurrency" placeholder="e.g. USD, TZS, KES" value="USD" oninput="saveCfg()">
-    </div>
+    <div class="fld"><label class="fld-lbl">Brand / Handle</label>
+      <input type="text" id="cfgHandle" placeholder="e.g. @yourbrand" oninput="saveCfg()"></div>
+    <div class="fld"><label class="fld-lbl">Location</label>
+      <input type="text" id="cfgLocation" placeholder="e.g. Dar es Salaam" oninput="saveCfg()"></div>
+    <div class="fld"><label class="fld-lbl">Phone / Contact</label>
+      <input type="text" id="cfgPhone" placeholder="e.g. +255 123 456 789" oninput="saveCfg()"></div>
+    <div class="fld"><label class="fld-lbl">Currency</label>
+      <input type="text" id="cfgCurrency" placeholder="e.g. USD, TZS" oninput="saveCfg()"></div>
+    <div class="fld"><label class="fld-lbl">Hashtags (for Instagram)</label>
+      <input type="text" id="cfgHashtags" placeholder="e.g. #shopnow #deals #kariakoo" oninput="saveCfg()"></div>
   </div>
 
   <div class="controls-row">
     <div class="product-name-wrap">
       <input type="text" id="productName" placeholder="Product name..." oninput="S.name=this.value;regen()">
     </div>
-    <div class="toggle-group" id="modeToggle">
+    <div class="toggle-group">
       <button class="tgl-btn on" id="modeSingle" onclick="setMode('single')">Single</button>
       <button class="tgl-btn" id="modeVariant" onclick="setMode('variant')">Variants</button>
     </div>
   </div>
   <div class="controls-row">
-    <div class="toggle-group" id="toneToggle" style="width:100%;">
+    <div class="toggle-group" style="flex:1;">
       <button class="tgl-btn" id="toneHype" onclick="setTone('hype')" style="flex:1;">&#128293; Hype</button>
-      <button class="tgl-btn on" id="toneBalanced" onclick="setTone('balanced')" style="flex:1;">&#9878;&#65039; Balanced</button>
-      <button class="tgl-btn" id="tonePro" onclick="setTone('pro')" style="flex:1;">&#127913; Pro</button>
+      <button class="tgl-btn on" id="toneBalanced" onclick="setTone('balanced')" style="flex:1;">Balanced</button>
+      <button class="tgl-btn" id="tonePro" onclick="setTone('pro')" style="flex:1;">Pro</button>
+    </div>
+    <div class="toggle-group">
+      <button class="tgl-btn on" id="langEn" onclick="setLang('en')">EN</button>
+      <button class="tgl-btn" id="langSw" onclick="setLang('sw')">SW</button>
     </div>
   </div>
 </div>
@@ -309,20 +161,14 @@ input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
     <div class="blk-label">Platform</div>
     <div class="pills" id="netPills"></div>
   </div>
-
   <div class="blk gone" id="typeBlk">
     <div class="blk-label">Caption Type</div>
     <div class="pills" id="typePills"></div>
   </div>
-
   <div id="fieldsArea"></div>
-
-  <div class="preview-wrap" id="previewWrap">
+  <div class="preview-wrap">
     <div class="preview-head">
-      <div class="preview-head-left">
-        <div class="preview-dot"></div>
-        Preview
-      </div>
+      <div class="preview-head-left"><div class="preview-dot"></div> Preview</div>
       <div class="preview-right">
         <span class="char-counter" id="charCounter"></span>
         <button class="reset-pill" id="resetPill" onclick="resetPreview()">Reset</button>
@@ -330,24 +176,105 @@ input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
     </div>
     <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Pick a platform and caption type...</textarea>
   </div>
-
-  <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy Caption</button>
+  <div class="btn-row">
+    <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy Caption</button>
+    <button class="clear-btn" onclick="clearForm()">Clear</button>
+  </div>
 </div>
 
 <script>
 // ═══════════════════════════════════════
+// LANGUAGE STRINGS
+// ═══════════════════════════════════════
+const LANG = {
+  en: {
+    wholesale: 'Wholesale', retail: 'Retail', flash_price: 'Flash Price',
+    low_stock: 'Low stock', out_of_stock: 'Out of Stock',
+    restocking: 'Restocking', order_now: 'Order now',
+    selling_fast: 'Selling fast — grab yours now!',
+    SELLING_FAST: 'SELLING FAST — grab yours NOW!',
+    still_available: 'still available!', STILL_AVAILABLE: 'STILL AVAILABLE!',
+    flash_today: 'FLASH SALE — TODAY ONLY', limited_time: 'Limited time offer',
+    LIMITED_TIME: 'LIMITED TIME — ACT NOW!',
+    just_arrived: 'Just Arrived!', JUST_ARRIVED: 'JUST ARRIVED!',
+    new_in_store: 'New in store!', NEW_IN_STORE: 'BRAND NEW IN STORE!',
+    back_in_stock: 'Back in Stock!', BACK_IN_STOCK: 'BACK IN STOCK!',
+    available_again: 'Available again!', AVAILABLE_AGAIN: 'AVAILABLE AGAIN!',
+    coming_soon: 'Coming soon...',
+    want: 'Want', budget: 'Tell us your budget — we\'ll make it work!',
+    BUDGET: 'Tell us your budget — we\'ll give you the BEST deal!',
+    ws_rs_welcome: 'Wholesale and retail welcome.',
+    WS_RS_WELCOME: 'Wholesale and retail ALL welcome!',
+    bundle_deal: 'Bundle Deal', BUNDLE_DEAL: 'BUNDLE DEAL',
+    combo: 'Combo', save: 'Save', YOU_SAVE: 'YOU SAVE',
+    only_left: 'Only %n left!', last_pieces: 'Last pieces!',
+    LAST_PIECES: 'LAST PIECES!', dont_miss: 'Don\'t miss out.',
+    DONT_MISS: 'GET YOURS BEFORE THEY\'RE GONE!',
+    customer_review: 'Customer Review',
+    price_drop: 'Price Drop', PRICE_DROP: 'PRICE DROP',
+    was: 'Was', now_only: 'Now only', you_save_pct: 'You save %p%!',
+    YOU_SAVE_PCT: 'YOU SAVE %p%!', prices_slashed: 'Prices slashed!',
+    PRICES_SLASHED: 'PRICES SLASHED!',
+    dm_prices: 'DM for prices', DM_PRICES: 'DM NOW for prices!',
+    dm_order: 'DM to order', GET_DEAL: 'GET THIS DEAL NOW!',
+    dm_budget: 'DM your budget', dm_gone: 'DM before it\'s gone',
+    ALMOST_GONE: 'ALMOST GONE — DM NOW!',
+    its_back: 'It\'s back! Get yours', ITS_BACK: 'IT\'S BACK! Get yours',
+    pick_prompt: 'Pick a platform and caption type...',
+    copied: 'Copied!', copy: 'Copy Caption',
+  },
+  sw: {
+    wholesale: 'Jumla', retail: 'Rejareja', flash_price: 'Bei ya Flash',
+    low_stock: 'Inakwisha', out_of_stock: 'Haipatikani',
+    restocking: 'Inarudi', order_now: 'Agiza sasa',
+    selling_fast: 'Inaendelea kuuzwa — chukua yako sasa!',
+    SELLING_FAST: 'INAUZWA HARAKA — chukua yako SASA!',
+    still_available: 'bado zipo!', STILL_AVAILABLE: 'BADO ZIPO!',
+    flash_today: 'FLASH SALE — LEO TU', limited_time: 'Offer ya muda mfupi',
+    LIMITED_TIME: 'MUDA MFUPI — CHUKUA SASA!',
+    just_arrived: 'Imefika!', JUST_ARRIVED: 'IMEFIKA!',
+    new_in_store: 'Mpya dukani!', NEW_IN_STORE: 'MPYA DUKANI!',
+    back_in_stock: 'Imerudishwa!', BACK_IN_STOCK: 'IMERUDISHWA!',
+    available_again: 'Inapatikana tena!', AVAILABLE_AGAIN: 'INAPATIKANA TENA!',
+    coming_soon: 'Inakuja hivi karibuni...',
+    want: 'Unataka', budget: 'Tuambie bajeti yako — tutakupa bei nzuri!',
+    BUDGET: 'Tuambie bajeti yako — tutakupa BEI BORA!',
+    ws_rs_welcome: 'Jumla na rejareja mnakaribishwa.',
+    WS_RS_WELCOME: 'Jumla na rejareja MNAKARIBISHWA!',
+    bundle_deal: 'Mchanganyiko', BUNDLE_DEAL: 'MCHANGANYIKO',
+    combo: 'Pamoja', save: 'Okoa', YOU_SAVE: 'UNAOKOA',
+    only_left: 'Zimebaki %n tu!', last_pieces: 'Mwisho!',
+    LAST_PIECES: 'MWISHO!', dont_miss: 'Usikose.',
+    DONT_MISS: 'CHUKUA KABLA HAZIJAISHA!',
+    customer_review: 'Maoni ya Mteja',
+    price_drop: 'Bei Imeshuka', PRICE_DROP: 'BEI IMESHUKA',
+    was: 'Ilikuwa', now_only: 'Sasa ni', you_save_pct: 'Unaokoa %p%!',
+    YOU_SAVE_PCT: 'UNAOKOA %p%!', prices_slashed: 'Bei zimeshuka!',
+    PRICES_SLASHED: 'BEI ZIMESHUKA!',
+    dm_prices: 'DM kwa bei', DM_PRICES: 'DM SASA kwa bei!',
+    dm_order: 'DM kuagiza', GET_DEAL: 'PATA DEAL HII SASA!',
+    dm_budget: 'DM bajeti yako', dm_gone: 'DM kabla haijaisha',
+    ALMOST_GONE: 'INAKWISHA — DM SASA!',
+    its_back: 'Imerudishwa! Chukua yako', ITS_BACK: 'IMERUDISHWA! Chukua yako',
+    pick_prompt: 'Chagua mtandao na aina ya caption...',
+    copied: 'Imenakiliwa!', copy: 'Nakili Caption',
+  }
+};
+
+function L(key) { return LANG[S.lang]?.[key] || LANG.en[key] || key; }
+function LH(normalKey, hypeKey) { return S.tone === 'hype' ? L(hypeKey) : L(normalKey); }
+
+// ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
 const S = {
-  network: null, type: null, mode: 'single', tone: 'balanced', name: '',
+  network: 'whatsapp', type: null, mode: 'single', tone: 'balanced', lang: 'en', name: '',
   w: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
   r: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
   flash: { price:'', og:'' },
   restockDate: '', restockHeadline: '',
   variants: [], variantRestock: '',
-  // new type fields
   bundle: { item2:'', comboPrice:'', savings:'' },
-  drop: {},  // uses w/r with ogOn forced
   lastQty: '',
   review: { quote:'', reviewer:'', stars:0 },
   previewEdited: false,
@@ -357,31 +284,32 @@ const S = {
 // CONFIG (localStorage)
 // ═══════════════════════════════════════
 const CFG = (() => {
-  try { const r = localStorage.getItem('rc_cfg'); if(r) return JSON.parse(r); } catch(e){}
-  return { handle:'', location:'', phone:'', currency:'USD', tone:'balanced' };
+  try { const r=localStorage.getItem('rc_cfg'); if(r) return JSON.parse(r); } catch(e){}
+  return { handle:'', location:'', phone:'', currency:'USD', tone:'balanced', lang:'en', hashtags:'' };
 })();
 
 function saveCfg() {
-  CFG.handle = document.getElementById('cfgHandle').value;
-  CFG.location = document.getElementById('cfgLocation').value;
-  CFG.phone = document.getElementById('cfgPhone').value;
-  CFG.currency = document.getElementById('cfgCurrency').value || 'USD';
-  CFG.tone = S.tone;
+  CFG.handle=document.getElementById('cfgHandle').value;
+  CFG.location=document.getElementById('cfgLocation').value;
+  CFG.phone=document.getElementById('cfgPhone').value;
+  CFG.currency=document.getElementById('cfgCurrency').value||'USD';
+  CFG.hashtags=document.getElementById('cfgHashtags').value;
+  CFG.tone=S.tone; CFG.lang=S.lang;
   localStorage.setItem('rc_cfg', JSON.stringify(CFG));
-  updateSettingsBtn();
-  regen();
+  updateSettingsBtn(); regen();
 }
 function initCfgFields() {
-  document.getElementById('cfgHandle').value = CFG.handle||'';
-  document.getElementById('cfgLocation').value = CFG.location||'';
-  document.getElementById('cfgPhone').value = CFG.phone||'';
-  document.getElementById('cfgCurrency').value = CFG.currency||'USD';
-  if (CFG.tone) { S.tone = CFG.tone; setTone(S.tone); }
+  document.getElementById('cfgHandle').value=CFG.handle||'';
+  document.getElementById('cfgLocation').value=CFG.location||'';
+  document.getElementById('cfgPhone').value=CFG.phone||'';
+  document.getElementById('cfgCurrency').value=CFG.currency||'USD';
+  document.getElementById('cfgHashtags').value=CFG.hashtags||'';
+  if(CFG.tone){ S.tone=CFG.tone; setTone(S.tone); }
+  if(CFG.lang){ S.lang=CFG.lang; setLang(S.lang); }
   updateSettingsBtn();
 }
 function updateSettingsBtn() {
-  const btn = document.getElementById('settingsBtn');
-  btn.classList.toggle('has-config', !!(CFG.handle||CFG.location||CFG.phone));
+  document.getElementById('settingsBtn').classList.toggle('has-config', !!(CFG.handle||CFG.location||CFG.phone));
 }
 function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('show'); }
 function CC() { return CFG.currency||'USD'; }
@@ -396,8 +324,8 @@ const EM = {
   header_restock:    { hype:'🔄', balanced:'🔄', pro:'' },
   header_repost:     { hype:'📢', balanced:'📢', pro:'' },
   header_bundle:     { hype:'🎁', balanced:'🎁', pro:'' },
-  header_drop:       { hype:'📉', balanced:'📉', pro:'' },
   header_last:       { hype:'🚨', balanced:'🚨', pro:'' },
+  header_drop:       { hype:'📉', balanced:'📉', pro:'' },
   header_review:     { hype:'⭐', balanced:'⭐', pro:'' },
   section_wholesale: { hype:'📦', balanced:'📦', pro:'' },
   section_retail:    { hype:'🛍️', balanced:'🛍️', pro:'' },
@@ -416,74 +344,66 @@ const EM = {
 };
 
 function E(role) {
-  const t = S.tone;
-  // platform can downgrade tone
-  let effective = t;
-  if (S.network === 'tiktok' || S.network === 'twitter') effective = 'pro'; // minimal emojis
-  else if (S.network === 'instagram' && t === 'hype') effective = 'balanced'; // cap IG at balanced
-  else if (S.network === 'facebook' && t === 'hype') effective = 'balanced';
-  else if (S.network === 'any') effective = 'pro'; // plain = no emojis
-  const entry = EM[role];
-  if (!entry) return '';
-  return entry[effective] || '';
+  let effective=S.tone;
+  if(S.network==='tiktok'||S.network==='twitter') effective='pro';
+  else if((S.network==='instagram'||S.network==='facebook')&&S.tone==='hype') effective='balanced';
+  else if(S.network==='any') effective='pro';
+  return EM[role]?.[effective]||'';
 }
-
-function Ep(role) {
-  // "pure" emoji lookup ignoring platform caps — for signature
-  const entry = EM[role];
-  if (!entry) return '';
-  return entry[S.tone] || '';
-}
+function Ep(role) { return EM[role]?.[S.tone]||''; }
 
 // ═══════════════════════════════════════
 // PLATFORM CONFIG
 // ═══════════════════════════════════════
 const PLATFORMS = {
-  whatsapp:  { label:'💬 WhatsApp',  md:true,  maxLen:0,    short:false },
-  telegram:  { label:'✈️ Telegram',  md:true,  maxLen:0,    short:false },
-  instagram: { label:'📸 Instagram', md:false, maxLen:2200, short:false },
-  tiktok:    { label:'🎵 TikTok',    md:false, maxLen:150,  short:true  },
-  facebook:  { label:'👥 Facebook',  md:false, maxLen:500,  short:false },
-  twitter:   { label:'𝕏 Twitter',    md:false, maxLen:280,  short:true  },
-  any:       { label:'📄 Plain',     md:false, maxLen:0,    short:false },
+  whatsapp:  { label:'💬 WhatsApp',  md:true,  maxLen:0,   short:false },
+  telegram:  { label:'✈️ Telegram',  md:true,  maxLen:0,   short:false },
+  instagram: { label:'📸 Instagram', md:false, maxLen:2200,short:false },
+  tiktok:    { label:'🎵 TikTok',    md:false, maxLen:150, short:true },
+  facebook:  { label:'👥 Facebook',  md:false, maxLen:500, short:false },
+  twitter:   { label:'𝕏 Twitter',    md:false, maxLen:280, short:true },
+  any:       { label:'📄 Plain',     md:false, maxLen:0,   short:false },
 };
-
 function useMd() { return PLATFORMS[S.network]?.md; }
 function isShort() { return PLATFORMS[S.network]?.short; }
-function maxLen() { return PLATFORMS[S.network]?.maxLen || 0; }
-
-function B(text) { return useMd() ? `*${text}*` : text; }
-function STR(text) { return useMd() ? `~${text}~` : text; }
+function maxLen() { return PLATFORMS[S.network]?.maxLen||0; }
+function B(t) { return useMd()?`*${t}*`:t; }
+function STR(t) { return useMd()?`~${t}~`:t; }
 
 // ═══════════════════════════════════════
 // NETWORKS & TYPES
 // ═══════════════════════════════════════
 const NETWORKS = Object.keys(PLATFORMS);
-
 const REGISTRY = [
-  { id:'standard',       label:'Standard',       nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildStandard },
-  { id:'repost',         label:'Repost',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['wholesale','retail'], build:buildRepost },
-  { id:'flash',          label:'Flash Sale',      nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['flash','wholesale'], build:buildFlash },
-  { id:'new_arrival',    label:'New Arrival',     nets:['whatsapp','telegram','tiktok','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildNewArrival },
-  { id:'back_in_stock',  label:'Back in Stock',   nets:['whatsapp','telegram','instagram','facebook','any'], groups:['restock_headline','wholesale','retail'], build:buildBackInStock },
-  { id:'engagement',     label:'Engagement',      nets:['tiktok','instagram','facebook','twitter','any'], groups:[], build:buildEngagement },
-  { id:'bundle',         label:'Bundle Deal',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['bundle','wholesale','retail'], build:buildBundle },
-  { id:'last_pieces',    label:'Last Pieces',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
-  { id:'review',         label:'Review',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
+  { id:'standard',      label:'Standard',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildStandard },
+  { id:'repost',        label:'Repost',       nets:['whatsapp','telegram','instagram','facebook','any'], groups:['wholesale','retail'], build:buildRepost },
+  { id:'flash',         label:'Flash Sale',   nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['flash','wholesale'], build:buildFlash },
+  { id:'new_arrival',   label:'New Arrival',  nets:['whatsapp','telegram','tiktok','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildNewArrival },
+  { id:'back_in_stock', label:'Back in Stock',nets:['whatsapp','telegram','instagram','facebook','any'], groups:['restock_headline','wholesale','retail'], build:buildBackInStock },
+  { id:'engagement',    label:'Engagement',   nets:['tiktok','instagram','facebook','twitter','any'], groups:[], build:buildEngagement },
+  { id:'price_drop',    label:'Price Drop',   nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildPriceDrop },
+  { id:'bundle',        label:'Bundle Deal',  nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['bundle','wholesale','retail'], build:buildBundle },
+  { id:'last_pieces',   label:'Last Pieces',  nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
+  { id:'review',        label:'Review',       nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
 ];
-
 const UNITS = ['pc','kg','g','L','ml','cm','inch','--'];
 
 // ═══════════════════════════════════════
-// TONE
+// TONE & LANG
 // ═══════════════════════════════════════
 function setTone(t) {
-  S.tone = t;
-  ['Hype','Balanced','Pro'].forEach(n => {
-    document.getElementById('tone'+n).classList.toggle('on', n.toLowerCase() === t || (n==='Pro' && t==='pro'));
-  });
-  CFG.tone = t;
-  try { localStorage.setItem('rc_cfg', JSON.stringify(CFG)); } catch(e){}
+  S.tone=t;
+  document.getElementById('toneHype').classList.toggle('on',t==='hype');
+  document.getElementById('toneBalanced').classList.toggle('on',t==='balanced');
+  document.getElementById('tonePro').classList.toggle('on',t==='pro');
+  CFG.tone=t; try{localStorage.setItem('rc_cfg',JSON.stringify(CFG));}catch(e){}
+  regen();
+}
+function setLang(lang) {
+  S.lang=lang;
+  document.getElementById('langEn').classList.toggle('on',lang==='en');
+  document.getElementById('langSw').classList.toggle('on',lang==='sw');
+  CFG.lang=lang; try{localStorage.setItem('rc_cfg',JSON.stringify(CFG));}catch(e){}
   regen();
 }
 
@@ -491,46 +411,53 @@ function setTone(t) {
 // NETWORK & TYPE SELECTION
 // ═══════════════════════════════════════
 function initNetworks() {
-  document.getElementById('netPills').innerHTML = NETWORKS.map(id =>
-    `<button class="pill" onclick="selectNetwork('${id}')" id="net_${id}">${PLATFORMS[id].label}</button>`
+  document.getElementById('netPills').innerHTML=NETWORKS.map(id=>
+    `<button class="pill${S.network===id?' on':''}" onclick="selectNetwork('${id}')" id="net_${id}">${PLATFORMS[id].label}</button>`
   ).join('');
+  // auto-show type pills since WhatsApp is pre-selected
+  if(S.network) document.getElementById('typeBlk').classList.remove('gone');
+  renderTypePills();
 }
-
 function selectNetwork(id) {
-  S.network = id;
-  document.querySelectorAll('#netPills .pill').forEach(b => b.classList.remove('on'));
+  S.network=id;
+  document.querySelectorAll('#netPills .pill').forEach(b=>b.classList.remove('on'));
   document.getElementById('net_'+id).classList.add('on');
-  if (S.type) {
-    const def = REGISTRY.find(r => r.id === S.type);
-    if (!def || !def.nets.includes(id)) S.type = null;
-  }
+  if(S.type){ const def=REGISTRY.find(r=>r.id===S.type); if(!def||!def.nets.includes(id)) S.type=null; }
   renderTypePills();
   document.getElementById('typeBlk').classList.remove('gone');
   updateCharCounter();
 }
-
 function renderTypePills() {
-  const el = document.getElementById('typePills');
-  const avail = REGISTRY.filter(r => r.nets.includes(S.network));
-  el.innerHTML = avail.map(r =>
-    `<button class="pill ${S.type===r.id?'on':''}" onclick="selectType('${r.id}')" id="type_${r.id}">${r.label}</button>`
-  ).join('');
+  const el=document.getElementById('typePills');
+  const avail=REGISTRY.filter(r=>r.nets.includes(S.network));
+  el.innerHTML=avail.map(r=>`<button class="pill${S.type===r.id?' on':''}" onclick="selectType('${r.id}')" id="type_${r.id}">${r.label}</button>`).join('');
 }
-
 function selectType(id) {
-  S.type = id;
-  document.querySelectorAll('#typePills .pill').forEach(b => b.classList.remove('on'));
-  const btn = document.getElementById('type_'+id);
-  if (btn) btn.classList.add('on');
-  renderFields();
-  regen();
+  S.type=id;
+  document.querySelectorAll('#typePills .pill').forEach(b=>b.classList.remove('on'));
+  const btn=document.getElementById('type_'+id); if(btn) btn.classList.add('on');
+  renderFields(); regen();
+}
+function setMode(m) {
+  S.mode=m;
+  document.getElementById('modeSingle').classList.toggle('on',m==='single');
+  document.getElementById('modeVariant').classList.toggle('on',m==='variant');
+  if(S.type) renderFields(); regen();
 }
 
-function setMode(m) {
-  S.mode = m;
-  document.getElementById('modeSingle').classList.toggle('on', m==='single');
-  document.getElementById('modeVariant').classList.toggle('on', m==='variant');
-  if (S.type) renderFields();
+// ═══════════════════════════════════════
+// CLEAR FORM
+// ═══════════════════════════════════════
+function clearForm() {
+  S.name=''; S.w={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
+  S.r={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
+  S.flash={price:'',og:''}; S.restockDate=''; S.restockHeadline='';
+  S.variants=[]; S.variantRestock='';
+  S.bundle={item2:'',comboPrice:'',savings:''}; S.lastQty='';
+  S.review={quote:'',reviewer:'',stars:0}; S.previewEdited=false;
+  document.getElementById('productName').value='';
+  document.getElementById('resetPill').classList.remove('show');
+  if(S.type) renderFields();
   regen();
 }
 
@@ -538,657 +465,452 @@ function setMode(m) {
 // FIELD RENDERING
 // ═══════════════════════════════════════
 function renderFields() {
-  const area = document.getElementById('fieldsArea');
-  if (!S.type) { area.innerHTML=''; return; }
-  const def = REGISTRY.find(r=>r.id===S.type);
-  if (!def) { area.innerHTML=''; return; }
-  let html = '<div class="blk" id="fieldsInner">';
-  if (S.mode==='variant') {
-    const needsPrices = def.groups.some(g=>['wholesale','retail','flash'].includes(g));
-    if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
-    if (def.groups.includes('testimonial')) html += htmlTestimonial();
-    if (def.groups.includes('bundle')) html += htmlBundleFields();
-    if (def.groups.includes('last_qty')) html += htmlLastQty();
-    if (def.groups.includes('flash')) html += htmlFlashGroupVariant();
-    if (needsPrices) html += htmlVariantSection(def);
+  const area=document.getElementById('fieldsArea');
+  if(!S.type){area.innerHTML='';return;}
+  const def=REGISTRY.find(r=>r.id===S.type);
+  if(!def){area.innerHTML='';return;}
+  let html='<div class="blk">';
+  if(S.mode==='variant'){
+    const needsPrices=def.groups.some(g=>['wholesale','retail','flash'].includes(g));
+    if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
+    if(def.groups.includes('testimonial')) html+=htmlTestimonial();
+    if(def.groups.includes('bundle')) html+=htmlBundleFields();
+    if(def.groups.includes('last_qty')) html+=htmlLastQty();
+    if(def.groups.includes('flash')) html+=htmlFlashGroupVariant();
+    if(needsPrices) html+=htmlVariantSection();
   } else {
-    if (def.groups.includes('restock_headline')) html += htmlRestockHeadline();
-    if (def.groups.includes('testimonial')) html += htmlTestimonial();
-    if (def.groups.includes('bundle')) html += htmlBundleFields();
-    if (def.groups.includes('last_qty')) html += htmlLastQty();
-    if (def.groups.includes('flash')) html += htmlFlashGroup();
-    if (def.groups.includes('wholesale')) html += htmlWholesaleGroup();
-    if (def.groups.includes('retail')) html += htmlRetailGroup();
+    if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
+    if(def.groups.includes('testimonial')) html+=htmlTestimonial();
+    if(def.groups.includes('bundle')) html+=htmlBundleFields();
+    if(def.groups.includes('last_qty')) html+=htmlLastQty();
+    if(def.groups.includes('flash')) html+=htmlFlashGroup();
+    if(def.groups.includes('wholesale')) html+=htmlWholesaleGroup();
+    if(def.groups.includes('retail')) html+=htmlRetailGroup();
   }
-  html += '</div>';
-  area.innerHTML = html;
-  if (S.mode==='single') {
-    applyStatus('w',S.w.status);
-    applyStatus('r',S.r.status);
-    if(S.w.ogOn){const f=document.getElementById('wOgField');if(f)f.classList.add('show');}
-    if(S.r.ogOn){const f=document.getElementById('rOgField');if(f)f.classList.add('show');}
+  html+='</div>';
+  area.innerHTML=html;
+  if(S.mode==='single'){
+    applyStatus('w',S.w.status); applyStatus('r',S.r.status);
+    // Auto-enable old price fields for Price Drop
+    if(S.type==='price_drop'&&!S.w.ogOn){S.w.ogOn=true;}
+    if(S.type==='price_drop'&&!S.r.ogOn){S.r.ogOn=true;}
+    if(S.w.ogOn){const f=document.getElementById('wOgField');if(f)f.classList.add('show');const b=document.getElementById('wOgBtn');if(b)b.classList.add('on');}
+    if(S.r.ogOn){const f=document.getElementById('rOgField');if(f)f.classList.add('show');const b=document.getElementById('rOgBtn');if(b)b.classList.add('on');}
     checkRestockVisibility();
-  } else {
-    renderVariantRows();
-  }
-  // restore star rating
-  if (def.groups.includes('testimonial')) applyStars(S.review.stars);
+  } else { renderVariantRows(); }
+  if(def.groups.includes('testimonial')) applyStars(S.review.stars);
 }
 
-function htmlWholesaleGroup() {
-  return `<div class="fc" id="wCard">
-    <div class="fc-title">${E('section_wholesale')} Wholesale Price</div>
-    <div class="grid2">
-      <div class="fld"><label class="fld-lbl">Price (${CC()})</label>
-        <input type="number" placeholder="150" value="${S.w.price}" oninput="S.w.price=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">Qty (pc)</label>
-        <input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()"></div>
-    </div>
+function htmlWholesaleGroup(){
+  return `<div class="fc" id="wCard"><div class="fc-title">${E('section_wholesale')} Wholesale</div>
+    <div class="grid2"><div class="fld"><label class="fld-lbl">Price (${CC()})</label><input type="number" placeholder="150" value="${S.w.price}" oninput="S.w.price=this.value;regen()"></div>
+    <div class="fld"><label class="fld-lbl">Qty (pc)</label><input type="number" placeholder="50" value="${S.w.qty}" oninput="S.w.qty=this.value;regen()"></div></div>
     <div class="og-row"><button class="og-toggle-btn ${S.w.ogOn?'on':''}" id="wOgBtn" onclick="toggleOg('w')">+ Old price</button></div>
-    <div class="og-field ${S.w.ogOn?'show':''}" id="wOgField">
-      <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
-        <input type="number" placeholder="Old price" value="${S.w.og}" oninput="S.w.og=this.value;regen()"></div>
-    </div>
-    <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
-    <div class="status-row">
-      <button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">In Stock</button>
-      <button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">Low</button>
-      <button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">Out</button>
-    </div>
-    <div class="restock-reveal" id="wRestock">
-      <div class="fld"><label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div>
-    </div>
-  </div>`;
+    <div class="og-field ${S.w.ogOn?'show':''}" id="wOgField"><div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Old price" value="${S.w.og}" oninput="S.w.og=this.value;regen()"></div></div>
+    <div class="fld-lbl" style="margin-top:4px;">Stock</div>
+    <div class="status-row"><button class="st-btn" id="wSt_in" onclick="setStatus('w','in_stock')">In Stock</button><button class="st-btn" id="wSt_low" onclick="setStatus('w','low_stock')">Low</button><button class="st-btn" id="wSt_out" onclick="setStatus('w','out_of_stock')">Out</button></div>
+    <div class="restock-reveal" id="wRestock"><div class="fld"><label class="fld-lbl">Restock Date</label><input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div></div></div>`;
 }
-
-function htmlRetailGroup() {
-  return `<div class="fc" id="rCard">
-    <div class="fc-title">${E('section_retail')} Retail Price</div>
-    <div class="grid2">
-      <div class="fld"><label class="fld-lbl">Price (${CC()})</label>
-        <input type="number" placeholder="5.50" value="${S.r.price}" oninput="S.r.price=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">Qty (if &gt; 1)</label>
-        <input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()"></div>
-    </div>
+function htmlRetailGroup(){
+  return `<div class="fc" id="rCard"><div class="fc-title">${E('section_retail')} Retail</div>
+    <div class="grid2"><div class="fld"><label class="fld-lbl">Price (${CC()})</label><input type="number" placeholder="5.50" value="${S.r.price}" oninput="S.r.price=this.value;regen()"></div>
+    <div class="fld"><label class="fld-lbl">Qty (if &gt; 1)</label><input type="number" placeholder="1" value="${S.r.qty}" oninput="S.r.qty=this.value;regen()"></div></div>
     <div class="og-row"><button class="og-toggle-btn ${S.r.ogOn?'on':''}" id="rOgBtn" onclick="toggleOg('r')">+ Old price</button></div>
-    <div class="og-field ${S.r.ogOn?'show':''}" id="rOgField">
-      <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
-        <input type="number" placeholder="Old price" value="${S.r.og}" oninput="S.r.og=this.value;regen()"></div>
-    </div>
-    <div class="fld-lbl" style="margin-top:4px;">Stock Status</div>
-    <div class="status-row">
-      <button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">In Stock</button>
-      <button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">Low</button>
-      <button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">Out</button>
-    </div>
-    <div class="restock-reveal" id="rRestock">
-      <div class="fld"><label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div>
-    </div>
-  </div>`;
+    <div class="og-field ${S.r.ogOn?'show':''}" id="rOgField"><div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Old price" value="${S.r.og}" oninput="S.r.og=this.value;regen()"></div></div>
+    <div class="fld-lbl" style="margin-top:4px;">Stock</div>
+    <div class="status-row"><button class="st-btn" id="rSt_in" onclick="setStatus('r','in_stock')">In Stock</button><button class="st-btn" id="rSt_low" onclick="setStatus('r','low_stock')">Low</button><button class="st-btn" id="rSt_out" onclick="setStatus('r','out_of_stock')">Out</button></div>
+    <div class="restock-reveal" id="rRestock"><div class="fld"><label class="fld-lbl">Restock Date</label><input type="text" placeholder="e.g. April 20" value="${S.restockDate}" oninput="S.restockDate=this.value;regen()"></div></div></div>`;
 }
-
-function htmlFlashGroup() {
-  return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale Price</div>
-    <div class="grid2">
-      <div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label>
-        <input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">Original Price (${CC()})</label>
-        <input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()"></div>
-    </div></div>`;
+function htmlFlashGroup(){
+  return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale</div>
+    <div class="grid2"><div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label><input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()"></div>
+    <div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()"></div></div></div>`;
 }
-function htmlFlashGroupVariant() {
+function htmlFlashGroupVariant(){
   return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale — Per Variant</div>
-    <p style="font-size:12px;color:var(--sub);margin-bottom:0;">Set flash prices on each variant below.</p></div>`;
+    <p style="font-size:12px;color:var(--sub);">Set flash prices on each variant below.</p></div>`;
 }
-function htmlRestockHeadline() {
+function htmlRestockHeadline(){
   return `<div class="fc"><div class="fc-title">${E('header_restock')} Restock Info</div>
-    <div class="fld"><label class="fld-lbl">Headline</label>
-      <input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()"></div></div>`;
+    <div class="fld"><label class="fld-lbl">Headline</label><input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()"></div></div>`;
 }
-function htmlBundleFields() {
+function htmlBundleFields(){
   return `<div class="fc"><div class="fc-title">${E('header_bundle')} Bundle Details</div>
-    <div class="fld"><label class="fld-lbl">Second Item Name</label>
-      <input type="text" placeholder="e.g. Phone Case" value="${S.bundle.item2}" oninput="S.bundle.item2=this.value;regen()"></div>
-    <div class="grid2">
-      <div class="fld"><label class="fld-lbl">Combo Price (${CC()})</label>
-        <input type="number" placeholder="Bundle price" value="${S.bundle.comboPrice}" oninput="S.bundle.comboPrice=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">You Save (${CC()})</label>
-        <input type="number" placeholder="Savings amount" value="${S.bundle.savings}" oninput="S.bundle.savings=this.value;regen()"></div>
-    </div></div>`;
+    <div class="fld"><label class="fld-lbl">Second Item</label><input type="text" placeholder="e.g. Phone Case" value="${S.bundle.item2}" oninput="S.bundle.item2=this.value;regen()"></div>
+    <div class="grid2"><div class="fld"><label class="fld-lbl">Combo Price (${CC()})</label><input type="number" placeholder="Bundle price" value="${S.bundle.comboPrice}" oninput="S.bundle.comboPrice=this.value;regen()"></div>
+    <div class="fld"><label class="fld-lbl">You Save (${CC()})</label><input type="number" placeholder="Savings" value="${S.bundle.savings}" oninput="S.bundle.savings=this.value;regen()"></div></div></div>`;
 }
-function htmlLastQty() {
-  return `<div class="fc"><div class="fc-title">${E('header_last')} Remaining Stock</div>
-    <div class="fld"><label class="fld-lbl">Pieces Left</label>
-      <input type="number" placeholder="e.g. 5" value="${S.lastQty}" oninput="S.lastQty=this.value;regen()"></div></div>`;
+function htmlLastQty(){
+  return `<div class="fc"><div class="fc-title">${E('header_last')} Remaining</div>
+    <div class="fld"><label class="fld-lbl">Pieces Left</label><input type="number" placeholder="e.g. 5" value="${S.lastQty}" oninput="S.lastQty=this.value;regen()"></div></div>`;
 }
-function htmlTestimonial() {
-  return `<div class="fc"><div class="fc-title">${E('header_review')} Customer Review</div>
-    <div class="fld"><label class="fld-lbl">Rating</label>
-      <div class="stars" id="starsWrap">
-        ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setStar(${n})">&#9733;</button>`).join('')}
-      </div></div>
-    <div class="fld"><label class="fld-lbl">Quote / Testimonial</label>
-      <textarea class="field-ta" placeholder="What the customer said..." oninput="S.review.quote=this.value;regen()">${S.review.quote}</textarea></div>
-    <div class="fld"><label class="fld-lbl">Reviewer Name (optional)</label>
-      <input type="text" placeholder="e.g. Sarah M." value="${S.review.reviewer}" oninput="S.review.reviewer=this.value;regen()"></div></div>`;
+function htmlTestimonial(){
+  return `<div class="fc"><div class="fc-title">${E('header_review')} Review</div>
+    <div class="fld"><label class="fld-lbl">Rating</label><div class="stars" id="starsWrap">${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setStar(${n})">&#9733;</button>`).join('')}</div></div>
+    <div class="fld"><label class="fld-lbl">Quote</label><textarea class="field-ta" placeholder="What they said..." oninput="S.review.quote=this.value;regen()">${S.review.quote}</textarea></div>
+    <div class="fld"><label class="fld-lbl">Reviewer (optional)</label><input type="text" placeholder="e.g. Sarah M." value="${S.review.reviewer}" oninput="S.review.reviewer=this.value;regen()"></div></div>`;
 }
-function setStar(n) {
-  S.review.stars = (S.review.stars === n) ? 0 : n;
-  applyStars(S.review.stars);
-  regen();
-}
-function applyStars(n) {
-  const wrap = document.getElementById('starsWrap');
-  if (!wrap) return;
-  wrap.querySelectorAll('.star-btn').forEach((btn,i) => btn.classList.toggle('on', i<n));
-}
+function setStar(n){ S.review.stars=(S.review.stars===n)?0:n; applyStars(S.review.stars); regen(); }
+function applyStars(n){ const w=document.getElementById('starsWrap'); if(!w)return; w.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n)); }
 
-function htmlVariantSection() {
-  return `<div class="fc" id="variantSection">
-    <div class="fc-title" id="variantSectionTitle">VARIANTS</div>
+function htmlVariantSection(){
+  return `<div class="fc" id="variantSection"><div class="fc-title">VARIANTS</div>
     <div id="variantRows"></div>
     <button class="add-variant-btn" onclick="addVariant()">+ Add Variant</button>
-    <div class="restock-reveal" id="variantRestockReveal">
-      <div class="fld"><label class="fld-lbl">Restock Date</label>
-        <input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()"></div>
-    </div></div>`;
+    <div class="restock-reveal" id="variantRestockReveal"><div class="fld"><label class="fld-lbl">Restock Date</label><input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()"></div></div></div>`;
 }
 
 // ═══════════════════════════════════════
 // VARIANT MANAGEMENT
 // ═══════════════════════════════════════
-function addVariant(v={}) {
-  S.variants.push({
-    prefix:v.prefix||'', size:v.size||'', unit:v.unit||'pc', customUnit:v.customUnit||'',
-    wholesale:v.wholesale||'', wholesaleQty:v.wholesaleQty||'', wOg:v.wOg||'',
-    retail:v.retail||'', rOg:v.rOg||'',
-    flashPrice:v.flashPrice||'', flashOg:v.flashOg||'',
-    status:v.status||'in_stock',
-  });
+function addVariant(v={}){
+  S.variants.push({ prefix:v.prefix||'',size:v.size||'',unit:v.unit||'pc',customUnit:v.customUnit||'',
+    wholesale:v.wholesale||'',wholesaleQty:v.wholesaleQty||'',wOg:v.wOg||'',
+    retail:v.retail||'',rOg:v.rOg||'',flashPrice:v.flashPrice||'',flashOg:v.flashOg||'',status:v.status||'in_stock' });
   renderVariantRows(); regen();
 }
-function removeVariant(i) { S.variants.splice(i,1); renderVariantRows(); regen(); }
-
-function renderVariantRows() {
-  const c = document.getElementById('variantRows');
-  if (!c) return;
-  c.innerHTML='';
-  const def = REGISTRY.find(r=>r.id===S.type);
-  const isFlash = def && def.groups.includes('flash');
-  S.variants.forEach((v,i) => {
-    const name = buildVName(v);
-    const div = document.createElement('div');
-    div.className='variant-card';
-    let priceHTML='';
-    if (isFlash) {
-      priceHTML=`<div class="div"></div><div class="grid2">
-        <div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label>
-          <input type="number" placeholder="Sale" value="${v.flashPrice}" oninput="S.variants[${i}].flashPrice=this.value;regen()"></div>
-        <div class="fld"><label class="fld-lbl">Original (${CC()})</label>
-          <input type="number" placeholder="Was" value="${v.flashOg}" oninput="S.variants[${i}].flashOg=this.value;regen()"></div></div>`;
+function removeVariant(i){ S.variants.splice(i,1); renderVariantRows(); regen(); }
+function renderVariantRows(){
+  const c=document.getElementById('variantRows'); if(!c)return; c.innerHTML='';
+  const def=REGISTRY.find(r=>r.id===S.type); const isFlash=def&&def.groups.includes('flash');
+  S.variants.forEach((v,i)=>{
+    const name=buildVName(v); const div=document.createElement('div'); div.className='variant-card';
+    let ph='';
+    if(isFlash){
+      ph=`<div class="div"></div><div class="grid2"><div class="fld"><label class="fld-lbl">Flash (${CC()})</label><input type="number" placeholder="Sale" value="${v.flashPrice}" oninput="S.variants[${i}].flashPrice=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Was" value="${v.flashOg}" oninput="S.variants[${i}].flashOg=this.value;regen()"></div></div>`;
     } else {
-      priceHTML=`<div class="div"></div><div class="grid2">
-        <div class="fld"><label class="fld-lbl">Wholesale (${CC()})</label>
-          <input type="number" placeholder="150" value="${v.wholesale}" oninput="S.variants[${i}].wholesale=this.value;regen()"></div>
-        <div class="fld"><label class="fld-lbl">W. Qty (pc)</label>
-          <input type="number" placeholder="50" value="${v.wholesaleQty}" oninput="S.variants[${i}].wholesaleQty=this.value;regen()"></div></div>
-        <div class="fld"><label class="fld-lbl">Old W. Price (opt)</label>
-          <input type="number" placeholder="Was" value="${v.wOg}" oninput="S.variants[${i}].wOg=this.value;regen()"></div>
-        <div class="div"></div>
-        <div class="fld"><label class="fld-lbl">Retail (${CC()})</label>
-          <input type="number" placeholder="4.00" value="${v.retail}" oninput="S.variants[${i}].retail=this.value;regen()"></div>
-        <div class="fld"><label class="fld-lbl">Old R. Price (opt)</label>
-          <input type="number" placeholder="Was" value="${v.rOg}" oninput="S.variants[${i}].rOg=this.value;regen()"></div>`;
+      ph=`<div class="div"></div><div class="grid2"><div class="fld"><label class="fld-lbl">Wholesale (${CC()})</label><input type="number" value="${v.wholesale}" oninput="S.variants[${i}].wholesale=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">W. Qty</label><input type="number" value="${v.wholesaleQty}" oninput="S.variants[${i}].wholesaleQty=this.value;regen()"></div></div>
+      <div class="fld"><label class="fld-lbl">Old W. Price</label><input type="number" value="${v.wOg}" oninput="S.variants[${i}].wOg=this.value;regen()"></div>
+      <div class="div"></div>
+      <div class="fld"><label class="fld-lbl">Retail (${CC()})</label><input type="number" value="${v.retail}" oninput="S.variants[${i}].retail=this.value;regen()"></div>
+      <div class="fld"><label class="fld-lbl">Old R. Price</label><input type="number" value="${v.rOg}" oninput="S.variants[${i}].rOg=this.value;regen()"></div>`;
     }
-    div.innerHTML=`
-      <div class="v-label" id="vlabel_${i}">VARIANT ${i+1}${name?' — '+name:''}</div>
+    div.innerHTML=`<div class="v-label" id="vlabel_${i}">VARIANT ${i+1}${name?' — '+name:''}</div>
       <button class="v-del" onclick="removeVariant(${i})">x</button>
-      <div class="grid2">
-        <div class="fld"><label class="fld-lbl">Prefix (opt)</label>
-          <input type="text" placeholder="e.g. Spiral" value="${v.prefix}" oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()"></div>
-        <div class="fld"><label class="fld-lbl">Size / Number</label>
-          <input type="text" placeholder="e.g. 12, L" value="${v.size}" oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()"></div></div>
-      <div class="fld"><label class="fld-lbl">Unit</label>
-        <div class="unit-chips">${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}</div>
-        <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}" style="${v.unit!=='--'?'display:none':''}" oninput="S.variants[${i}].customUnit=this.value;regen()"></div>
-      ${priceHTML}
+      <div class="grid2"><div class="fld"><label class="fld-lbl">Prefix</label><input type="text" placeholder="e.g. Spiral" value="${v.prefix}" oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()"></div>
+      <div class="fld"><label class="fld-lbl">Size</label><input type="text" placeholder="e.g. 12, L" value="${v.size}" oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()"></div></div>
+      <div class="fld"><label class="fld-lbl">Unit</label><div class="unit-chips">${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}</div>
+      <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}" style="${v.unit!=='--'?'display:none':''}" oninput="S.variants[${i}].customUnit=this.value;regen()"></div>
+      ${ph}
       <div class="fld-lbl" style="margin-top:10px;">Stock</div>
-      <div class="status-row">
-        <button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In</button>
-        <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">Low</button>
-        <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">Out</button>
-      </div>`;
+      <div class="status-row"><button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In</button>
+      <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">Low</button>
+      <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">Out</button></div>`;
     c.appendChild(div);
   });
   checkVariantRestock();
 }
-
-function updateVLabel(i) {
-  const el=document.getElementById('vlabel_'+i); if(!el)return;
-  el.textContent=`VARIANT ${i+1}${buildVName(S.variants[i])?' — '+buildVName(S.variants[i]):''}`;
-}
-function setVUnit(i,u) {
-  S.variants[i].unit=u;
-  const ci=document.getElementById('vcu_'+i); if(ci) ci.style.display=u==='--'?'block':'none';
-  const card=document.getElementById('variantRows').children[i];
-  if(card) card.querySelectorAll('.uc').forEach((btn,j)=>btn.classList.toggle('on',UNITS[j]===u));
-  regen();
-}
-function setVStatus(i,st) {
-  S.variants[i].status=st;
-  const card=document.getElementById('variantRows').children[i];
-  if(card){const b=card.querySelectorAll('.status-row .st-btn');
-    b[0].className='st-btn'+(st==='in_stock'?' g':'');
-    b[1].className='st-btn'+(st==='low_stock'?' o':'');
-    b[2].className='st-btn'+(st==='out_of_stock'?' r':'');}
-  checkVariantRestock(); regen();
-}
-function checkVariantRestock() {
-  const el=document.getElementById('variantRestockReveal'); if(!el)return;
-  el.classList.toggle('show', S.variants.length>0 && S.variants.every(v=>v.status==='out_of_stock'));
-}
-function buildVName(v) {
-  const unit=v.unit==='--'?v.customUnit:v.unit;
-  if(!v.size) return v.prefix||'';
-  if(v.prefix) return (unit&&unit!=='pc')?`${v.prefix}-${v.size} ${unit}`:`${v.prefix}-${v.size}`;
-  return (unit&&unit!=='pc')?`${v.size} ${unit}`:v.size;
-}
+function updateVLabel(i){ const el=document.getElementById('vlabel_'+i); if(!el)return; const n=buildVName(S.variants[i]); el.textContent=`VARIANT ${i+1}${n?' — '+n:''}`; }
+function setVUnit(i,u){ S.variants[i].unit=u; const ci=document.getElementById('vcu_'+i); if(ci)ci.style.display=u==='--'?'block':'none'; const card=document.getElementById('variantRows').children[i]; if(card)card.querySelectorAll('.uc').forEach((b,j)=>b.classList.toggle('on',UNITS[j]===u)); regen(); }
+function setVStatus(i,st){ S.variants[i].status=st; const card=document.getElementById('variantRows').children[i]; if(card){const b=card.querySelectorAll('.status-row .st-btn'); b[0].className='st-btn'+(st==='in_stock'?' g':''); b[1].className='st-btn'+(st==='low_stock'?' o':''); b[2].className='st-btn'+(st==='out_of_stock'?' r':'');} checkVariantRestock(); regen(); }
+function checkVariantRestock(){ const el=document.getElementById('variantRestockReveal'); if(!el)return; el.classList.toggle('show',S.variants.length>0&&S.variants.every(v=>v.status==='out_of_stock')); }
+function buildVName(v){ const u=v.unit==='--'?v.customUnit:v.unit; if(!v.size)return v.prefix||''; if(v.prefix)return(u&&u!=='pc')?`${v.prefix}-${v.size} ${u}`:`${v.prefix}-${v.size}`; return(u&&u!=='pc')?`${v.size} ${u}`:v.size; }
 
 // ═══════════════════════════════════════
 // STATUS & OG HELPERS
 // ═══════════════════════════════════════
-function setStatus(w,val) {
-  if(w==='w')S.w.status=val; else S.r.status=val;
-  applyStatus(w,val); checkRestockVisibility(); regen();
-}
-function applyStatus(w,val) {
-  ['in','low','out'].forEach(s=>{
-    const btn=document.getElementById(`${w}St_${s}`); if(!btn)return;
-    btn.className='st-btn';
-    if(s==='in'&&val==='in_stock')btn.classList.add('g');
-    if(s==='low'&&val==='low_stock')btn.classList.add('o');
-    if(s==='out'&&val==='out_of_stock')btn.classList.add('r');
-  });
-}
-function checkRestockVisibility() {
-  const def=REGISTRY.find(r=>r.id===S.type);
-  if(!def||def.groups.includes('restock_headline'))return;
-  const wr=document.getElementById('wRestock');
-  const rr=document.getElementById('rRestock');
-  if(wr)wr.classList.toggle('show',S.w.status==='out_of_stock');
-  if(rr)rr.classList.toggle('show',S.r.status==='out_of_stock');
-}
-function toggleOg(w) {
-  if(w==='w')S.w.ogOn=!S.w.ogOn; else S.r.ogOn=!S.r.ogOn;
-  const f=document.getElementById(w+'OgField');
-  const btn=document.getElementById(w+'OgBtn');
-  const on=w==='w'?S.w.ogOn:S.r.ogOn;
-  if(f)f.classList.toggle('show',on);
-  if(btn)btn.classList.toggle('on',on);
-  if(!on){if(w==='w')S.w.og='';else S.r.og='';}
-  regen();
-}
+function setStatus(w,val){ if(w==='w')S.w.status=val;else S.r.status=val; applyStatus(w,val); checkRestockVisibility(); regen(); }
+function applyStatus(w,val){ ['in','low','out'].forEach(s=>{ const btn=document.getElementById(`${w}St_${s}`); if(!btn)return; btn.className='st-btn'; if(s==='in'&&val==='in_stock')btn.classList.add('g'); if(s==='low'&&val==='low_stock')btn.classList.add('o'); if(s==='out'&&val==='out_of_stock')btn.classList.add('r'); }); }
+function checkRestockVisibility(){ const def=REGISTRY.find(r=>r.id===S.type); if(!def||def.groups.includes('restock_headline'))return; const wr=document.getElementById('wRestock'); const rr=document.getElementById('rRestock'); if(wr)wr.classList.toggle('show',S.w.status==='out_of_stock'); if(rr)rr.classList.toggle('show',S.r.status==='out_of_stock'); }
+function toggleOg(w){ if(w==='w')S.w.ogOn=!S.w.ogOn;else S.r.ogOn=!S.r.ogOn; const f=document.getElementById(w+'OgField'); const btn=document.getElementById(w+'OgBtn'); const on=w==='w'?S.w.ogOn:S.r.ogOn; if(f)f.classList.toggle('show',on); if(btn)btn.classList.toggle('on',on); if(!on){if(w==='w')S.w.og='';else S.r.og='';} regen(); }
 
 // ═══════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════
-function fmt(n) { if(!n)return n; return Number(String(n).replace(/,/g,'')).toLocaleString('en-US'); }
+function fmt(n){ if(!n)return n; return Number(String(n).replace(/,/g,'')).toLocaleString('en-US'); }
+function clean(text){ return text.replace(/  +/g,' ').replace(/^ +/gm,'').replace(/\n{3,}/g,'\n\n'); }
 
 // ═══════════════════════════════════════
-// SIGNATURE (platform-aware)
+// SIGNATURE
 // ═══════════════════════════════════════
-function getSig() {
-  const h=CFG.handle, l=CFG.location, p=CFG.phone;
+function getSig(){
+  const h=CFG.handle,l=CFG.location,p=CFG.phone;
   if(!h&&!l&&!p) return '';
-  const net = S.network;
-  // TikTok / Twitter: just handle
-  if(net==='tiktok'||net==='twitter') return h ? `\n${h}` : '';
-  // Instagram: single line before hashtags
-  if(net==='instagram') {
-    return '\n'+[h,l,p].filter(Boolean).join(' | ');
-  }
-  // WhatsApp / Telegram: emoji-prefixed block
-  if(net==='whatsapp'||net==='telegram') {
-    const div = E('divider')||'───────────────';
-    let lines = [`\n${div}`];
-    if(h) lines.push(`${Ep('sig_handle')} ${h}`.trim());
-    if(l) lines.push(`${Ep('sig_location')} ${l}`.trim());
-    if(p) lines.push(`${Ep('sig_phone')} ${p}`.trim());
+  if(S.network==='tiktok'||S.network==='twitter') return h?`\n${h}`:'';
+  if(S.network==='instagram') return '\n'+[h,l,p].filter(Boolean).join(' | ');
+  if(S.network==='whatsapp'||S.network==='telegram'){
+    const div=E('divider')||'───────────────';
+    let lines=[`\n${div}`];
+    if(h)lines.push(`${Ep('sig_handle')} ${h}`.trim());
+    if(l)lines.push(`${Ep('sig_location')} ${l}`.trim());
+    if(p)lines.push(`${Ep('sig_phone')} ${p}`.trim());
     return lines.join('\n');
   }
-  // Facebook / Plain: simple line
   return '\n'+[h,l,p].filter(Boolean).join(' | ');
 }
 
 // ═══════════════════════════════════════
-// CAPTION BUILDING BLOCKS
+// CAPTION BLOCKS
 // ═══════════════════════════════════════
-function getWBlock() {
-  const price=S.mode==='single'?S.w.price:null;
-  const qty=S.mode==='single'?(S.w.qty||'1'):null;
-  const og=S.mode==='single'&&S.w.ogOn?S.w.og:'';
-  const status=S.mode==='single'?S.w.status:null;
+function getWBlock(){
+  const price=S.mode==='single'?S.w.price:null, qty=S.mode==='single'?(S.w.qty||'1'):null;
+  const og=S.mode==='single'&&S.w.ogOn?S.w.og:'', status=S.mode==='single'?S.w.status:null;
   if(!price||!qty||status==='out_of_stock') return '';
   const sw=E('section_wholesale'), pa=E('price_arrow');
-  let line = og
-    ? `${sw} ${B('Wholesale')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
-    : `${sw} ${B('Wholesale')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=`\n${E('status_low')} Low stock`;
-  return line.replace(/^ /gm,'');
+  let line=og
+    ? `${sw} ${B(L('wholesale'))}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
+    : `${sw} ${B(L('wholesale'))}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
+  if(status==='low_stock') line+=`\n${E('status_low')} ${L('low_stock')}`;
+  return clean(line);
 }
-
-function getRBlock() {
-  const price=S.mode==='single'?S.r.price:null;
-  const qty=S.mode==='single'?(S.r.qty||'1'):null;
-  const og=S.mode==='single'&&S.r.ogOn?S.r.og:'';
-  const status=S.mode==='single'?S.r.status:null;
+function getRBlock(){
+  const price=S.mode==='single'?S.r.price:null, qty=S.mode==='single'?(S.r.qty||'1'):null;
+  const og=S.mode==='single'&&S.r.ogOn?S.r.og:'', status=S.mode==='single'?S.r.status:null;
   if(!price||status==='out_of_stock') return '';
   const sr=E('section_retail'), pa=E('price_arrow');
-  let line = og
-    ? `${sr} ${B('Retail')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
-    : `${sr} ${B('Retail')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=`\n${E('status_low')} Low stock`;
-  return line.replace(/^ /gm,'');
+  let line=og
+    ? `${sr} ${B(L('retail'))}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
+    : `${sr} ${B(L('retail'))}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
+  if(status==='low_stock') line+=`\n${E('status_low')} ${L('low_stock')}`;
+  return clean(line);
 }
-
-function getVariantLines(isFlash=false, isWholesaleOnly=false) {
+function getVariantLines(isFlash=false){
   const active=S.variants.filter(v=>v.status!=='out_of_stock');
   if(!active.length) return null;
   const pa=E('price_arrow'), sw=E('section_wholesale'), sr=E('section_retail');
   return active.map(v=>{
-    const vName=buildVName(v);
-    let block=`${E('fire')} ${B(vName)}`.replace(/^ /,'');
+    const vn=buildVName(v);
+    let b=`${E('fire')} ${B(vn)}`;
     if(isFlash){
-      block+=`\n${E('header_flash')} Flash Price`.replace(/^ /,'');
-      if(v.flashOg) block+=`\n${STR(`${pa} ${CC()} ${fmt(v.flashOg)}`)}`.replace(/^ /,'');
-      if(v.flashPrice) block+=`\n${pa} ${B(`${CC()} ${fmt(v.flashPrice)}`)}`.replace(/^ /,'');
+      b+=`\n${E('header_flash')} ${L('flash_price')}`;
+      if(v.flashOg) b+=`\n${STR(`${pa} ${CC()} ${fmt(v.flashOg)}`)}`;
+      if(v.flashPrice) b+=`\n${pa} ${B(`${CC()} ${fmt(v.flashPrice)}`)}`;
     } else {
       if(v.wholesale&&v.wholesaleQty){
-        block+=`\n${sw} ${B('Wholesale')}`.replace(/^ /,'');
-        if(v.wOg) block+=`\n${STR(`${pa} ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}`.replace(/^ /,'');
-        block+=`\n${pa} ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,'');
+        b+=`\n${sw} ${B(L('wholesale'))}`;
+        if(v.wOg) b+=`\n${STR(`${pa} ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}`;
+        b+=`\n${pa} ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`;
       }
-      if(!isWholesaleOnly&&v.retail){
-        block+=`\n${sr} ${B('Retail')}`.replace(/^ /,'');
-        if(v.rOg) block+=`\n${STR(`${pa} 1pc = ${CC()} ${fmt(v.rOg)}`)}`.replace(/^ /,'');
-        block+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,'');
+      if(v.retail){
+        b+=`\n${sr} ${B(L('retail'))}`;
+        if(v.rOg) b+=`\n${STR(`${pa} 1pc = ${CC()} ${fmt(v.rOg)}`)}`;
+        b+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`;
       }
     }
-    if(v.status==='low_stock') block+=`\n${E('status_low')} Low stock`.replace(/^ /,'');
-    return block;
+    if(v.status==='low_stock') b+=`\n${E('status_low')} ${L('low_stock')}`;
+    return clean(b);
   }).join('\n\n');
 }
-
-function getOutOfStockBlock() {
+function getOutOfStockBlock(){
   const date=S.mode==='variant'?S.variantRestock:S.restockDate;
-  if(date) return `${E('status_out')} Restocking — ${B(date)}`.replace(/^ /,'');
-  return `${E('status_out')} ${B('Out of Stock')}`.replace(/^ /,'');
+  if(date) return clean(`${E('status_out')} ${L('restocking')} — ${B(date)}`);
+  return clean(`${E('status_out')} ${B(L('out_of_stock'))}`);
 }
 
-function isAllOut() {
-  if(S.mode==='variant') return S.variants.length>0&&S.variants.every(v=>v.status==='out_of_stock');
-  return S.w.status==='out_of_stock'&&S.r.status==='out_of_stock';
-}
-
-function hypeText(normal, hypeVer) { return S.tone==='hype'?hypeVer:normal; }
-
-function assembleSingle(header, body, footer='') {
-  const div = E('divider')||'───────────────';
-  const sig = getSig();
-  let out = `${header}\n${div}\n\n${body}`;
+function assembleSingle(header, body, footer=''){
+  const div=E('divider')||'───────────────'; const sig=getSig();
+  let out=`${header}\n${div}\n\n${body}`;
   if(footer) out+=`\n\n${footer}`;
   if(sig) out+=`\n${sig}`;
   return out;
 }
-
-// ═══════════════════════════════════════
-// SHORT PLATFORM BUILDERS (TikTok, X)
-// ═══════════════════════════════════════
-function buildShort(hook, cta) {
-  const name=S.name||'this';
+function buildShort(hook, cta){
   const sig=getSig();
-  return `${hook}\n${cta}${sig}`;
+  let out=`${hook}\n${cta}`;
+  if(sig) out+=sig;
+  // truncate for platform
+  const ml=maxLen();
+  if(ml&&out.length>ml) out=out.slice(0,ml-1)+'…';
+  return out;
 }
 
 // ═══════════════════════════════════════
 // CAPTION BUILDERS
 // ═══════════════════════════════════════
-
-function buildStandard() {
+function buildStandard(){
   const name=S.name||'—';
-  if(isShort()) return buildShort(
-    `${E('header_product')} ${name}`.trim(),
-    hypeText('DM for prices','DM NOW for prices! '+E('fire'))
-  );
-  const h=`${E('header_product')} ${B(name)}`.trim();
-  if(S.mode==='variant'){
-    return assembleSingle(h, getVariantLines()||getOutOfStockBlock());
-  }
-  const body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
-  return assembleSingle(h, body);
+  if(isShort()) return buildShort(`${E('header_product')} ${name}`, LH('dm_prices','DM_PRICES'));
+  const h=clean(`${E('header_product')} ${B(name)}`);
+  if(S.mode==='variant') return assembleSingle(h, getVariantLines()||getOutOfStockBlock());
+  return assembleSingle(h, [getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock());
 }
 
-function buildRepost() {
+function buildRepost(){
   const name=S.name||'—';
-  const cta=hypeText(
-    `${E('cta_order')} ${hypeText('Order now','SELLING FAST — grab yours NOW!')}`.trim(),
-    `${E('cta_order')} SELLING FAST — grab yours NOW! ${E('fire')}`.trim()
-  );
-  if(isShort()) return buildShort(
-    `${E('header_repost')} ${name} — still available!`.trim(), cta
-  );
-  const h=`${E('header_repost')} ${B(`${name} — ${hypeText('still available!','STILL AVAILABLE!')}`)}`.trim();
+  const cta=clean(`${E('cta_order')} ${LH('selling_fast','SELLING_FAST')}`);
+  if(isShort()) return buildShort(`${E('header_repost')} ${name} — ${LH('still_available','STILL_AVAILABLE')}`, cta);
+  const h=clean(`${E('header_repost')} ${B(`${name} — ${LH('still_available','STILL_AVAILABLE')}`)}`);
   if(S.mode==='variant') return assembleSingle(h, getVariantLines()||getOutOfStockBlock(), cta);
-  const body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
-  return assembleSingle(h, body, cta);
+  return assembleSingle(h, [getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock(), cta);
 }
 
-function buildFlash() {
+function buildFlash(){
   const name=S.name||'—';
-  const flashHead=`${E('header_flash')} ${B(hypeText('FLASH SALE — TODAY ONLY','FLASH SALE — TODAY ONLY!'))} ${E('header_flash')}`.trim();
+  const flashHead=clean(`${E('header_flash')} ${B(L('flash_today'))} ${E('header_flash')}`);
   if(isShort()){
     const fp=S.flash.price?` ${CC()} ${fmt(S.flash.price)}`:'';
-    return buildShort(flashHead, `${name}${fp}\n${hypeText('Limited time','GRAB IT NOW! '+E('fire'))}`);
+    return buildShort(flashHead, `${name}${fp}\n${LH('limited_time','LIMITED_TIME')}`);
   }
-  const div=E('divider')||'───────────────';
-  const sig=getSig();
+  const div=E('divider')||'───────────────'; const sig=getSig(); const pa=E('price_arrow');
   if(S.mode==='variant'){
     const lines=getVariantLines(true);
-    const body=lines?`${E('header_product')} ${B(name)}\n\n${lines}`.trim():getOutOfStockBlock();
-    let out=`${flashHead}\n${div}\n\n${body}\n\n${hypeText('Limited time offer','⏰ LIMITED TIME — ACT NOW!')}`;
-    if(sig) out+=`\n${sig}`;
-    return out;
+    const body=lines?clean(`${E('header_product')} ${B(name)}`)+'\n\n'+lines:getOutOfStockBlock();
+    let out=`${flashHead}\n${div}\n\n${body}\n\n${LH('limited_time','LIMITED_TIME')}`;
+    if(sig) out+=`\n${sig}`; return out;
   }
-  let body=`${E('header_product')} ${B(name)}`.trim();
-  if(S.flash.og) body+=`\n${STR(`${E('price_arrow')} ${CC()} ${fmt(S.flash.og)}`)}`.replace(/^ /,'');
-  if(S.flash.price) body+=`\n${E('price_arrow')} ${B(`${CC()} ${fmt(S.flash.price)}`)}`.replace(/^ /,'');
-  const wBlock=getWBlock();
-  if(wBlock) body+=`\n\n${wBlock}`;
-  body+=`\n\n${hypeText('Limited time offer','⏰ LIMITED TIME — ACT NOW!')}`;
-  let out=`${flashHead}\n${div}\n\n${body}`;
-  if(sig) out+=`\n${sig}`;
-  return out;
+  let body=clean(`${E('header_product')} ${B(name)}`);
+  if(S.flash.og) body+='\n'+clean(`${STR(`${pa} ${CC()} ${fmt(S.flash.og)}`)}`);
+  if(S.flash.price) body+='\n'+clean(`${pa} ${B(`${CC()} ${fmt(S.flash.price)}`)}`);
+  const wBlock=getWBlock(); if(wBlock) body+='\n\n'+wBlock;
+  body+=`\n\n${LH('limited_time','LIMITED_TIME')}`;
+  let out=`${flashHead}\n${div}\n\n${body}`; if(sig) out+=`\n${sig}`; return out;
 }
 
-function buildNewArrival() {
+function buildNewArrival(){
   const name=S.name||'—';
-  if(isShort()) return buildShort(
-    `${E('header_new')} ${name} — ${hypeText('JUST ARRIVED!','JUST DROPPED!')}`.trim(),
-    hypeText('DM for price','Want it? DM NOW! '+E('fire'))
-  );
-  const h=`${E('header_new')} ${B(`${name} — ${hypeText('Just Arrived!','JUST ARRIVED!')}`)}`.trim();
-  const intro=`${hypeText('New in store!','🆕 BRAND NEW IN STORE!')}`;
+  if(isShort()) return buildShort(`${E('header_new')} ${name} — ${LH('just_arrived','JUST_ARRIVED')}`, LH('dm_prices','DM_PRICES'));
+  const h=clean(`${E('header_new')} ${B(`${name} — ${LH('just_arrived','JUST_ARRIVED')}`)}`);
+  const intro=LH('new_in_store','NEW_IN_STORE');
   if(S.mode==='variant') return assembleSingle(h, `${intro}\n\n${getVariantLines()||getOutOfStockBlock()}`);
-  const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
-  return assembleSingle(h, priceBody?`${intro}\n\n${priceBody}`:intro);
+  const pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+  return assembleSingle(h, pb?`${intro}\n\n${pb}`:intro);
 }
 
-function buildBackInStock() {
+function buildBackInStock(){
   const name=S.name||'—';
-  const headline=S.restockHeadline||hypeText('Back in Stock!','BACK IN STOCK!');
-  if(isShort()) return buildShort(
-    `${E('header_restock')} ${name} — ${headline}`.trim(),
-    hypeText('Available again','IT\'S BACK! Get yours '+E('fire'))
-  );
-  const h=`${E('header_restock')} ${B(`${name} — ${headline}`)}`.trim();
-  const intro=`${E('status_in')} ${hypeText('Available again!','AVAILABLE AGAIN!')}`.trim();
-  if(S.mode==='variant') return assembleSingle(h, `${intro}\n\n${getVariantLines()||'Coming soon...'}`);
-  const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
-  return assembleSingle(h, priceBody?`${intro}\n\n${priceBody}`:intro);
+  const headline=S.restockHeadline||LH('back_in_stock','BACK_IN_STOCK');
+  if(isShort()) return buildShort(`${E('header_restock')} ${name} — ${headline}`, LH('its_back','ITS_BACK'));
+  const h=clean(`${E('header_restock')} ${B(`${name} — ${headline}`)}`);
+  const intro=clean(`${E('status_in')} ${LH('available_again','AVAILABLE_AGAIN')}`);
+  if(S.mode==='variant') return assembleSingle(h, `${intro}\n\n${getVariantLines()||L('coming_soon')}`);
+  const pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+  return assembleSingle(h, pb?`${intro}\n\n${pb}`:intro);
 }
 
-function buildEngagement() {
+function buildEngagement(){
   const name=S.name||'this';
-  if(isShort()) return buildShort(
-    `${hypeText('Want '+name+'?','Want '+name+'? 👀')}`,
-    hypeText('DM your budget','Tell us your budget — we\'ll make it work! '+E('fire'))
-  );
-  const h=hypeText(`Want ${name}?`,`Want ${name}? 👀🔥`);
-  const body=hypeText(
-    'Tell us your budget — we\'ll make it work!\n\nWholesale and retail welcome.',
-    'Tell us your budget — we\'ll give you the BEST deal! 💰🔥\n\nWholesale and retail ALL welcome!'
-  );
-  const cta=CFG.phone?`\n${E('sig_phone')} ${CFG.phone}`.trim():'';
+  const wantLine=`${L('want')} ${name}?`;
+  if(isShort()) return buildShort(wantLine, LH('budget','BUDGET'));
+  const div=E('divider')||'───────────────';
+  const body=LH('budget','BUDGET')+'\n\n'+LH('ws_rs_welcome','WS_RS_WELCOME');
   const sig=getSig();
-  return `${h}\n${E('divider')||'───────────────'}\n\n${body}${cta}${sig?'\n'+sig:''}`;
+  // no duplicate phone — it's in the signature
+  return `${wantLine}\n${div}\n\n${body}${sig?'\n'+sig:''}`;
 }
 
-function buildBundle() {
+function buildPriceDrop(){
   const name=S.name||'—';
-  const item2=S.bundle.item2||'Item 2';
-  const combo=S.bundle.comboPrice;
-  const savings=S.bundle.savings;
-  if(isShort()){
-    let short=`${E('header_bundle')} ${name} + ${item2}`.trim();
-    if(combo) short+=` = ${CC()} ${fmt(combo)}`;
-    if(savings) short+=` (save ${CC()} ${fmt(savings)}${E('fire')})`.trim();
-    return buildShort(short, hypeText('DM to order','GET THIS DEAL NOW! '+E('fire')));
-  }
-  const h=`${E('header_bundle')} ${B(`${name} + ${item2}`)}`.trim();
-  let bundleBody=`${hypeText('Bundle Deal','🎁 BUNDLE DEAL')}`;
-  if(combo) bundleBody+=`\n${E('price_arrow')} Combo: ${B(`${CC()} ${fmt(combo)}`)}`.replace(/^ /,'');
-  if(savings) bundleBody+=`\n${hypeText(`Save ${CC()} ${fmt(savings)}`,`💰 YOU SAVE ${CC()} ${fmt(savings)}!`)}`;
-  if(S.mode==='variant') {
-    const lines=getVariantLines();
-    if(lines) bundleBody+=`\n\n${lines}`;
-  } else {
-    const priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
-    if(priceBody) bundleBody+=`\n\n${priceBody}`;
-  }
-  return assembleSingle(h, bundleBody);
-}
-
-function buildLastPieces() {
-  const name=S.name||'—';
-  const qty=S.lastQty;
-  const qtyText=qty?`Only ${qty} left!`:'Last pieces!';
-  if(isShort()) return buildShort(
-    `${E('header_last')} ${name} — ${qtyText}`.trim(),
-    hypeText('DM before it\'s gone','ALMOST GONE — DM NOW! '+E('fire'))
-  );
-  const h=`${E('header_last')} ${B(`${name} — ${hypeText(qtyText,qtyText.toUpperCase())}`)}`.trim();
-  const urgency=hypeText(
-    `${E('status_low')} ${qtyText} Don't miss out.`.trim(),
-    `${E('status_low')} ${qtyText.toUpperCase()} GET YOURS BEFORE THEY'RE GONE! ${E('fire')}`.trim()
-  );
-  let body;
+  if(isShort()) return buildShort(`${E('header_drop')} ${name} — ${LH('price_drop','PRICE_DROP')}`, LH('dm_prices','DM_PRICES'));
+  const h=clean(`${E('header_drop')} ${B(`${name} — ${LH('price_drop','PRICE_DROP')}`)}`);
+  const intro=LH('prices_slashed','PRICES_SLASHED');
+  // Build price blocks — for price drop, force old-price display on
+  let pb;
   if(S.mode==='variant'){
-    body=getVariantLines()||getOutOfStockBlock();
+    pb=getVariantLines()||getOutOfStockBlock();
   } else {
-    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
+    // Calculate savings percentage for wholesale
+    let wLine='';
+    if(S.w.price && S.w.status!=='out_of_stock'){
+      const sw=E('section_wholesale'), pa=E('price_arrow');
+      const qty=S.w.qty||'1';
+      wLine=`${sw} ${B(L('wholesale'))}`;
+      if(S.w.og){
+        wLine+=`\n${STR(`${pa} ${L('was')}: ${CC()} ${fmt(S.w.og)}`)}`;
+        wLine+=`\n${pa} ${L('now_only')}: ${B(`${CC()} ${fmt(S.w.price)}`)}`;
+        const pct=Math.round((1-Number(S.w.price)/Number(S.w.og))*100);
+        if(pct>0) wLine+=`\n${LH('you_save_pct','YOU_SAVE_PCT').replace('%p',pct)}`;
+      } else {
+        wLine+=`\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(S.w.price)}`)}`;
+      }
+      if(S.w.status==='low_stock') wLine+=`\n${E('status_low')} ${L('low_stock')}`;
+    }
+    let rLine='';
+    if(S.r.price && S.r.status!=='out_of_stock'){
+      const sr=E('section_retail'), pa=E('price_arrow');
+      rLine=`${sr} ${B(L('retail'))}`;
+      if(S.r.og){
+        rLine+=`\n${STR(`${pa} ${L('was')}: ${CC()} ${fmt(S.r.og)}`)}`;
+        rLine+=`\n${pa} ${L('now_only')}: ${B(`${CC()} ${fmt(S.r.price)}`)}`;
+        const pct=Math.round((1-Number(S.r.price)/Number(S.r.og))*100);
+        if(pct>0) rLine+=`\n${LH('you_save_pct','YOU_SAVE_PCT').replace('%p',pct)}`;
+      } else {
+        rLine+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(S.r.price)}`)}`;
+      }
+      if(S.r.status==='low_stock') rLine+=`\n${E('status_low')} ${L('low_stock')}`;
+    }
+    pb=[wLine,rLine].filter(Boolean).join('\n\n')||getOutOfStockBlock();
   }
+  return assembleSingle(h, `${intro}\n\n${pb}`);
+}
+
+function buildBundle(){
+  const name=S.name||'—'; const item2=S.bundle.item2||'Item 2';
+  const combo=S.bundle.comboPrice; const savings=S.bundle.savings;
+  if(isShort()){
+    let short=`${E('header_bundle')} ${name} + ${item2}`;
+    if(combo) short+=`\n${L('combo')}: ${CC()} ${fmt(combo)}`;
+    return buildShort(short, LH('dm_order','GET_DEAL'));
+  }
+  const h=clean(`${E('header_bundle')} ${B(`${name} + ${item2}`)}`);
+  let bb=LH('bundle_deal','BUNDLE_DEAL');
+  if(combo) bb+='\n'+clean(`${E('price_arrow')} ${L('combo')}: ${B(`${CC()} ${fmt(combo)}`)}`);
+  if(savings) bb+='\n'+LH(`${L('save')} ${CC()} ${fmt(savings)}`,`${L('YOU_SAVE')} ${CC()} ${fmt(savings)}!`);
+  if(S.mode==='variant'){ const l=getVariantLines(); if(l) bb+='\n\n'+l; }
+  else { const pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n'); if(pb) bb+='\n\n'+pb; }
+  return assembleSingle(h, bb);
+}
+
+function buildLastPieces(){
+  const name=S.name||'—'; const qty=S.lastQty;
+  const qtyText=qty?L('only_left').replace('%n',qty):L('last_pieces');
+  const qtyHype=qty?L('only_left').replace('%n',qty).toUpperCase():L('LAST_PIECES');
+  if(isShort()) return buildShort(`${E('header_last')} ${name} — ${qtyText}`, LH('dm_gone','ALMOST_GONE'));
+  const h=clean(`${E('header_last')} ${B(`${name} — ${S.tone==='hype'?qtyHype:qtyText}`)}`);
+  const urgency=clean(`${E('status_low')} ${S.tone==='hype'?qtyHype:qtyText} ${LH('dont_miss','DONT_MISS')}`);
+  let body; if(S.mode==='variant') body=getVariantLines()||getOutOfStockBlock();
+  else body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
   return assembleSingle(h, `${urgency}\n\n${body}`);
 }
 
-function buildReview() {
-  const name=S.name||'—';
-  const q=S.review.quote||'Great product!';
-  const reviewer=S.review.reviewer;
-  const stars=S.review.stars;
-  const starStr=stars?E('star').repeat(stars)||('★'.repeat(stars)):'';
-  if(isShort()) return buildShort(
-    `${E('header_review')} "${q.slice(0,60)}${q.length>60?'...':''}"`.trim(),
-    `${name}${reviewer?' — '+reviewer:''}${getSig()}`
-  );
-  const h=`${E('header_review')} ${B(name)} — Customer Review`.trim();
-  let reviewBody='';
-  if(starStr) reviewBody+=`${starStr}\n`;
-  reviewBody+=`"${q}"`;
-  if(reviewer) reviewBody+=`\n— ${reviewer}`;
-  let priceBody;
-  if(S.mode==='variant'){
-    priceBody=getVariantLines();
-  } else {
-    priceBody=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
-  }
-  const full=priceBody?`${reviewBody}\n\n${priceBody}`:reviewBody;
-  return assembleSingle(h, full);
+function buildReview(){
+  const name=S.name||'—'; const q=S.review.quote||'Great product!';
+  const reviewer=S.review.reviewer; const stars=S.review.stars;
+  const starStr=stars?(E('star')||'★').repeat(stars):'';
+  if(isShort()) return buildShort(`${E('header_review')} "${q.slice(0,60)}${q.length>60?'...':''}"`, `${name}${reviewer?' — '+reviewer:''}`);
+  const h=clean(`${E('header_review')} ${B(name)} — ${L('customer_review')}`);
+  let rb=''; if(starStr) rb+=starStr+'\n'; rb+=`"${q}"`; if(reviewer) rb+=`\n— ${reviewer}`;
+  let pb; if(S.mode==='variant') pb=getVariantLines(); else pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
+  return assembleSingle(h, pb?`${rb}\n\n${pb}`:rb);
 }
 
 // ═══════════════════════════════════════
-// INSTAGRAM HASHTAG APPEND
+// INSTAGRAM HASHTAGS
 // ═══════════════════════════════════════
-function maybeAddHashtags(text) {
+function maybeAddHashtags(text){
   if(S.network!=='instagram') return text;
-  const name=(S.name||'product').toLowerCase().replace(/[^a-z0-9]/g,'');
-  const tags=['#'+name,'#shopnow','#deals','#wholesale','#retail'].filter(t=>t!=='#');
-  return text+'\n.\n.\n.\n'+tags.join(' ');
+  const custom=CFG.hashtags?.trim();
+  if(!custom) return text;
+  return text+'\n.\n.\n.\n'+custom;
 }
 
 // ═══════════════════════════════════════
 // PREVIEW ENGINE
 // ═══════════════════════════════════════
-function regen() {
+function regen(){
   if(S.previewEdited) return;
-  if(!S.type){
-    document.getElementById('previewBox').value='Pick a platform and caption type...';
-    updateCharCounter(); return;
-  }
-  const def=REGISTRY.find(r=>r.id===S.type);
-  if(!def) return;
-  let text=def.build();
-  // clean up double spaces from empty emojis
-  text=text.replace(/  +/g,' ').replace(/^ /gm,'');
+  if(!S.type){ document.getElementById('previewBox').value=L('pick_prompt'); updateCharCounter(); return; }
+  const def=REGISTRY.find(r=>r.id===S.type); if(!def)return;
+  let text=clean(def.build());
   text=maybeAddHashtags(text);
   document.getElementById('previewBox').value=text;
   updateCharCounter();
 }
-
-function onPreviewEdit() {
-  if(!S.type)return;
-  S.previewEdited=true;
-  document.getElementById('resetPill').classList.add('show');
-  updateCharCounter();
-}
-function resetPreview() {
-  S.previewEdited=false;
-  document.getElementById('resetPill').classList.remove('show');
-  regen();
-}
-
-function updateCharCounter() {
-  const el=document.getElementById('charCounter');
-  const ml=maxLen();
-  if(!ml){ el.classList.remove('show'); return; }
-  const len=document.getElementById('previewBox').value.length;
-  el.textContent=`${len}/${ml}`;
-  el.classList.add('show');
-  el.classList.toggle('warn', len>ml*0.8 && len<=ml);
-  el.classList.toggle('over', len>ml);
-}
+function onPreviewEdit(){ if(!S.type)return; S.previewEdited=true; document.getElementById('resetPill').classList.add('show'); updateCharCounter(); }
+function resetPreview(){ S.previewEdited=false; document.getElementById('resetPill').classList.remove('show'); regen(); }
+function updateCharCounter(){ const el=document.getElementById('charCounter'); const ml=maxLen(); if(!ml){el.classList.remove('show');return;} const len=document.getElementById('previewBox').value.length; el.textContent=`${len}/${ml}`; el.classList.add('show'); el.classList.toggle('warn',len>ml*0.8&&len<=ml); el.classList.toggle('over',len>ml); }
 
 // ═══════════════════════════════════════
 // COPY
 // ═══════════════════════════════════════
-function doCopy() {
+function doCopy(){
   const text=document.getElementById('previewBox').value;
-  if(!text||text==='Pick a platform and caption type...') return;
+  if(!text||text===L('pick_prompt')) return;
   navigator.clipboard.writeText(text).then(()=>{
     const btn=document.getElementById('copyBtn');
-    btn.textContent='Copied!'; btn.classList.add('done');
-    setTimeout(()=>{ btn.textContent='Copy Caption'; btn.classList.remove('done'); },2500);
+    btn.textContent=L('copied'); btn.classList.add('done');
+    setTimeout(()=>{ btn.textContent=L('copy'); btn.classList.remove('done'); },2500);
   });
 }
 
