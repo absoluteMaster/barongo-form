@@ -390,23 +390,23 @@ function CC() { return CFG.currency||'USD'; }
 // EMOJI REGISTRY
 // ═══════════════════════════════════════
 const EM = {
-  header_product:    { hype:'🛒🔥', balanced:'🛒', pro:'' },
-  header_flash:      { hype:'⚡🔥', balanced:'⚡', pro:'' },
-  header_new:        { hype:'✨🆕', balanced:'✨', pro:'' },
-  header_restock:    { hype:'🔄✅', balanced:'🔄', pro:'' },
-  header_repost:     { hype:'📢🔥', balanced:'📢', pro:'' },
-  header_bundle:     { hype:'🎁🔥', balanced:'🎁', pro:'' },
-  header_drop:       { hype:'📉🔥', balanced:'📉', pro:'' },
-  header_last:       { hype:'🚨🔥', balanced:'🚨', pro:'' },
-  header_review:     { hype:'⭐🔥', balanced:'⭐', pro:'' },
-  section_wholesale: { hype:'📦💰', balanced:'📦', pro:'' },
-  section_retail:    { hype:'🛍️💰', balanced:'🛍️', pro:'' },
-  price_arrow:       { hype:'👉🔥', balanced:'👉', pro:'•' },
-  status_in:         { hype:'✅🟢', balanced:'✅', pro:'' },
-  status_low:        { hype:'⚠️🔥', balanced:'⚠️', pro:'' },
-  status_out:        { hype:'❌😱', balanced:'❌', pro:'' },
+  header_product:    { hype:'🛒', balanced:'🛒', pro:'' },
+  header_flash:      { hype:'⚡', balanced:'⚡', pro:'' },
+  header_new:        { hype:'✨', balanced:'✨', pro:'' },
+  header_restock:    { hype:'🔄', balanced:'🔄', pro:'' },
+  header_repost:     { hype:'📢', balanced:'📢', pro:'' },
+  header_bundle:     { hype:'🎁', balanced:'🎁', pro:'' },
+  header_drop:       { hype:'📉', balanced:'📉', pro:'' },
+  header_last:       { hype:'🚨', balanced:'🚨', pro:'' },
+  header_review:     { hype:'⭐', balanced:'⭐', pro:'' },
+  section_wholesale: { hype:'📦', balanced:'📦', pro:'' },
+  section_retail:    { hype:'🛍️', balanced:'🛍️', pro:'' },
+  price_arrow:       { hype:'👉', balanced:'👉', pro:'•' },
+  status_in:         { hype:'✅', balanced:'✅', pro:'' },
+  status_low:        { hype:'⚠️', balanced:'⚠️', pro:'' },
+  status_out:        { hype:'❌', balanced:'❌', pro:'' },
   cta_order:         { hype:'🏃💨', balanced:'👇', pro:'' },
-  cta_dm:            { hype:'💬🔥', balanced:'💬', pro:'' },
+  cta_dm:            { hype:'💬', balanced:'💬', pro:'' },
   sig_handle:        { hype:'🌐', balanced:'🌐', pro:'' },
   sig_location:      { hype:'📍', balanced:'📍', pro:'' },
   sig_phone:         { hype:'📞', balanced:'📞', pro:'' },
@@ -462,15 +462,12 @@ const NETWORKS = Object.keys(PLATFORMS);
 
 const REGISTRY = [
   { id:'standard',       label:'Standard',       nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildStandard },
-  { id:'wholesale_only', label:'Wholesale Only',  nets:['whatsapp','telegram','facebook','any'], groups:['wholesale'], build:buildWholesaleOnly },
   { id:'repost',         label:'Repost',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['wholesale','retail'], build:buildRepost },
   { id:'flash',          label:'Flash Sale',      nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['flash','wholesale'], build:buildFlash },
   { id:'new_arrival',    label:'New Arrival',     nets:['whatsapp','telegram','tiktok','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildNewArrival },
   { id:'back_in_stock',  label:'Back in Stock',   nets:['whatsapp','telegram','instagram','facebook','any'], groups:['restock_headline','wholesale','retail'], build:buildBackInStock },
   { id:'engagement',     label:'Engagement',      nets:['tiktok','instagram','facebook','twitter','any'], groups:[], build:buildEngagement },
-  { id:'plain',          label:'Plain Text',      nets:['any'], groups:['wholesale','retail'], build:buildPlain },
   { id:'bundle',         label:'Bundle Deal',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['bundle','wholesale','retail'], build:buildBundle },
-  { id:'price_drop',     label:'Price Drop',      nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildPriceDrop },
   { id:'last_pieces',    label:'Last Pieces',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
   { id:'review',         label:'Review',          nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
 ];
@@ -878,8 +875,8 @@ function getWBlock() {
   let line = og
     ? `${sw} ${B('Wholesale')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
     : `${sw} ${B('Wholesale')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=` ${E('status_low')}`;
-  return line.replace(/^ /,'');
+  if(status==='low_stock') line+=`\n${E('status_low')} Low stock`;
+  return line.replace(/^ /gm,'');
 }
 
 function getRBlock() {
@@ -892,34 +889,34 @@ function getRBlock() {
   let line = og
     ? `${sr} ${B('Retail')}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
     : `${sr} ${B('Retail')}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=` ${E('status_low')}`;
-  return line.replace(/^ /,'');
+  if(status==='low_stock') line+=`\n${E('status_low')} Low stock`;
+  return line.replace(/^ /gm,'');
 }
 
 function getVariantLines(isFlash=false, isWholesaleOnly=false) {
   const active=S.variants.filter(v=>v.status!=='out_of_stock');
   if(!active.length) return null;
-  const pa=E('price_arrow');
+  const pa=E('price_arrow'), sw=E('section_wholesale'), sr=E('section_retail');
   return active.map(v=>{
     const vName=buildVName(v);
-    let block=`${E('fire')} ${B(vName)}\n`.replace(/^ /,'');
+    let block=`${E('fire')} ${B(vName)}`.replace(/^ /,'');
     if(isFlash){
-      if(v.flashOg) block+=`${STR(`Was: ${CC()} ${fmt(v.flashOg)}`)}\n`;
-      if(v.flashPrice) block+=`${E('header_flash')} Flash: ${B(`${CC()} ${fmt(v.flashPrice)}`)}`.replace(/^ /,'');
+      block+=`\n${E('header_flash')} Flash Price`.replace(/^ /,'');
+      if(v.flashOg) block+=`\n${STR(`${pa} ${CC()} ${fmt(v.flashOg)}`)}`.replace(/^ /,'');
+      if(v.flashPrice) block+=`\n${pa} ${B(`${CC()} ${fmt(v.flashPrice)}`)}`.replace(/^ /,'');
     } else {
       if(v.wholesale&&v.wholesaleQty){
-        if(v.wOg){ block+=`${E('section_wholesale')} ${STR(`Wholesale: ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}\n`.replace(/^ /,'');
-          block+=`${E('section_wholesale')} Wholesale: ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,'');
-        } else { block+=`${E('section_wholesale')} Wholesale: ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,''); }
+        block+=`\n${sw} ${B('Wholesale')}`.replace(/^ /,'');
+        if(v.wOg) block+=`\n${STR(`${pa} ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}`.replace(/^ /,'');
+        block+=`\n${pa} ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`.replace(/^ /,'');
       }
       if(!isWholesaleOnly&&v.retail){
-        if(v.wholesale&&v.wholesaleQty) block+='\n';
-        if(v.rOg){ block+=`${E('section_retail')} ${STR(`Retail: 1pc = ${CC()} ${fmt(v.rOg)}`)}\n`.replace(/^ /,'');
-          block+=`${E('section_retail')} Retail: 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,'');
-        } else { block+=`${E('section_retail')} Retail: 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,''); }
+        block+=`\n${sr} ${B('Retail')}`.replace(/^ /,'');
+        if(v.rOg) block+=`\n${STR(`${pa} 1pc = ${CC()} ${fmt(v.rOg)}`)}`.replace(/^ /,'');
+        block+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`.replace(/^ /,'');
       }
     }
-    if(v.status==='low_stock') block+=` ${E('status_low')}`;
+    if(v.status==='low_stock') block+=`\n${E('status_low')} Low stock`.replace(/^ /,'');
     return block;
   }).join('\n\n');
 }
@@ -973,17 +970,6 @@ function buildStandard() {
   return assembleSingle(h, body);
 }
 
-function buildWholesaleOnly() {
-  const name=S.name||'—';
-  if(isShort()) return buildShort(
-    `${E('section_wholesale')} ${name} — Wholesale`.trim(),
-    hypeText('DM for bulk pricing','BULK DEALS — DM now! '+E('fire'))
-  );
-  const h=`${E('header_product')} ${B(name)}`.trim();
-  if(S.mode==='variant') return assembleSingle(h, getVariantLines(false,true)||getOutOfStockBlock());
-  return assembleSingle(h, getWBlock()||getOutOfStockBlock());
-}
-
 function buildRepost() {
   const name=S.name||'—';
   const cta=hypeText(
@@ -1015,9 +1001,9 @@ function buildFlash() {
     if(sig) out+=`\n${sig}`;
     return out;
   }
-  let body=`${E('header_product')} ${B(name)}\n`.trim();
-  if(S.flash.og) body+=`\n${STR(`Was: ${CC()} ${fmt(S.flash.og)}`)}`;
-  if(S.flash.price) body+=`\n${E('header_flash')} ${hypeText('Now:','NOW ONLY:')} ${B(`${CC()} ${fmt(S.flash.price)}`)}`.trim();
+  let body=`${E('header_product')} ${B(name)}`.trim();
+  if(S.flash.og) body+=`\n${STR(`${E('price_arrow')} ${CC()} ${fmt(S.flash.og)}`)}`.replace(/^ /,'');
+  if(S.flash.price) body+=`\n${E('price_arrow')} ${B(`${CC()} ${fmt(S.flash.price)}`)}`.replace(/^ /,'');
   const wBlock=getWBlock();
   if(wBlock) body+=`\n\n${wBlock}`;
   body+=`\n\n${hypeText('Limited time offer','⏰ LIMITED TIME — ACT NOW!')}`;
@@ -1069,22 +1055,6 @@ function buildEngagement() {
   return `${h}\n${E('divider')||'───────────────'}\n\n${body}${cta}${sig?'\n'+sig:''}`;
 }
 
-function buildPlain() {
-  const name=S.name||'—';
-  // Plain always uses pro tone (no emojis, no markdown)
-  const origTone=S.tone; S.tone='pro';
-  let body;
-  if(S.mode==='variant'){
-    body=getVariantLines()||getOutOfStockBlock();
-  } else {
-    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
-  }
-  S.tone=origTone;
-  const parts=[CFG.handle,CFG.location,CFG.phone].filter(Boolean);
-  const sig=parts.length?'\n\n'+parts.join(' | '):'';
-  return `${name}\n---------------\n\n${body}${sig}`;
-}
-
 function buildBundle() {
   const name=S.name||'—';
   const item2=S.bundle.item2||'Item 2';
@@ -1108,29 +1078,6 @@ function buildBundle() {
     if(priceBody) bundleBody+=`\n\n${priceBody}`;
   }
   return assembleSingle(h, bundleBody);
-}
-
-function buildPriceDrop() {
-  const name=S.name||'—';
-  if(isShort()){
-    return buildShort(
-      `${E('header_drop')} ${name} — PRICE DROP`.trim(),
-      hypeText('Check new prices','NEW LOW PRICES — DM now! '+E('fire'))
-    );
-  }
-  const h=`${E('header_drop')} ${B(`${name} — ${hypeText('Price Drop!','PRICE DROP!')}`)}`.trim();
-  // Force show old prices
-  const origWOg=S.w.ogOn, origROg=S.r.ogOn;
-  S.w.ogOn=!!S.w.og; S.r.ogOn=!!S.r.og;
-  let body;
-  if(S.mode==='variant') {
-    body=getVariantLines()||getOutOfStockBlock();
-  } else {
-    body=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n')||getOutOfStockBlock();
-  }
-  S.w.ogOn=origWOg; S.r.ogOn=origROg;
-  const cta=hypeText('New prices now live!',`${E('fire')} NEW LOW PRICES — don't miss out!`);
-  return assembleSingle(h, body, cta);
 }
 
 function buildLastPieces() {
