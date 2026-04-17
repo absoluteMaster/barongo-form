@@ -246,10 +246,10 @@ function initNetworks() {
 function selectNetwork(id) {
   S.network=id;
   document.querySelectorAll('#netPills .pill').forEach(b=>b.classList.remove('on'));
-  document.getElementById('net_'+id).classList.add('on');
+  document.getElementById('net_'+id)?.classList.add('on');
   if(S.type){ const def=REGISTRY.find(r=>r.id===S.type); if(!def||!def.nets.includes(id)) S.type=null; }
   renderTypePills();
-  document.getElementById('typeBlk').classList.remove('gone');
+  document.getElementById('typeBlk')?.classList.remove('gone');
   updateCharCounter();
   updatePreviewMeta();
   regen();
@@ -261,9 +261,15 @@ function renderTypePills() {
 }
 function selectType(id) {
   S.type=id;
-  document.querySelectorAll('#typePills .pill').forEach(b=>b.classList.remove('on'));
-  const btn=document.getElementById('type_'+id); if(btn) btn.classList.add('on');
-  renderFields(); updatePreviewMeta(); regen();
+  document.body.classList.remove('no-type');
+  document.body.classList.add('has-type');
+  document.querySelectorAll('.type-tile').forEach(t=>t.classList.toggle('on', t.dataset.type===id));
+  if(typeof updateTypeChip==='function') updateTypeChip();
+  renderFields();
+  updatePreviewMeta();
+  regen();
+  if(typeof closeAllPanels==='function') closeAllPanels();
+  setTimeout(()=>{ if(!S.name && typeof focusName==='function') focusName(); }, 180);
 }
 function setMode(m) {
   S.mode=m;
@@ -296,16 +302,20 @@ function renderFields() {
   if(!S.type){area.innerHTML='';return;}
   const def=REGISTRY.find(r=>r.id===S.type);
   if(!def){area.innerHTML='';return;}
+  // New layout: name + price inputs handle wholesale/retail/flash.
+  // Only render TYPE-SPECIFIC extras here (bundle, review, restock headline, last qty).
   let html='<div class="blk">';
+  if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
+  if(def.groups.includes('testimonial')) html+=htmlTestimonial();
+  if(def.groups.includes('bundle')) html+=htmlBundleFields();
+  if(def.groups.includes('last_qty')) html+=htmlLastQty();
+  html+='</div>';
+  area.innerHTML=html;
+  if(def.groups.includes('testimonial')) applyStars(S.review.stars);
+  return;
+  // ─── legacy variant/full path retained below but not reached ───
   if(S.mode==='variant'){
     const needsPrices=def.groups.some(g=>['wholesale','retail','flash'].includes(g));
-    if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
-    if(def.groups.includes('testimonial')) html+=htmlTestimonial();
-    if(def.groups.includes('bundle')) html+=htmlBundleFields();
-    if(def.groups.includes('last_qty')) html+=htmlLastQty();
-    if(def.groups.includes('flash')) html+=htmlFlashGroupVariant();
-    if(needsPrices) html+=htmlVariantSection();
-  } else {
     if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
     if(def.groups.includes('testimonial')) html+=htmlTestimonial();
     if(def.groups.includes('bundle')) html+=htmlBundleFields();
@@ -813,14 +823,15 @@ function tgInit() {
   document.body.classList.add('in-tg');
   // Dark theme always — our design is dark-only
   try { TG.setHeaderColor('#0a0a0a'); TG.setBackgroundColor('#0a0a0a'); } catch(e){}
-  TG.MainButton.setText('SEND TO CHAT');
+  TG.MainButton.setText('send to chat');
   TG.MainButton.color = '#7ee787';
   TG.MainButton.textColor = '#0a0a0a';
   TG.MainButton.onClick(()=>{
     const text = document.getElementById('previewBox').value;
     if (!text || text === L('pick_prompt')) return;
     TG.sendData(text);
-    TG.close();
+    // keep app open, clear name+price for next product
+    if(typeof resetAfterSend==='function') resetAfterSend();
   });
   updateTgMainBtn();
 }
@@ -838,9 +849,265 @@ const _onPreviewEdit = onPreviewEdit;
 onPreviewEdit = function(){ _onPreviewEdit.apply(this, arguments); updateTgMainBtn(); };
 
 // ═══════════════════════════════════════
+// NEW UI LAYER (phased interaction)
+// ═══════════════════════════════════════
+
+// --- type chip ---
+function updateTypeChip(){
+  const chip=document.getElementById('typeChip');
+  if(!chip) return;
+  if(!S.type){ chip.textContent='—'; return; }
+  const def=REGISTRY.find(r=>r.id===S.type);
+  const icon={standard:'🛒',flash:'⚡',new_arrival:'✨',last_pieces:'🔥',repost:'📢',back_in_stock:'🔄',engagement:'💬',price_drop:'📉',bundle:'🎁',review:'⭐'}[S.type]||'▸';
+  chip.textContent=`${icon} ${def?def.label.toLowerCase():S.type}`;
+}
+
+// --- name ---
+function onNameInput(){
+  const chip=document.getElementById('nameChip');
+  if(chip) chip.textContent = S.name ? '• ' + S.name : '';
+  regen();
+}
+function focusName(){
+  // Un-hide name field before focusing (CSS may hide it when focus-price is active)
+  document.body.classList.remove('focus-price');
+  requestAnimationFrame(()=>{
+    const el=document.getElementById('productName');
+    if(el){ el.focus(); el.select(); }
+  });
+}
+function focusPrice(){
+  document.body.classList.remove('focus-name');
+  requestAnimationFrame(()=>{
+    const el=document.getElementById('priceField');
+    if(el) el.focus();
+  });
+}
+
+// --- price smart parser ---
+// Accepts: "1200", "1200 10", "1200~1500", "1200~1500 10", "1200 10 low", "1200 10 out"
+function parsePriceInput(raw){
+  const text=(raw||'').trim();
+  const tokens=text.split(/\s+/).filter(Boolean);
+  let price='', qty='', og='', status=null;
+  if(tokens.length){
+    const first=tokens[0];
+    if(first.includes('~')){
+      const [p,o]=first.split('~');
+      price=(p||'').replace(/[^\d.]/g,'');
+      og=(o||'').replace(/[^\d.]/g,'');
+    } else {
+      price=first.replace(/[^\d.]/g,'');
+    }
+    for(const t of tokens.slice(1)){
+      const low=t.toLowerCase();
+      if(/^\d+$/.test(t) && !qty) qty=t;
+      else if(low==='low'||low==='low_stock') status='low_stock';
+      else if(low==='out'||low==='out_of_stock') status='out_of_stock';
+      else if(low==='in'||low==='in_stock') status='in_stock';
+    }
+  }
+
+  // Map to state based on type
+  if(S.type==='flash'){
+    S.flash.price=price;
+    if(og) S.flash.og=og;
+    if(qty) S.w.qty=qty;
+    if(status) S.w.status=status;
+  } else {
+    S.w.price=price;
+    if(qty) S.w.qty=qty;
+    if(og){ S.w.og=og; S.w.ogOn=true; }
+    else { S.w.ogOn=false; S.w.og=''; }
+    if(status) S.w.status=status;
+  }
+
+  updatePriceChip();
+  updateChipRail();
+  regen();
+}
+function updatePriceChip(){
+  const chip=document.getElementById('priceChip'); if(!chip) return;
+  const p = S.type==='flash' ? S.flash.price : S.w.price;
+  const og = S.type==='flash' ? S.flash.og : S.w.og;
+  const q = S.w.qty;
+  if(!p){ chip.textContent=''; return; }
+  let parts=[`${CC()} ${fmt(p)}`];
+  if(og) parts.push(`~${fmt(og)}~`);
+  if(q && q!=='1') parts.push(`×${q}`);
+  chip.textContent='• '+parts.join(' ');
+}
+function showPriceHint(show){ /* hint visibility driven by :focus-within CSS; kept for API */ }
+
+// --- focus step (keyboard-up collapsing) ---
+function setFocusStep(step){
+  document.body.classList.remove('focus-name','focus-price','kb-up');
+  if(step){
+    document.body.classList.add('focus-'+step, 'kb-up');
+  }
+}
+
+// --- chip rail (platform / status / tone / lang / retail) ---
+function updateChipRail(){
+  const p=document.getElementById('chipPlatformV');
+  if(p) p.textContent = (PLATFORMS[S.network]?.fullLabel || S.network || '').toLowerCase();
+  const t=document.getElementById('chipToneV'); if(t) t.textContent=S.tone;
+  const l=document.getElementById('chipLangV'); if(l) l.textContent=S.lang;
+  const sv=document.getElementById('chipStatusV'); const sc=document.getElementById('chipStatus');
+  if(sv && sc){
+    const st=S.w.status;
+    sv.textContent = st==='in_stock'?'in':st==='low_stock'?'low':'out';
+    sc.dataset.status = st==='in_stock'?'in':st==='low_stock'?'low':'out';
+  }
+  const rc=document.getElementById('chipRetail');
+  if(rc){
+    const on = !!(S.r && S.r.price);
+    rc.classList.toggle('on', on);
+    rc.classList.toggle('off', !on);
+    rc.querySelector('.rc-v').textContent = on ? `${CC()} ${fmt(S.r.price)}` : 'retail';
+  }
+}
+function cycleStatus(){
+  const seq=['in_stock','low_stock','out_of_stock'];
+  const i=seq.indexOf(S.w.status);
+  S.w.status=seq[(i+1)%seq.length];
+  updateChipRail();
+  regen();
+}
+function toggleRetail(){
+  // ask inline for retail price
+  const current = S.r.price || '';
+  const v = window.prompt('retail price? (leave blank to remove)', current);
+  if(v===null) return;
+  const trimmed = v.trim();
+  if(!trimmed){
+    S.r = { price:'', qty:'', og:'', ogOn:false, status:'in_stock' };
+  } else {
+    const parts = trimmed.split(/\s+/);
+    const head = parts[0];
+    if(head.includes('~')){
+      const [p,o]=head.split('~');
+      S.r.price=(p||'').replace(/[^\d.]/g,'');
+      S.r.og=(o||'').replace(/[^\d.]/g,'');
+      S.r.ogOn=!!S.r.og;
+    } else {
+      S.r.price=head.replace(/[^\d.]/g,'');
+    }
+    if(parts[1] && /^\d+$/.test(parts[1])) S.r.qty=parts[1];
+  }
+  updateChipRail();
+  regen();
+}
+
+// --- side panels ---
+function showPanel(id){
+  document.getElementById('backdrop')?.classList.add('show');
+  document.getElementById(id)?.classList.add('show');
+}
+function hidePanel(id){
+  document.getElementById(id)?.classList.remove('show');
+  // close backdrop only if no panel remains shown
+  const anyOpen = ['settingsPanel','typesPanel','pickerPanel'].some(p=>document.getElementById(p)?.classList.contains('show'));
+  if(!anyOpen) document.getElementById('backdrop')?.classList.remove('show');
+}
+function closeAllPanels(){
+  ['settingsPanel','typesPanel','pickerPanel'].forEach(p=>document.getElementById(p)?.classList.remove('show'));
+  document.getElementById('backdrop')?.classList.remove('show');
+}
+// override toggleSettings to use panel API
+const _toggleSettings_orig = toggleSettings;
+toggleSettings = function(){
+  const p=document.getElementById('settingsPanel');
+  if(p?.classList.contains('show')) hidePanel('settingsPanel');
+  else showPanel('settingsPanel');
+};
+
+// --- types panel ---
+function openTypesPanel(){
+  const list=document.getElementById('typesList'); if(!list) return;
+  const avail=REGISTRY.filter(r=>r.nets.includes(S.network));
+  list.innerHTML = avail.map(r=>{
+    const icon={standard:'🛒',flash:'⚡',new_arrival:'✨',last_pieces:'🔥',repost:'📢',back_in_stock:'🔄',engagement:'💬',price_drop:'📉',bundle:'🎁',review:'⭐'}[r.id]||'▸';
+    return `<button class="type-row${S.type===r.id?' on':''}" onclick="pickTypeFromPanel('${r.id}')">${icon} ${r.label.toLowerCase()}</button>`;
+  }).join('');
+  showPanel('typesPanel');
+}
+function closeTypesPanel(){ hidePanel('typesPanel'); }
+function pickTypeFromPanel(id){
+  closeTypesPanel();
+  selectType(id);
+}
+
+// --- generic picker (platform, tone, lang) ---
+let _pickerField = null;
+function openPicker(field){
+  _pickerField = field;
+  const title=document.getElementById('pickerTitle');
+  const list=document.getElementById('pickerList');
+  if(!title||!list) return;
+  let rows=[], current='';
+  if(field==='platform'){
+    title.textContent = '▸ platform';
+    current = S.network;
+    rows = Object.keys(PLATFORMS).map(k=>({ id:k, label:(PLATFORMS[k].fullLabel||k).toLowerCase() }));
+  } else if(field==='tone'){
+    title.textContent = '▸ tone';
+    current = S.tone;
+    rows = [{id:'hype',label:'hype — playful, emoji-heavy'},{id:'balanced',label:'balanced — clean & warm'},{id:'pro',label:'pro — minimal, business'}];
+  } else if(field==='lang'){
+    title.textContent = '▸ language';
+    current = S.lang;
+    rows = [{id:'en',label:'english'},{id:'sw',label:'swahili'}];
+  }
+  list.innerHTML = rows.map(r=>`<button class="picker-row${r.id===current?' on':''}" onclick="pickFromPanel('${r.id}')">${r.label}</button>`).join('');
+  showPanel('pickerPanel');
+}
+function closePicker(){ hidePanel('pickerPanel'); _pickerField=null; }
+function pickFromPanel(id){
+  if(_pickerField==='platform') selectNetwork(id);
+  else if(_pickerField==='tone') setTone(id);
+  else if(_pickerField==='lang') setLang(id);
+  closePicker();
+  updateChipRail();
+}
+
+// --- clear: two flavors ---
+function clearAll(){
+  S.type=null;
+  clearForm(); // resets name + prices + extras
+  document.body.classList.remove('has-type','focus-name','focus-price','kb-up');
+  document.body.classList.add('no-type');
+  const p=document.getElementById('priceField'); if(p) p.value='';
+  updateTypeChip();
+  updatePriceChip();
+  updateChipRail();
+  renderFields();
+  updatePreviewMeta();
+  regen();
+  closeAllPanels();
+}
+// After sending from Telegram, we clear name+price but keep type/platform
+function resetAfterSend(){
+  S.name=''; S.w.price=''; S.w.qty=''; S.w.og=''; S.w.ogOn=false;
+  S.flash.price=''; S.flash.og='';
+  S.r.price=''; S.r.qty=''; S.r.og=''; S.r.ogOn=false;
+  S.previewEdited=false;
+  const n=document.getElementById('productName'); if(n) n.value='';
+  const p=document.getElementById('priceField'); if(p) p.value='';
+  onNameInput();
+  updatePriceChip();
+  updateChipRail();
+  regen();
+  setTimeout(focusName, 200);
+}
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 initNetworks();
 initCfgFields();
 regen();
+updateTypeChip();
+updateChipRail();
 tgInit();
+

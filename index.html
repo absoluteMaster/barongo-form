@@ -2,104 +2,162 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Rapid Captions</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="app.js" defer></script>
 </head>
-<body>
+<body class="no-type">
 
-<div class="settings-backdrop" id="settingsBackdrop" onclick="toggleSettings()"></div>
+<div class="backdrop" id="backdrop" onclick="closeAllPanels()"></div>
 
-<div class="hdr">
-  <div class="hdr-top">
-    <div class="hdr-logo">R</div>
-    <div class="hdr-name">RAPID <span>CAPTIONS</span></div>
-    <button class="settings-btn" id="settingsBtn" onclick="toggleSettings()" title="Settings">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+<header class="stage-top" id="stageTop">
+  <div class="brand-line">
+    <span class="brand-dollar">$</span>
+    <span class="brand">rapid_captions</span>
+    <button class="type-chip" id="typeChip" onclick="openTypesPanel()" title="change type">—</button>
+    <button class="cog" id="settingsBtn" onclick="toggleSettings()" title="settings">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
 
-  <div class="controls-row">
-    <div class="product-name-wrap">
-      <input type="text" id="productName" placeholder="Product name…" oninput="S.name=this.value;regen()">
-    </div>
-    <div class="toggle-group">
-      <button class="tgl-btn on" id="modeSingle" onclick="setMode('single')">Single</button>
-      <button class="tgl-btn" id="modeVariant" onclick="setMode('variant')">Variants</button>
-    </div>
-  </div>
-  <div class="controls-row">
-    <div class="toggle-group" style="flex:1;">
-      <button class="tgl-btn" id="toneHype" onclick="setTone('hype')" style="flex:1;">Hype</button>
-      <button class="tgl-btn on" id="toneBalanced" onclick="setTone('balanced')" style="flex:1;">Balanced</button>
-      <button class="tgl-btn" id="tonePro" onclick="setTone('pro')" style="flex:1;">Pro</button>
-    </div>
-    <div class="toggle-group">
-      <button class="tgl-btn on" id="langEn" onclick="setLang('en')">EN</button>
-      <button class="tgl-btn" id="langSw" onclick="setLang('sw')">SW</button>
-    </div>
-  </div>
-
-  <div class="preview-sticky">
+  <div class="preview-wrap">
     <div class="preview-head">
-      <div class="preview-head-left">
-        <div class="preview-dot"></div>
-        <span class="preview-live">LIVE</span>
-        <span class="preview-meta" id="previewMeta"></span>
+      <span class="preview-dot"></span>
+      <span class="preview-live">live</span>
+      <span class="preview-meta" id="previewMeta"></span>
+      <span class="char-counter" id="charCounter"></span>
+      <button class="icon-btn" id="resetPill" onclick="resetPreview()" title="reset">
+        <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 1.8-4.3"/><path d="M2 2v4h4"/></svg>
+      </button>
+    </div>
+    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()" readonly>pick a type…</textarea>
+  </div>
+</header>
+
+<main class="stage">
+
+  <section class="type-hero" id="typeHero">
+    <div class="zone-label">▸ pick caption type</div>
+    <div class="type-grid">
+      <button class="type-tile" data-type="standard" onclick="selectType('standard')">
+        <span class="tt-icon">🛒</span><span class="tt-label">sell</span>
+      </button>
+      <button class="type-tile" data-type="flash" onclick="selectType('flash')">
+        <span class="tt-icon">⚡</span><span class="tt-label">flash</span>
+      </button>
+      <button class="type-tile" data-type="new_arrival" onclick="selectType('new_arrival')">
+        <span class="tt-icon">✨</span><span class="tt-label">new</span>
+      </button>
+      <button class="type-tile" data-type="last_pieces" onclick="selectType('last_pieces')">
+        <span class="tt-icon">🔥</span><span class="tt-label">last</span>
+      </button>
+    </div>
+    <button class="more-types" onclick="openTypesPanel()">▸ more types</button>
+  </section>
+
+  <section class="field-stack" id="fieldStack">
+
+    <div class="field" id="fieldName" onclick="if(document.body.classList.contains('focus-price'))focusName()">
+      <div class="field-head">
+        <label class="field-lbl" for="productName">▸ name</label>
+        <span class="field-chip" id="nameChip"></span>
       </div>
-      <div class="preview-right">
-        <span class="char-counter" id="charCounter"></span>
-        <button class="icon-btn reset-mini" id="resetPill" onclick="resetPreview()" title="Reset">
-          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 1.8-4.3"/><path d="M2 2v4h4"/></svg>
-        </button>
-        <button class="icon-btn mini-copy" id="miniCopyBtn" onclick="doCopy()" title="Copy">
-          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 2 3v6A1.5 1.5 0 0 0 3.5 10.5H5"/></svg>
-        </button>
+      <input type="text" id="productName"
+             placeholder="e.g. iPhone 15"
+             autocomplete="off"
+             oninput="S.name=this.value;onNameInput()"
+             onfocus="setFocusStep('name')"
+             onblur="setFocusStep(null)"
+             onkeydown="if(event.key==='Enter'){event.preventDefault();focusPrice();}">
+    </div>
+
+    <div class="field" id="fieldPrice" onclick="if(document.body.classList.contains('focus-name'))focusPrice()">
+      <div class="field-head">
+        <label class="field-lbl" for="priceField">▸ price</label>
+        <span class="field-chip" id="priceChip"></span>
       </div>
+      <input type="text" id="priceField"
+             placeholder="1200"
+             inputmode="text"
+             autocomplete="off"
+             oninput="parsePriceInput(this.value)"
+             onfocus="setFocusStep('price')"
+             onblur="setFocusStep(null)"
+             onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+      <div class="field-hint" id="priceHint">price · qty · ~old · low/out</div>
     </div>
-    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()">Pick a platform and caption type…</textarea>
-  </div>
-</div>
 
-<div class="settings-panel" id="settingsPanel">
-  <div class="fc-title">Your Business Info</div>
-  <div class="fld"><label class="fld-lbl">Brand / Handle</label>
-    <input type="text" id="cfgHandle" placeholder="e.g. @yourbrand" oninput="saveCfg()"></div>
-  <div class="fld"><label class="fld-lbl">Location</label>
-    <input type="text" id="cfgLocation" placeholder="e.g. Dar es Salaam" oninput="saveCfg()"></div>
-  <div class="fld"><label class="fld-lbl">Phone / Contact</label>
-    <input type="text" id="cfgPhone" placeholder="e.g. +255 123 456 789" oninput="saveCfg()"></div>
-  <div class="fld"><label class="fld-lbl">Currency</label>
-    <input type="text" id="cfgCurrency" placeholder="e.g. USD, TZS" oninput="saveCfg()"></div>
-  <div class="fld"><label class="fld-lbl">Hashtags (for Instagram)</label>
-    <input type="text" id="cfgHashtags" placeholder="e.g. #shopnow #deals #kariakoo" oninput="saveCfg()"></div>
-  <button class="settings-done" onclick="toggleSettings()">Done</button>
-</div>
+    <div id="fieldsArea" class="extras"></div>
 
-<div class="wrap">
-  <div class="blk" id="netBlk">
-    <div class="pill-row">
-      <div class="pill-row-label">Platform</div>
-      <div class="pills scroll-x" id="netPills"></div>
+    <div class="chip-rail" id="chipRail">
+      <button class="rail-chip" id="chipPlatform" onclick="openPicker('platform')">
+        <span class="rc-k">net</span><span class="rc-v" id="chipPlatformV">whatsapp</span>
+      </button>
+      <button class="rail-chip" id="chipStatus" onclick="cycleStatus()">
+        <span class="rc-k">stock</span><span class="rc-v" id="chipStatusV">in</span>
+      </button>
+      <button class="rail-chip" id="chipRetail" onclick="toggleRetail()">
+        <span class="rc-k">+</span><span class="rc-v">retail</span>
+      </button>
+      <button class="rail-chip" id="chipTone" onclick="openPicker('tone')">
+        <span class="rc-k">tone</span><span class="rc-v" id="chipToneV">balanced</span>
+      </button>
+      <button class="rail-chip" id="chipLang" onclick="openPicker('lang')">
+        <span class="rc-k">lang</span><span class="rc-v" id="chipLangV">en</span>
+      </button>
     </div>
-  </div>
-  <div class="blk gone" id="typeBlk">
-    <div class="pill-row">
-      <div class="pill-row-label">Type</div>
-      <div class="pills scroll-x" id="typePills"></div>
-    </div>
-  </div>
-  <div id="fieldsArea"></div>
-</div>
 
-<div class="action-bar">
-  <div class="action-bar-inner">
-    <button class="copy-btn" id="copyBtn" onclick="doCopy()">Copy Caption</button>
-    <button class="clear-btn" onclick="clearForm()" title="Clear">&#10005;</button>
-  </div>
+  </section>
+
+</main>
+
+<footer class="action-bar">
+  <button class="copy-btn" id="copyBtn" onclick="doCopy()">copy caption</button>
+  <button class="clear-btn" onclick="clearAll()" title="clear all">×</button>
+</footer>
+
+<aside class="side-panel" id="settingsPanel">
+  <div class="panel-title">▸ business info</div>
+  <div class="fld"><label class="fld-lbl">handle</label>
+    <input type="text" id="cfgHandle" placeholder="@yourbrand" oninput="saveCfg()"></div>
+  <div class="fld"><label class="fld-lbl">location</label>
+    <input type="text" id="cfgLocation" placeholder="dar es salaam" oninput="saveCfg()"></div>
+  <div class="fld"><label class="fld-lbl">phone</label>
+    <input type="text" id="cfgPhone" placeholder="+255 …" oninput="saveCfg()"></div>
+  <div class="fld"><label class="fld-lbl">currency</label>
+    <input type="text" id="cfgCurrency" placeholder="USD" oninput="saveCfg()"></div>
+  <div class="fld"><label class="fld-lbl">hashtags (IG only)</label>
+    <input type="text" id="cfgHashtags" placeholder="#shopnow #deals" oninput="saveCfg()"></div>
+  <button class="panel-done" onclick="toggleSettings()">▸ done</button>
+</aside>
+
+<aside class="side-panel" id="typesPanel">
+  <div class="panel-title">▸ caption type</div>
+  <div class="types-list" id="typesList"></div>
+  <button class="panel-done" onclick="closeTypesPanel()">▸ done</button>
+</aside>
+
+<aside class="side-panel" id="pickerPanel">
+  <div class="panel-title" id="pickerTitle">▸ pick</div>
+  <div class="picker-list" id="pickerList"></div>
+  <button class="panel-done" onclick="closePicker()">▸ done</button>
+</aside>
+
+<div class="hidden-shim" aria-hidden="true">
+  <div id="netPills"></div>
+  <div id="typePills"></div>
+  <div id="typeBlk"></div>
+  <button id="modeSingle"></button>
+  <button id="modeVariant"></button>
+  <button id="toneHype"></button>
+  <button id="toneBalanced"></button>
+  <button id="tonePro"></button>
+  <button id="langEn"></button>
+  <button id="langSw"></button>
+  <button id="miniCopyBtn"></button>
 </div>
 
 </body>
