@@ -498,3 +498,7 @@ input::placeholder, textarea.field-ta::placeholder { color: var(--dim); }
 .clear-btn:hover, .clear-btn:active { color: var(--err); border-color: var(--err); }
 
 .gone { display: none !important; }
+
+/* ───────── IN TELEGRAM MINI APP ───────── */
+.in-tg .action-bar { display: none; }
+.in-tg .wrap { padding-bottom: 24px; }

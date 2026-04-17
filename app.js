@@ -802,8 +802,45 @@ function doCopy(){
 }
 
 // ═══════════════════════════════════════
+// TELEGRAM WEB APP INTEGRATION
+// ═══════════════════════════════════════
+const TG = window.Telegram?.WebApp;
+const IN_TG = !!TG && TG.initData !== undefined && TG.initData !== '';
+
+function tgInit() {
+  if (!IN_TG) return;
+  TG.ready(); TG.expand();
+  document.body.classList.add('in-tg');
+  // Dark theme always — our design is dark-only
+  try { TG.setHeaderColor('#0a0a0a'); TG.setBackgroundColor('#0a0a0a'); } catch(e){}
+  TG.MainButton.setText('SEND TO CHAT');
+  TG.MainButton.color = '#7ee787';
+  TG.MainButton.textColor = '#0a0a0a';
+  TG.MainButton.onClick(()=>{
+    const text = document.getElementById('previewBox').value;
+    if (!text || text === L('pick_prompt')) return;
+    TG.sendData(text);
+    TG.close();
+  });
+  updateTgMainBtn();
+}
+function updateTgMainBtn() {
+  if (!IN_TG) return;
+  const text = document.getElementById('previewBox').value;
+  const ready = !!S.type && text && text !== L('pick_prompt');
+  if (ready) TG.MainButton.show(); else TG.MainButton.hide();
+}
+
+// Patch regen + onPreviewEdit to also update the MainButton visibility
+const _regen = regen;
+regen = function(){ _regen.apply(this, arguments); updateTgMainBtn(); };
+const _onPreviewEdit = onPreviewEdit;
+onPreviewEdit = function(){ _onPreviewEdit.apply(this, arguments); updateTgMainBtn(); };
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 initNetworks();
 initCfgFields();
 regen();
+tgInit();
