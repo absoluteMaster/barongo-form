@@ -247,7 +247,15 @@ function selectNetwork(id) {
   S.network=id;
   document.querySelectorAll('#netPills .pill').forEach(b=>b.classList.remove('on'));
   document.getElementById('net_'+id)?.classList.add('on');
-  if(S.type){ const def=REGISTRY.find(r=>r.id===S.type); if(!def||!def.nets.includes(id)) S.type=null; }
+  if(S.type){
+    const def=REGISTRY.find(r=>r.id===S.type);
+    if(!def||!def.nets.includes(id)){
+      S.type=null;
+      document.body.classList.remove('has-type','focus-name','focus-price','kb-up');
+      document.body.classList.add('no-type');
+      if(typeof updateTypeChip==='function') updateTypeChip();
+    }
+  }
   renderTypePills();
   document.getElementById('typeBlk')?.classList.remove('gone');
   updateCharCounter();
@@ -266,6 +274,11 @@ function selectType(id) {
   document.querySelectorAll('.type-tile').forEach(t=>t.classList.toggle('on', t.dataset.type===id));
   if(typeof updateTypeChip==='function') updateTypeChip();
   renderFields();
+  // Re-parse the existing price text so state routes to the correct slot (flash vs w)
+  const pf=document.getElementById('priceField');
+  if(pf && pf.value && typeof parsePriceInput==='function') parsePriceInput(pf.value);
+  if(typeof updatePriceChip==='function') updatePriceChip();
+  if(typeof updateChipRail==='function') updateChipRail();
   updatePreviewMeta();
   regen();
   if(typeof closeAllPanels==='function') closeAllPanels();
@@ -885,15 +898,17 @@ function focusPrice(){
 }
 
 // --- price smart parser ---
-// Accepts: "1200", "1200 10", "1200~1500", "1200~1500 10", "1200 10 low", "1200 10 out"
+// Accepts: "1200", "1200 10", "1200,1500", "1200,1500 10", "1200 10 low", "1200 10 out"
+// (~ also accepted as old-price separator for backward compat)
 function parsePriceInput(raw){
   const text=(raw||'').trim();
   const tokens=text.split(/\s+/).filter(Boolean);
   let price='', qty='', og='', status=null;
   if(tokens.length){
     const first=tokens[0];
-    if(first.includes('~')){
-      const [p,o]=first.split('~');
+    const sep = first.includes(',') ? ',' : first.includes('~') ? '~' : null;
+    if(sep){
+      const [p,o]=first.split(sep);
       price=(p||'').replace(/[^\d.]/g,'');
       og=(o||'').replace(/[^\d.]/g,'');
     } else {
@@ -933,7 +948,7 @@ function updatePriceChip(){
   const q = S.w.qty;
   if(!p){ chip.textContent=''; return; }
   let parts=[`${CC()} ${fmt(p)}`];
-  if(og) parts.push(`~${fmt(og)}~`);
+  if(og) parts.push(`,${fmt(og)}`);
   if(q && q!=='1') parts.push(`×${q}`);
   chip.textContent='• '+parts.join(' ');
 }
@@ -964,20 +979,33 @@ function updateChipRail(){
     const on = !!(S.r && S.r.price);
     rc.classList.toggle('on', on);
     rc.classList.toggle('off', !on);
-    rc.querySelector('.rc-v').textContent = on ? `${CC()} ${fmt(S.r.price)}` : 'retail';
+    let label = 'retail';
+    if(on){
+      label = `${CC()} ${fmt(S.r.price)}`;
+      if(S.r.og) label += ` ,${fmt(S.r.og)}`;
+      if(S.r.qty && S.r.qty!=='1') label += ` ×${S.r.qty}`;
+    }
+    rc.querySelector('.rc-v').textContent = label;
   }
 }
 function cycleStatus(){
   const seq=['in_stock','low_stock','out_of_stock'];
   const i=seq.indexOf(S.w.status);
-  S.w.status=seq[(i+1)%seq.length];
+  const next=seq[(i+1)%seq.length];
+  S.w.status=next;
+  // Keep retail status in sync (one status chip governs both)
+  if(S.r) S.r.status=next;
   updateChipRail();
   regen();
 }
 function toggleRetail(){
-  // ask inline for retail price
-  const current = S.r.price || '';
-  const v = window.prompt('retail price? (leave blank to remove)', current);
+  // ask inline for retail price — same smart grammar as wholesale
+  // e.g. "150", "150 12" (price qty), "150,200" (was-price), "150,200 12"
+  const current = [
+    S.r.price + (S.r.og ? ','+S.r.og : ''),
+    S.r.qty || ''
+  ].filter(Boolean).join(' ');
+  const v = window.prompt('retail price?\nformat: price   price qty   price,was   price,was qty\n(leave blank to remove)', current);
   if(v===null) return;
   const trimmed = v.trim();
   if(!trimmed){
@@ -985,15 +1013,18 @@ function toggleRetail(){
   } else {
     const parts = trimmed.split(/\s+/);
     const head = parts[0];
-    if(head.includes('~')){
-      const [p,o]=head.split('~');
+    const sep = head.includes(',') ? ',' : head.includes('~') ? '~' : null;
+    if(sep){
+      const [p,o]=head.split(sep);
       S.r.price=(p||'').replace(/[^\d.]/g,'');
       S.r.og=(o||'').replace(/[^\d.]/g,'');
       S.r.ogOn=!!S.r.og;
     } else {
       S.r.price=head.replace(/[^\d.]/g,'');
+      S.r.og=''; S.r.ogOn=false;
     }
     if(parts[1] && /^\d+$/.test(parts[1])) S.r.qty=parts[1];
+    else S.r.qty='';
   }
   updateChipRail();
   regen();
