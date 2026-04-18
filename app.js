@@ -813,6 +813,7 @@ function doCopy(){
   const text=document.getElementById('previewBox').value;
   if(!text||text===L('pick_prompt')) return;
   navigator.clipboard.writeText(text).then(()=>{
+    autoSaveProduct(text);
     const btn=document.getElementById('copyBtn');
     const mini=document.getElementById('miniCopyBtn');
     btn.textContent=L('copied'); btn.classList.add('done');
@@ -842,9 +843,7 @@ function tgInit() {
   TG.MainButton.onClick(()=>{
     const text = document.getElementById('previewBox').value;
     if (!text || text === L('pick_prompt')) return;
-    TG.sendData(text);
-    // keep app open, clear name+price for next product
-    if(typeof resetAfterSend==='function') resetAfterSend();
+    sendCaption(text);
   });
   updateTgMainBtn();
 }
@@ -879,6 +878,7 @@ function updateTypeChip(){
 function onNameInput(){
   const chip=document.getElementById('nameChip');
   if(chip) chip.textContent = S.name ? '• ' + S.name : '';
+  if(typeof renderSuggestions==='function') renderSuggestions();
   regen();
 }
 function focusName(){
@@ -1035,14 +1035,14 @@ function showPanel(id){
   document.getElementById('backdrop')?.classList.add('show');
   document.getElementById(id)?.classList.add('show');
 }
+const ALL_PANELS=['settingsPanel','typesPanel','pickerPanel','vaultPanel','importPanel'];
 function hidePanel(id){
   document.getElementById(id)?.classList.remove('show');
-  // close backdrop only if no panel remains shown
-  const anyOpen = ['settingsPanel','typesPanel','pickerPanel'].some(p=>document.getElementById(p)?.classList.contains('show'));
+  const anyOpen = ALL_PANELS.some(p=>document.getElementById(p)?.classList.contains('show'));
   if(!anyOpen) document.getElementById('backdrop')?.classList.remove('show');
 }
 function closeAllPanels(){
-  ['settingsPanel','typesPanel','pickerPanel'].forEach(p=>document.getElementById(p)?.classList.remove('show'));
+  ALL_PANELS.forEach(p=>document.getElementById(p)?.classList.remove('show'));
   document.getElementById('backdrop')?.classList.remove('show');
 }
 // override toggleSettings to use panel API
@@ -1131,6 +1131,211 @@ function resetAfterSend(){
   regen();
   setTimeout(focusName, 200);
 }
+
+// ═══════════════════════════════════════
+// SEND / AUTO-SAVE / TOAST
+// ═══════════════════════════════════════
+function sendCaption(text){
+  // 1. clipboard (best-effort; may fail on some older browsers)
+  try { if(navigator.clipboard) navigator.clipboard.writeText(text); } catch(e){}
+  // 2. send to Telegram chat
+  try { if(IN_TG) TG.sendData(text); } catch(e){}
+  // 3. haptic ack
+  try { if(IN_TG && TG.HapticFeedback) TG.HapticFeedback.notificationOccurred('success'); } catch(e){}
+  // 4. memory
+  autoSaveProduct(text);
+  // 5. user feedback
+  showToast(IN_TG ? '✓ sent to chat · copied' : '✓ copied');
+  // 6. clear name+price, keep type
+  resetAfterSend();
+}
+
+function autoSaveProduct(lastCaption){
+  if(typeof productUpsert!=='function') return;
+  const name=(S.name||'').trim();
+  if(!name) return;
+  productUpsert({
+    name,
+    unit: S.w?.unit || 'pc',
+    customUnit: S.w?.customUnit || '',
+    lastPlatform: S.network || '',
+    lastType: S.type || '',
+    lastCaption: lastCaption || '',
+    source: 'sent',
+  });
+}
+
+let _toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  if(!t) return;
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'), 1800);
+}
+
+// ═══════════════════════════════════════
+// SUGGESTIONS (below name input)
+// ═══════════════════════════════════════
+function renderSuggestions(){
+  const strip=document.getElementById('suggestStrip');
+  if(!strip||typeof productsAll!=='function') return;
+  const q=(S.name||'').trim();
+  const results = q ? productsSearch(q) : productsAll();
+  const top = results.slice(0, 4);
+  if(!top.length && !productsCount()){
+    strip.innerHTML=''; strip.classList.remove('show');
+    return;
+  }
+  const chips = top.map(p=>`<button class="sg-chip" onclick="pickProduct('${p.id}')" title="${esc(p.description||'')}">${esc(p.name)}</button>`).join('');
+  const vaultChip = `<button class="sg-chip sg-all" onclick="openVault()">⋯ all (${productsCount()})</button>`;
+  strip.innerHTML = chips + vaultChip;
+  strip.classList.add('show');
+}
+function hideSuggestions(){
+  const strip=document.getElementById('suggestStrip');
+  if(strip){ strip.classList.remove('show'); }
+}
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function pickProduct(id){
+  const p = productById(id);
+  if(!p) return;
+  S.name = p.name;
+  const n=document.getElementById('productName'); if(n) n.value=p.name;
+  if(p.unit) S.w.unit = p.unit;
+  if(p.customUnit) S.w.customUnit = p.customUnit;
+  if(p.lastPlatform && PLATFORMS[p.lastPlatform]) S.network = p.lastPlatform;
+  if(p.lastType && REGISTRY.find(r=>r.id===p.lastType)){
+    if(p.lastType !== S.type) selectType(p.lastType);
+  }
+  onNameInput();
+  updateChipRail();
+  hideSuggestions();
+  focusPrice();
+}
+
+// ═══════════════════════════════════════
+// VAULT PANEL
+// ═══════════════════════════════════════
+function openVault(){
+  const search=document.getElementById('vaultSearch');
+  if(search) search.value='';
+  resetWipeConfirm();
+  renderVault();
+  showPanel('vaultPanel');
+}
+function renderVault(){
+  const listEl=document.getElementById('vaultList');
+  const countEl=document.getElementById('vaultCount');
+  if(!listEl) return;
+  const q=(document.getElementById('vaultSearch')?.value||'').trim();
+  const rows = q ? productsSearch(q) : productsAll();
+  if(countEl) countEl.textContent = '('+productsCount()+')';
+  if(!rows.length){
+    listEl.innerHTML = '<div class="vault-empty">'+(productsCount()?'no matches':'no products yet — sent captions auto-save here')+'</div>';
+    return;
+  }
+  listEl.innerHTML = rows.map(p=>{
+    const when = p.lastUsedAt ? timeAgo(p.lastUsedAt) : '';
+    const desc = p.description ? esc(p.description) : '';
+    const platform = p.lastPlatform ? `<span class="vr-pf">${esc(p.lastPlatform)}</span>` : '';
+    return `<div class="vault-row" data-id="${p.id}">
+      <button class="vr-main" onclick="pickFromVault('${p.id}')">
+        <div class="vr-name">${esc(p.name)}</div>
+        ${desc?`<div class="vr-desc">${desc}</div>`:''}
+        <div class="vr-meta">${platform}<span class="vr-when">${when}</span></div>
+      </button>
+      <button class="vr-del" onclick="vaultDelete('${p.id}')" title="delete">×</button>
+    </div>`;
+  }).join('');
+}
+function pickFromVault(id){
+  hidePanel('vaultPanel');
+  pickProduct(id);
+}
+function vaultDelete(id){
+  if(typeof productDelete!=='function') return;
+  productDelete(id);
+  renderVault();
+  renderSuggestions();
+}
+let _wipeArmed=false, _wipeTimer=null;
+function vaultWipeRequest(){
+  const btn=document.getElementById('vaultWipeBtn');
+  if(!btn) return;
+  if(!_wipeArmed){
+    _wipeArmed=true;
+    btn.textContent = `confirm · ${productsCount()}`;
+    btn.classList.add('armed');
+    clearTimeout(_wipeTimer);
+    _wipeTimer=setTimeout(resetWipeConfirm, 3000);
+    return;
+  }
+  productsWipe();
+  resetWipeConfirm();
+  renderVault();
+  renderSuggestions();
+  showToast('✓ wiped');
+}
+function resetWipeConfirm(){
+  _wipeArmed=false;
+  clearTimeout(_wipeTimer);
+  const btn=document.getElementById('vaultWipeBtn');
+  if(btn){ btn.textContent='wipe'; btn.classList.remove('armed'); }
+}
+function timeAgo(ts){
+  const d = Date.now()-ts;
+  if(d<60000) return 'just now';
+  if(d<3600000) return Math.floor(d/60000)+'m';
+  if(d<86400000) return Math.floor(d/3600000)+'h';
+  if(d<604800000) return Math.floor(d/86400000)+'d';
+  return Math.floor(d/604800000)+'w';
+}
+
+// ═══════════════════════════════════════
+// IMPORT
+// ═══════════════════════════════════════
+function openImportPanel(){
+  hidePanel('vaultPanel');
+  const t=document.getElementById('importText'); if(t) t.value='';
+  renderImportPreview();
+  showPanel('importPanel');
+}
+function renderImportPreview(){
+  const text=document.getElementById('importText')?.value||'';
+  const box=document.getElementById('importPreview');
+  const btn=document.getElementById('importCommitBtn');
+  if(!box||typeof productsImportPreview!=='function') return;
+  if(!text.trim()){ box.innerHTML=''; if(btn) btn.disabled=true; return; }
+  const pv = productsImportPreview(text);
+  if(btn) btn.disabled = !pv.rows.length;
+  const rows = pv.rows.slice(0,20).map(r=>`<div class="ip-row ip-${r.match}"><span class="ip-tag">${r.match}</span> ${esc(r.name)}${r.description?' · '+esc(r.description):''}</div>`).join('');
+  const more = pv.rows.length>20 ? `<div class="ip-more">+${pv.rows.length-20} more…</div>` : '';
+  box.innerHTML = `<div class="ip-summary">new <b>${pv.newCount}</b> · update <b>${pv.updateCount}</b>${pv.skipCount?` · skip <b>${pv.skipCount}</b>`:''}</div>${rows}${more}`;
+}
+function doImportCommit(){
+  const text=document.getElementById('importText')?.value||'';
+  if(!text.trim()) return;
+  const pv = productsImportCommit(text);
+  hidePanel('importPanel');
+  showToast(`✓ imported · new ${pv.newCount} · update ${pv.updateCount}`);
+  renderSuggestions();
+}
+
+// expose for inline handlers
+window.sendCaption = sendCaption;
+window.renderSuggestions = renderSuggestions;
+window.pickProduct = pickProduct;
+window.openVault = openVault;
+window.renderVault = renderVault;
+window.pickFromVault = pickFromVault;
+window.vaultDelete = vaultDelete;
+window.vaultWipeRequest = vaultWipeRequest;
+window.openImportPanel = openImportPanel;
+window.renderImportPreview = renderImportPreview;
+window.doImportCommit = doImportCommit;
 
 // ═══════════════════════════════════════
 // INIT

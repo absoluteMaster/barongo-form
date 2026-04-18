@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="products.js" defer></script>
 <script src="app.js" defer></script>
 </head>
 <body class="no-type">
@@ -69,9 +70,10 @@
              placeholder="e.g. iPhone 15"
              autocomplete="off"
              oninput="S.name=this.value;onNameInput()"
-             onfocus="setFocusStep('name')"
+             onfocus="setFocusStep('name');renderSuggestions()"
              onblur="setFocusStep(null)"
              onkeydown="if(event.key==='Enter'){event.preventDefault();focusPrice();}">
+      <div class="suggest-strip" id="suggestStrip"></div>
     </div>
 
     <div class="field" id="fieldPrice" onclick="if(document.body.classList.contains('focus-name'))focusPrice()">
@@ -145,6 +147,32 @@
   <div class="picker-list" id="pickerList"></div>
   <button class="panel-done" onclick="closePicker()">▸ done</button>
 </aside>
+
+<aside class="side-panel vault-panel" id="vaultPanel">
+  <div class="panel-title">
+    <span>▸ products <span class="vault-count" id="vaultCount"></span></span>
+    <div class="vault-actions">
+      <button class="vault-act" onclick="openImportPanel()">import</button>
+      <button class="vault-act vault-wipe" id="vaultWipeBtn" onclick="vaultWipeRequest()">wipe</button>
+    </div>
+  </div>
+  <input type="text" class="vault-search" id="vaultSearch" placeholder="search…" oninput="renderVault()" autocomplete="off">
+  <div class="vault-list" id="vaultList"></div>
+  <button class="panel-done" onclick="hidePanel('vaultPanel')">▸ done</button>
+</aside>
+
+<aside class="side-panel" id="importPanel">
+  <div class="panel-title">▸ import products</div>
+  <div class="import-help">one per line · <code>name</code> · <code>name | description</code> · <code>name | description | unit</code></div>
+  <textarea id="importText" class="import-text" placeholder="iphone 15&#10;airpods pro | gen 2, noise cancelling&#10;rice 25kg | local tz | bag" oninput="renderImportPreview()" spellcheck="false"></textarea>
+  <div class="import-preview" id="importPreview"></div>
+  <div class="import-actions">
+    <button class="panel-done" onclick="hidePanel('importPanel')">← back</button>
+    <button class="import-commit" id="importCommitBtn" onclick="doImportCommit()">▸ import</button>
+  </div>
+</aside>
+
+<div class="toast" id="toast"></div>
 
 <div class="hidden-shim" aria-hidden="true">
   <div id="netPills"></div>
