@@ -495,6 +495,34 @@ body.no-type .action-bar { display: none; }
 }
 body.focus-price .suggest-strip { display: none; }
 
+/* ════════════ DESCRIPTION TOGGLE + BOX ════════════ */
+.desc-toggle {
+  margin-top: 6px;
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--sub);
+  border: 1px dashed var(--border-2); border-radius: var(--r);
+  font-family: var(--mono); font-size: 10px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+.desc-toggle:active { color: var(--accent); border-color: var(--accent); }
+.desc-box {
+  display: none;
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border-2); border-radius: var(--r);
+  font-family: var(--mono); font-size: 11px;
+  outline: none;
+  resize: vertical;
+}
+.desc-box.show { display: block; }
+.desc-box:focus { border-color: var(--accent); }
+body.focus-price .desc-toggle, body.focus-price .desc-box { display: none; }
+
 /* ════════════ VAULT PANEL ════════════ */
 .vault-panel .panel-title {
   display: flex; align-items: center; justify-content: space-between;
@@ -550,14 +578,15 @@ body.focus-price .suggest-strip { display: none; }
 .vr-meta { font-size: 10px; color: var(--sub); display: flex; gap: 8px; margin-top: 2px; }
 .vr-pf { color: var(--accent); opacity: 0.7; }
 .vr-when { margin-left: auto; }
-.vr-del {
-  width: 32px;
+.vr-del, .vr-ex {
+  width: 28px;
   background: var(--bg-2);
   color: var(--sub);
   border: 1px solid var(--border-2); border-radius: var(--r);
-  font-family: var(--mono); font-size: 16px;
+  font-family: var(--mono); font-size: 14px;
   cursor: pointer;
 }
+.vr-ex:active { color: var(--accent); border-color: var(--accent); }
 .vr-del:active { color: #ff6b6b; border-color: #4a2020; }
 .vault-empty {
   padding: 20px 10px;
@@ -624,6 +653,7 @@ body.focus-price .suggest-strip { display: none; }
 .ip-new .ip-tag { color: var(--accent); border-color: var(--accent); }
 .ip-update .ip-tag { color: #ffd166; border-color: #4a3a20; }
 .ip-more { color: var(--sub); padding: 4px 0; font-style: italic; }
+.ip-err { color: #ff6b6b; padding: 6px 0; font-family: var(--mono); font-size: 11px; }
 .import-actions { display: flex; gap: 6px; }
 .import-actions .panel-done { flex: 1; margin-top: 0; }
 .import-commit {

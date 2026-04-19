@@ -881,6 +881,32 @@ function onNameInput(){
   if(typeof renderSuggestions==='function') renderSuggestions();
   regen();
 }
+function onDescInput(){
+  S.description = document.getElementById('descBox')?.value || '';
+  regen();
+}
+function toggleDescription(){
+  const box=document.getElementById('descBox');
+  const btn=document.getElementById('descToggle');
+  if(!box||!btn) return;
+  const open = box.classList.toggle('show');
+  btn.textContent = open ? '− description' : '+ description';
+  if(open){ box.focus(); }
+}
+function revealDescription(){
+  const box=document.getElementById('descBox');
+  const btn=document.getElementById('descToggle');
+  if(!box||!btn) return;
+  box.classList.add('show');
+  btn.textContent = '− description';
+}
+function collapseDescription(){
+  const box=document.getElementById('descBox');
+  const btn=document.getElementById('descToggle');
+  if(!box||!btn) return;
+  box.classList.remove('show');
+  btn.textContent = '+ description';
+}
 function focusName(){
   // Un-hide name field before focusing (CSS may hide it when focus-price is active)
   document.body.classList.remove('focus-price');
@@ -1106,6 +1132,9 @@ function pickFromPanel(id){
 function clearAll(){
   S.type=null;
   clearForm(); // resets name + prices + extras
+  S.description='';
+  const db=document.getElementById('descBox'); if(db) db.value='';
+  collapseDescription();
   document.body.classList.remove('has-type','focus-name','focus-price','kb-up');
   document.body.classList.add('no-type');
   const p=document.getElementById('priceField'); if(p) p.value='';
@@ -1122,9 +1151,12 @@ function resetAfterSend(){
   S.name=''; S.w.price=''; S.w.qty=''; S.w.og=''; S.w.ogOn=false;
   S.flash.price=''; S.flash.og='';
   S.r.price=''; S.r.qty=''; S.r.og=''; S.r.ogOn=false;
+  S.description='';
   S.previewEdited=false;
   const n=document.getElementById('productName'); if(n) n.value='';
   const p=document.getElementById('priceField'); if(p) p.value='';
+  const db=document.getElementById('descBox'); if(db) db.value='';
+  collapseDescription();
   onNameInput();
   updatePriceChip();
   updateChipRail();
@@ -1150,19 +1182,35 @@ function sendCaption(text){
   resetAfterSend();
 }
 
+function stateSnapshot(){
+  return {
+    name: S.name || '',
+    description: (document.getElementById('descBox')?.value || '').trim(),
+    wholesale: { price:S.w.price, qty:S.w.qty, og:S.w.og, ogOn:S.w.ogOn, status:S.w.status },
+    retail:    { enabled: !!(S.r && S.r.price), price:S.r.price, qty:S.r.qty, og:S.r.og, ogOn:S.r.ogOn, status:S.r.status },
+    flash:     { price:S.flash.price, og:S.flash.og },
+    mode: S.mode,
+    variants: JSON.parse(JSON.stringify(S.variants || [])),
+    variantRestock: S.variantRestock || '',
+    testimonial: { quote:S.review.quote, reviewer:S.review.reviewer, stars:S.review.stars },
+    bundle:      { item2:S.bundle.item2, comboPrice:S.bundle.comboPrice, savings:S.bundle.savings },
+    restockDate: S.restockDate || '',
+    restockHeadline: S.restockHeadline || '',
+    lastQty: S.lastQty || '',
+    lastType: S.type || '',
+    lastPlatform: S.network || '',
+    lastTone: S.tone || '',
+    lastLang: S.lang || '',
+  };
+}
 function autoSaveProduct(lastCaption){
   if(typeof productUpsert!=='function') return;
   const name=(S.name||'').trim();
   if(!name) return;
-  productUpsert({
-    name,
-    unit: S.w?.unit || 'pc',
-    customUnit: S.w?.customUnit || '',
-    lastPlatform: S.network || '',
-    lastType: S.type || '',
-    lastCaption: lastCaption || '',
-    source: 'sent',
-  });
+  const snap = stateSnapshot();
+  snap.lastCaption = lastCaption || '';
+  snap.source = 'sent';
+  productUpsert(snap);
 }
 
 let _toastTimer=null;
@@ -1202,17 +1250,76 @@ function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;
 function pickProduct(id){
   const p = productById(id);
   if(!p) return;
+  // 1. name
   S.name = p.name;
   const n=document.getElementById('productName'); if(n) n.value=p.name;
-  if(p.unit) S.w.unit = p.unit;
-  if(p.customUnit) S.w.customUnit = p.customUnit;
+  // 2. description
+  const desc = p.description || '';
+  const db = document.getElementById('descBox');
+  if(db){ db.value = desc; }
+  S.description = desc;
+  if(desc) revealDescription(); else collapseDescription();
+  // 3. wholesale
+  if(p.wholesale){
+    S.w.price  = p.wholesale.price  || '';
+    S.w.qty    = p.wholesale.qty    || '';
+    S.w.og     = p.wholesale.og     || '';
+    S.w.ogOn   = !!p.wholesale.ogOn;
+    S.w.status = p.wholesale.status || 'in_stock';
+  }
+  // 4. retail
+  if(p.retail){
+    S.r.price  = p.retail.price  || '';
+    S.r.qty    = p.retail.qty    || '';
+    S.r.og     = p.retail.og     || '';
+    S.r.ogOn   = !!p.retail.ogOn;
+    S.r.status = p.retail.status || 'in_stock';
+  }
+  // 5. flash
+  if(p.flash){
+    S.flash.price = p.flash.price || '';
+    S.flash.og    = p.flash.og    || '';
+  }
+  // 6. mode + variants
+  if(p.mode) S.mode = p.mode;
+  if(Array.isArray(p.variants)) S.variants = JSON.parse(JSON.stringify(p.variants));
+  S.variantRestock = p.variantRestock || '';
+  // 7. type-specific extras
+  if(p.testimonial){
+    S.review.quote    = p.testimonial.quote    || '';
+    S.review.reviewer = p.testimonial.reviewer || '';
+    S.review.stars    = p.testimonial.stars    || 0;
+  }
+  if(p.bundle){
+    S.bundle.item2      = p.bundle.item2      || '';
+    S.bundle.comboPrice = p.bundle.comboPrice || '';
+    S.bundle.savings    = p.bundle.savings    || '';
+  }
+  S.restockDate     = p.restockDate     || '';
+  S.restockHeadline = p.restockHeadline || '';
+  S.lastQty         = p.lastQty         || '';
+  // 8. last session context — auto-select type; detect falls back to standard
   if(p.lastPlatform && PLATFORMS[p.lastPlatform]) S.network = p.lastPlatform;
-  if(p.lastType && REGISTRY.find(r=>r.id===p.lastType)){
-    if(p.lastType !== S.type) selectType(p.lastType);
+  if(p.lastTone) { S.tone = p.lastTone; setTone(p.lastTone); }
+  if(p.lastLang) { S.lang = p.lastLang; setLang(p.lastLang); }
+  const resolvedType = (p.lastType && REGISTRY.find(r=>r.id===p.lastType)) ? p.lastType : 'standard';
+  if(resolvedType !== S.type) selectType(resolvedType);
+  // 9. reflect price field + chips
+  const pf = document.getElementById('priceField');
+  if(pf){
+    const p0 = (S.type==='flash' ? S.flash.price : S.w.price) || '';
+    const og0 = (S.type==='flash' ? S.flash.og : (S.w.ogOn ? S.w.og : '')) || '';
+    let disp = p0;
+    if(og0) disp = `${p0},${og0}`;
+    if(S.w.qty && S.w.qty !== '1') disp += ` ${S.w.qty}`;
+    pf.value = disp;
   }
   onNameInput();
+  renderFields();
+  updatePriceChip();
   updateChipRail();
   hideSuggestions();
+  regen();
   focusPrice();
 }
 
@@ -1247,6 +1354,7 @@ function renderVault(){
         ${desc?`<div class="vr-desc">${desc}</div>`:''}
         <div class="vr-meta">${platform}<span class="vr-when">${when}</span></div>
       </button>
+      <button class="vr-ex" onclick="exportOne('${p.id}')" title="export">↓</button>
       <button class="vr-del" onclick="vaultDelete('${p.id}')" title="delete">×</button>
     </div>`;
   }).join('');
@@ -1310,6 +1418,11 @@ function renderImportPreview(){
   if(!box||typeof productsImportPreview!=='function') return;
   if(!text.trim()){ box.innerHTML=''; if(btn) btn.disabled=true; return; }
   const pv = productsImportPreview(text);
+  if(pv.error){
+    box.innerHTML = `<div class="ip-err">${esc(pv.error)}</div>`;
+    if(btn) btn.disabled = true;
+    return;
+  }
   if(btn) btn.disabled = !pv.rows.length;
   const rows = pv.rows.slice(0,20).map(r=>`<div class="ip-row ip-${r.match}"><span class="ip-tag">${r.match}</span> ${esc(r.name)}${r.description?' · '+esc(r.description):''}</div>`).join('');
   const more = pv.rows.length>20 ? `<div class="ip-more">+${pv.rows.length-20} more…</div>` : '';
@@ -1319,9 +1432,44 @@ function doImportCommit(){
   const text=document.getElementById('importText')?.value||'';
   if(!text.trim()) return;
   const pv = productsImportCommit(text);
+  if(pv.error){ showToast('✗ '+pv.error); return; }
   hidePanel('importPanel');
   showToast(`✓ imported · new ${pv.newCount} · update ${pv.updateCount}`);
   renderSuggestions();
+  if(document.getElementById('vaultPanel')?.classList.contains('show')) renderVault();
+}
+
+// ═══════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════
+function _downloadJSON(filename, data){
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+function exportOne(id){
+  const p = productById(id); if(!p) return;
+  const slug = productSlug(p);
+  _downloadJSON(`${slug}.json`, productExportPayload(p));
+  showToast(`✓ exported ${slug}.json`);
+}
+function exportAll(){
+  const all = productsAll();
+  if(!all.length){ showToast('nothing to export'); return; }
+  all.forEach((p, i)=>{
+    setTimeout(()=>{
+      const slug = productSlug(p);
+      _downloadJSON(`${slug}.json`, productExportPayload(p));
+    }, i * 250);
+  });
+  showToast(`↓ exporting ${all.length} file${all.length>1?'s':''}`);
 }
 
 // expose for inline handlers
@@ -1336,6 +1484,10 @@ window.vaultWipeRequest = vaultWipeRequest;
 window.openImportPanel = openImportPanel;
 window.renderImportPreview = renderImportPreview;
 window.doImportCommit = doImportCommit;
+window.exportOne = exportOne;
+window.exportAll = exportAll;
+window.toggleDescription = toggleDescription;
+window.onDescInput = onDescInput;
 
 // ═══════════════════════════════════════
 // INIT

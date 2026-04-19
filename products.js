@@ -1,14 +1,13 @@
 // ══════════════════════════════════════════
-// PRODUCT MEMORY — data model + storage
+// PRODUCT MEMORY — full-state product records
 // ══════════════════════════════════════════
 
 const PRODUCTS_KEY = 'rc.products';
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 function _now() { return Date.now(); }
 
 function _uid() {
-  // 6 lowercase-alphanumeric chars, good enough for per-user scope
   const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let s = 'p_';
   for (let i = 0; i < 6; i++) s += c[Math.floor(Math.random() * c.length)];
@@ -19,32 +18,76 @@ function _canon(name) {
   return String(name || '').toLowerCase().replace(/\s+/g, ' ').trim();
 }
 
+function _slug(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 64) || 'product';
+}
+
 function _blankRecord() {
   const t = _now();
   return {
     id: _uid(),
     schemaVersion: SCHEMA_VERSION,
-    source: 'sent',
 
+    // identity
     name: '',
     nameLC: '',
     description: '',
     unit: 'pc',
     customUnit: '',
 
-    photoFileId: '',
-    photoRatio: '',
+    // wholesale block
+    wholesale: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
 
-    lastPlatform: '',
+    // retail block
+    retail: { enabled:false, price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
+
+    // flash block
+    flash: { price:'', og:'' },
+
+    // variant mode
+    mode: 'single',
+    variants: [],
+    variantRestock: '',
+
+    // type-specific extras
+    testimonial: { quote:'', reviewer:'', stars:0 },
+    bundle: { item2:'', comboPrice:'', savings:'' },
+    restockDate: '',
+    restockHeadline: '',
+    lastQty: '',
+
+    // last session context
     lastType: '',
+    lastPlatform: '',
+    lastTone: '',
+    lastLang: '',
     lastCaption: '',
 
+    // meta
     firstSeenAt: t,
     lastUsedAt: t,
+    source: 'sent',
   };
 }
 
-// ─── storage adapter (localStorage today, CloudStorage-ready tomorrow) ───
+function _merge(dst, src) {
+  if (!src || typeof src !== 'object') return dst;
+  for (const k of Object.keys(src)) {
+    const v = src[k];
+    if (v && typeof v === 'object' && !Array.isArray(v) && dst[k] && typeof dst[k] === 'object' && !Array.isArray(dst[k])) {
+      _merge(dst[k], v);
+    } else if (v !== undefined) {
+      dst[k] = v;
+    }
+  }
+  return dst;
+}
+
+// ─── storage adapter ───
 function _loadRaw() {
   try {
     const raw = localStorage.getItem(PRODUCTS_KEY);
@@ -55,7 +98,7 @@ function _loadRaw() {
 function _saveRaw(collection) {
   try {
     localStorage.setItem(PRODUCTS_KEY, JSON.stringify(collection));
-  } catch (_) { /* quota / private mode — swallow */ }
+  } catch (_) { /* quota — swallow */ }
 }
 function _collection() {
   const existing = _loadRaw();
@@ -63,7 +106,6 @@ function _collection() {
   const fresh = {
     schemaVersion: SCHEMA_VERSION,
     createdAt: _now(),
-    migratedAt: 0,
     deviceOrigin: (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) ? 'tg' : 'web',
     products: [],
   };
@@ -79,7 +121,6 @@ function productsAll() {
     .sort((a, b) => (b.lastUsedAt || 0) - (a.lastUsedAt || 0));
 }
 
-// Search against nameLC + description. All tokens must match. Returns recent-first.
 function productsSearch(query) {
   const q = _canon(query);
   if (!q) return productsAll();
@@ -100,30 +141,22 @@ function productByName(name) {
   return _collection().products.find(p => p.nameLC === lc) || null;
 }
 
-// Create OR update by canonical name. Returns the record.
-// patch may include: name, description, unit, customUnit, lastPlatform, lastType, lastCaption, source, photoFileId, photoRatio
+// Upsert by canonical name. patch is deep-merged into existing or blank record.
 function productUpsert(patch) {
   if (!patch || !patch.name) return null;
   const col = _collection();
   const lc = _canon(patch.name);
   let rec = col.products.find(p => p.nameLC === lc);
-  if (!rec) {
+  const isNew = !rec;
+  if (isNew) {
     rec = _blankRecord();
     rec.firstSeenAt = _now();
     col.products.push(rec);
   }
-  // update fields from patch
+  _merge(rec, patch);
   rec.name = patch.name;
   rec.nameLC = lc;
-  if (patch.description !== undefined) rec.description = patch.description;
-  if (patch.unit !== undefined) rec.unit = patch.unit;
-  if (patch.customUnit !== undefined) rec.customUnit = patch.customUnit;
-  if (patch.lastPlatform !== undefined) rec.lastPlatform = patch.lastPlatform;
-  if (patch.lastType !== undefined) rec.lastType = patch.lastType;
-  if (patch.lastCaption !== undefined) rec.lastCaption = patch.lastCaption;
-  if (patch.photoFileId !== undefined) rec.photoFileId = patch.photoFileId;
-  if (patch.photoRatio !== undefined) rec.photoRatio = patch.photoRatio;
-  if (patch.source) rec.source = patch.source;
+  rec.schemaVersion = SCHEMA_VERSION;
   rec.lastUsedAt = _now();
   _saveRaw(col);
   return rec;
@@ -144,49 +177,59 @@ function productsWipe() {
 
 function productsCount() { return _collection().products.length; }
 
-// ─── import ───
+// ─── import / export (JSON) ───
 
-// Parses the pasted grammar:
-//   name
-//   name | description
-//   name | description | unit
-// Returns a preview object: { rows: [{name,description,unit,match}], newCount, updateCount, skipCount }
+// Accepts either a single product object or an array of product objects.
+// Returns { rows: [{name, description, match: 'new'|'update'}], newCount, updateCount, skipCount, error }
 function productsImportPreview(text) {
-  const lines = String(text || '').split(/\r?\n/);
-  const rows = [];
-  let newCount = 0, updateCount = 0, skipCount = 0;
+  const out = { rows: [], newCount: 0, updateCount: 0, skipCount: 0, error: '' };
+  const t = String(text || '').trim();
+  if (!t) return out;
+  let data;
+  try { data = JSON.parse(t); }
+  catch (e) { out.error = 'invalid JSON: ' + e.message; return out; }
+  const arr = Array.isArray(data) ? data : [data];
   const seen = new Set();
-  for (const raw of lines) {
-    const line = raw.trim();
-    if (!line) continue;
-    const parts = line.split('|').map(s => s.trim());
-    const name = parts[0] || '';
-    if (!name) { skipCount++; continue; }
-    const lc = _canon(name);
-    if (seen.has(lc)) { skipCount++; continue; }
+  for (const item of arr) {
+    if (!item || typeof item !== 'object' || !item.name) { out.skipCount++; continue; }
+    const lc = _canon(item.name);
+    if (!lc || seen.has(lc)) { out.skipCount++; continue; }
     seen.add(lc);
-    const description = parts[1] || '';
-    const unit = parts[2] || '';
-    const existing = productByName(name);
-    const match = existing ? 'update' : 'new';
-    if (match === 'new') newCount++; else updateCount++;
-    rows.push({ name, description, unit, match });
+    const match = productByName(item.name) ? 'update' : 'new';
+    if (match === 'new') out.newCount++; else out.updateCount++;
+    out.rows.push({ name: item.name, description: item.description || '', match });
   }
-  return { rows, newCount, updateCount, skipCount };
+  return out;
 }
 
 function productsImportCommit(text) {
   const preview = productsImportPreview(text);
-  for (const row of preview.rows) {
-    const patch = { name: row.name, source: 'import' };
-    if (row.description) patch.description = row.description;
-    if (row.unit) patch.unit = row.unit;
-    productUpsert(patch);
+  if (preview.error) return preview;
+  const t = String(text || '').trim();
+  let data;
+  try { data = JSON.parse(t); } catch (e) { preview.error = e.message; return preview; }
+  const arr = Array.isArray(data) ? data : [data];
+  const seen = new Set();
+  for (const item of arr) {
+    if (!item || typeof item !== 'object' || !item.name) continue;
+    const lc = _canon(item.name);
+    if (!lc || seen.has(lc)) continue;
+    seen.add(lc);
+    productUpsert({ ...item, source: item.source || 'import' });
   }
   return preview;
 }
 
-// Expose globally for inline handlers
+// Strip runtime-local fields before export
+function productExportPayload(rec) {
+  if (!rec) return null;
+  const { id, nameLC, firstSeenAt, lastUsedAt, ...rest } = rec;
+  return rest;
+}
+
+function productSlug(rec) { return _slug(rec?.name); }
+
+// Expose globally
 window.productsAll = productsAll;
 window.productsSearch = productsSearch;
 window.productById = productById;
@@ -197,3 +240,5 @@ window.productsWipe = productsWipe;
 window.productsCount = productsCount;
 window.productsImportPreview = productsImportPreview;
 window.productsImportCommit = productsImportCommit;
+window.productExportPayload = productExportPayload;
+window.productSlug = productSlug;

@@ -19,6 +19,9 @@
     <span class="brand-dollar">$</span>
     <span class="brand">rapid_captions</span>
     <button class="type-chip" id="typeChip" onclick="openTypesPanel()" title="change type">—</button>
+    <button class="cog" id="vaultBtn" onclick="openVault()" title="products">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/><path d="M3 7l9 4 9-4"/><path d="M12 11v10"/></svg>
+    </button>
     <button class="cog" id="settingsBtn" onclick="toggleSettings()" title="settings">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -73,6 +76,8 @@
              onfocus="setFocusStep('name');renderSuggestions()"
              onblur="setFocusStep(null)"
              onkeydown="if(event.key==='Enter'){event.preventDefault();focusPrice();}">
+      <button class="desc-toggle" id="descToggle" onclick="toggleDescription()" type="button">+ description</button>
+      <textarea class="desc-box" id="descBox" placeholder="short description…" rows="2" oninput="onDescInput()" spellcheck="false"></textarea>
       <div class="suggest-strip" id="suggestStrip"></div>
     </div>
 
@@ -153,6 +158,7 @@
     <span>▸ products <span class="vault-count" id="vaultCount"></span></span>
     <div class="vault-actions">
       <button class="vault-act" onclick="openImportPanel()">import</button>
+      <button class="vault-act" id="vaultExportAllBtn" onclick="exportAll()">export</button>
       <button class="vault-act vault-wipe" id="vaultWipeBtn" onclick="vaultWipeRequest()">wipe</button>
     </div>
   </div>
@@ -163,8 +169,8 @@
 
 <aside class="side-panel" id="importPanel">
   <div class="panel-title">▸ import products</div>
-  <div class="import-help">one per line · <code>name</code> · <code>name | description</code> · <code>name | description | unit</code></div>
-  <textarea id="importText" class="import-text" placeholder="iphone 15&#10;airpods pro | gen 2, noise cancelling&#10;rice 25kg | local tz | bag" oninput="renderImportPreview()" spellcheck="false"></textarea>
+  <div class="import-help">paste JSON — single object or array of products</div>
+  <textarea id="importText" class="import-text" placeholder='[{"name":"iphone 15","description":"128gb","wholesale":{"price":"1200","qty":"10"}}]' oninput="renderImportPreview()" spellcheck="false"></textarea>
   <div class="import-preview" id="importPreview"></div>
   <div class="import-actions">
     <button class="panel-done" onclick="hidePanel('importPanel')">← back</button>
