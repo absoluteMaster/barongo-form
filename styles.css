@@ -81,29 +81,7 @@ body.no-type .type-chip { display: none; }
 .cog:hover, .cog:active { color: var(--accent); border-color: var(--accent-dim); }
 
 /* PREVIEW */
-.preview-wrap {
-  background: var(--bg-2);
-  border: 1px solid var(--border-2);
-  border-radius: var(--r);
-  padding: 6px 8px 4px;
-}
-.preview-head {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 9.5px; color: var(--sub);
-  padding: 0 0 4px;
-}
-.preview-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 6px var(--accent);
-  animation: pulse 2s infinite;
-}
-@keyframes pulse { 50% { opacity: 0.4; } }
-.preview-live {
-  color: var(--accent);
-  font-weight: 600; letter-spacing: 0.1em;
-}
-.preview-meta { color: var(--sub); margin-left: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.preview-meta { color: var(--sub); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .char-counter { color: var(--dim); font-size: 9px; }
 .char-counter:not(.show) { display: none; }
 .char-counter.warn { color: var(--warn); }
@@ -121,22 +99,27 @@ body.no-type .type-chip { display: none; }
 
 #previewBox {
   width: 100%;
-  min-height: 110px;
-  max-height: 180px;
+  flex: 1;
+  min-height: 300px;
   resize: none;
-  background: transparent;
+  background: var(--bg-2);
   color: var(--text);
   font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1.45;
-  border: none; outline: none;
-  padding: 2px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid var(--border-2);
+  border-radius: var(--r);
+  outline: none;
+  padding: 12px;
   white-space: pre-wrap;
-  transition: min-height 0.2s, max-height 0.2s;
 }
 #previewBox.placeholder { color: var(--dim); font-style: normal; }
-body.kb-up #previewBox { min-height: 70px; max-height: 90px; }
-body.no-type #previewBox { min-height: 50px; max-height: 70px; }
+.preview-panel { display: flex; flex-direction: column; }
+.preview-panel .panel-title { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.preview-panel .vault-actions { display: flex; align-items: center; gap: 8px; }
+.preview-network-switch { min-height: 0; margin-bottom: 8px; }
+.preview-actions { display: flex; gap: 8px; margin-top: 10px; }
+.preview-actions .import-commit { flex: 1; }
 
 /* ════════════ STAGE (work surface) ════════════ */
 .stage {
@@ -272,17 +255,27 @@ body.focus-price #fieldName .field-head { padding: 0; }
 body.focus-name #fieldPrice .field-lbl,
 body.focus-price #fieldName .field-lbl { font-size: 9.5px; }
 
-body.focus-name #chipRail,
-body.focus-price #chipRail,
 body.focus-name .extras,
 body.focus-price .extras { display: none; }
 
 /* CHIP RAIL (platform/tone/lang/status) */
 .chip-rail {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  padding: 6px 0 4px;
-  margin-bottom: 10px;
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(58px + env(safe-area-inset-bottom));
+  max-width: 480px; margin: 0 auto;
+  display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px;
+  padding: 8px 12px;
+  background: rgba(10,10,10,0.94);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--border-2);
+  z-index: 29;
+  scrollbar-width: none;
 }
+.chip-rail::-webkit-scrollbar { display: none; }
+.chip-rail .rail-chip { flex-shrink: 0; }
+body.no-type .chip-rail { display: none; }
+.stage { padding-bottom: 120px; }
 .rail-chip {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 5px 9px;
@@ -522,6 +515,27 @@ body.focus-price .suggest-strip { display: none; }
 .desc-box.show { display: block; }
 .desc-box:focus { border-color: var(--accent); }
 body.focus-price .desc-toggle, body.focus-price .desc-box { display: none; }
+body.focus-name #retailToggle, body.focus-name .retail-box { display: none; }
+.retail-box {
+  display: none;
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border-2); border-radius: var(--r);
+  font-family: var(--mono); font-size: 11px;
+  outline: none;
+}
+.retail-box.show { display: block; }
+.retail-box:focus { border-color: var(--accent); }
+.extra-toggles { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.extra-toggles .desc-toggle { margin-top: 0; }
+body.mode-variant #priceField,
+body.mode-variant #retailField,
+body.mode-variant #retailToggle,
+body.mode-variant #priceHint,
+body.mode-variant #priceChip { display: none !important; }
 
 /* ════════════ VAULT PANEL ════════════ */
 .vault-panel .panel-title {

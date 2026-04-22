@@ -19,6 +19,9 @@
     <span class="brand-dollar">$</span>
     <span class="brand">rapid_captions</span>
     <button class="type-chip" id="typeChip" onclick="openTypesPanel()" title="change type">—</button>
+    <button class="cog" id="previewBtn" onclick="openPreview()" title="preview caption">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+    </button>
     <button class="cog" id="vaultBtn" onclick="openVault()" title="products">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7z"/><path d="M3 7l9 4 9-4"/><path d="M12 11v10"/></svg>
     </button>
@@ -27,18 +30,6 @@
     </button>
   </div>
 
-  <div class="preview-wrap">
-    <div class="preview-head">
-      <span class="preview-dot"></span>
-      <span class="preview-live">live</span>
-      <span class="preview-meta" id="previewMeta"></span>
-      <span class="char-counter" id="charCounter"></span>
-      <button class="icon-btn" id="resetPill" onclick="resetPreview()" title="reset">
-        <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 1.8-4.3"/><path d="M2 2v4h4"/></svg>
-      </button>
-    </div>
-    <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()" readonly>pick a type…</textarea>
-  </div>
 </header>
 
 <main class="stage">
@@ -94,6 +85,18 @@
              onfocus="setFocusStep('price')"
              onblur="setFocusStep(null)"
              onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+      <div class="extra-toggles">
+        <button class="desc-toggle" id="retailToggle" onclick="toggleRetail()" type="button">+ retail</button>
+        <button class="desc-toggle" id="variantToggle" onclick="toggleVariantMode()" type="button">⚡ variants</button>
+      </div>
+      <input type="text" id="retailField" class="retail-box"
+             placeholder="retail: 1500 · 1500 5 · 1500,1800"
+             inputmode="text"
+             autocomplete="off"
+             oninput="onRetailInput(this.value)"
+             onfocus="setFocusStep('price')"
+             onblur="setFocusStep(null)"
+             onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
       <div class="field-hint" id="priceHint">1200 · 1200 10 · 1200,1500 · 1200 10 low</div>
     </div>
 
@@ -105,9 +108,6 @@
       </button>
       <button class="rail-chip" id="chipStatus" onclick="cycleStatus()">
         <span class="rc-k">stock</span><span class="rc-v" id="chipStatusV">in</span>
-      </button>
-      <button class="rail-chip" id="chipRetail" onclick="toggleRetail()">
-        <span class="rc-k">+</span><span class="rc-v">retail</span>
       </button>
       <button class="rail-chip" id="chipTone" onclick="openPicker('tone')">
         <span class="rc-k">tone</span><span class="rc-v" id="chipToneV">balanced</span>
@@ -165,6 +165,23 @@
   <input type="text" class="vault-search" id="vaultSearch" placeholder="search…" oninput="renderVault()" autocomplete="off">
   <div class="vault-list" id="vaultList"></div>
   <button class="panel-done" onclick="hidePanel('vaultPanel')">▸ done</button>
+</aside>
+
+<aside class="side-panel preview-panel" id="previewPanel">
+  <div class="panel-title">
+    <span>▸ preview</span>
+    <div class="vault-actions">
+      <span class="preview-meta" id="previewMeta"></span>
+      <span class="char-counter" id="charCounter"></span>
+      <button class="vault-act" id="resetPill" onclick="resetPreview()" title="reset">reset</button>
+    </div>
+  </div>
+  <div class="preview-network-switch" id="previewNetSwitch"></div>
+  <textarea id="previewBox" spellcheck="false" oninput="onPreviewEdit()" readonly>pick a type…</textarea>
+  <div class="preview-actions">
+    <button class="panel-done" onclick="hidePanel('previewPanel')">← back</button>
+    <button class="import-commit" onclick="doCopy()">copy</button>
+  </div>
 </aside>
 
 <aside class="side-panel" id="importPanel">

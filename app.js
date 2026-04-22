@@ -187,6 +187,12 @@ function isShort() { return PLATFORMS[S.network]?.short; }
 function maxLen() { return PLATFORMS[S.network]?.maxLen||0; }
 function B(t) { return useMd()?`*${t}*`:t; }
 function STR(t) { return useMd()?`~${t}~`:t; }
+function I(t) { return useMd()?`_${t}_`:t; }
+function descLine(){
+  const d=(S.description||'').trim();
+  if(!d) return '';
+  return I(clean(d));
+}
 
 // ═══════════════════════════════════════
 // NETWORKS & TYPES
@@ -288,7 +294,21 @@ function setMode(m) {
   S.mode=m;
   document.getElementById('modeSingle').classList.toggle('on',m==='single');
   document.getElementById('modeVariant').classList.toggle('on',m==='variant');
+  document.body.classList.toggle('mode-variant', m==='variant');
+  const vt=document.getElementById('variantToggle');
+  if(vt) vt.textContent = m==='variant' ? '− variants' : '⚡ variants';
   if(S.type) renderFields(); regen();
+}
+function typeSupportsVariants(){
+  const def=REGISTRY.find(r=>r.id===S.type);
+  if(!def) return false;
+  return def.groups.some(g=>['wholesale','retail','flash'].includes(g));
+}
+function toggleVariantMode(){
+  if(!S.type){ showToast('pick a type first'); return; }
+  if(!typeSupportsVariants()){ showToast('no variants for this type'); return; }
+  setMode(S.mode==='variant' ? 'single' : 'variant');
+  if(S.mode==='variant' && S.variants.length===0) addVariant();
 }
 
 // ═══════════════════════════════════════
@@ -322,9 +342,11 @@ function renderFields() {
   if(def.groups.includes('testimonial')) html+=htmlTestimonial();
   if(def.groups.includes('bundle')) html+=htmlBundleFields();
   if(def.groups.includes('last_qty')) html+=htmlLastQty();
+  if(S.mode==='variant' && typeSupportsVariants()) html+=htmlVariantSection();
   html+='</div>';
   area.innerHTML=html;
   if(def.groups.includes('testimonial')) applyStars(S.review.stars);
+  if(S.mode==='variant' && typeSupportsVariants()) renderVariantRows();
   return;
   // ─── legacy variant/full path retained below but not reached ───
   if(S.mode==='variant'){
@@ -568,7 +590,9 @@ function variantBody(isFlash=false){
 
 function assembleSingle(header, body, footer=''){
   const div=E('divider')||'───────────────'; const sig=getSig();
+  const desc=descLine();
   let out=header;
+  if(desc) out+=`\n${desc}`;
   if(body && body.trim()) out+=`\n${div}\n\n${body}`;
   if(footer) out+= (body && body.trim()) ? `\n\n${footer}` : `\n${div}\n\n${footer}`;
   if(sig) out+=`\n${sig}`;
@@ -612,13 +636,14 @@ function buildFlash(){
     return buildShort(flashHead, `${name}${fp}\n${LH('limited_time','LIMITED_TIME')}`);
   }
   const div=E('divider')||'───────────────'; const sig=getSig(); const pa=E('price_arrow');
+  const desc=descLine(); const descSuffix=desc?`\n${desc}`:'';
   if(S.mode==='variant'){
     const lines=getVariantLines(true);
     const hasContent=!!lines || S.variants.length>0;
     let body='';
     if(lines) body=clean(`${E('header_product')} ${B(name)}`)+'\n\n'+lines;
     else if(S.variants.length>0 && S.variants.every(v=>v.status==='out_of_stock')) body=getOutOfStockBlock();
-    let out=flashHead;
+    let out=flashHead+descSuffix;
     if(body) out+=`\n${div}\n\n${body}\n\n${LH('limited_time','LIMITED_TIME')}`;
     if(sig) out+=`\n${sig}`; return out;
   }
@@ -627,7 +652,7 @@ function buildFlash(){
   if(S.flash.price) body+='\n'+clean(`${pa} ${B(`${CC()} ${fmt(S.flash.price)}`)}`);
   const wBlock=getWBlock(); if(wBlock) body+='\n\n'+wBlock;
   body+=`\n\n${LH('limited_time','LIMITED_TIME')}`;
-  let out=`${flashHead}\n${div}\n\n${body}`; if(sig) out+=`\n${sig}`; return out;
+  let out=`${flashHead}${descSuffix}\n${div}\n\n${body}`; if(sig) out+=`\n${sig}`; return out;
 }
 
 function buildNewArrival(){
@@ -664,7 +689,8 @@ function buildEngagement(){
   const div=E('divider')||'───────────────';
   const body=LH('budget','BUDGET')+'\n\n'+LH('ws_rs_welcome','WS_RS_WELCOME');
   const sig=getSig();
-  return `${wantLine}\n${div}\n\n${body}${sig?'\n'+sig:''}`;
+  const desc=descLine(); const descSuffix=desc?`\n${desc}`:'';
+  return `${wantLine}${descSuffix}\n${div}\n\n${body}${sig?'\n'+sig:''}`;
 }
 
 function buildPriceDrop(){
@@ -809,20 +835,28 @@ function updatePreviewMeta(){
 // ═══════════════════════════════════════
 const COPY_SVG='<svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 0 2 3v6A1.5 1.5 0 0 0 3.5 10.5H5"/></svg>';
 const CHECK_SVG='<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 7 12 13 4"/></svg>';
-function doCopy(){
+async function doCopy(){
   const text=document.getElementById('previewBox').value;
   if(!text||text===L('pick_prompt')) return;
-  navigator.clipboard.writeText(text).then(()=>{
-    autoSaveProduct(text);
-    const btn=document.getElementById('copyBtn');
-    const mini=document.getElementById('miniCopyBtn');
+  const btn=document.getElementById('copyBtn');
+  const mini=document.getElementById('miniCopyBtn');
+  let clipboardOk=false;
+  try {
+    await navigator.clipboard.writeText(text);
+    clipboardOk=true;
+  } catch(e) { /* fall through */ }
+  autoSaveProduct(text);
+  if(clipboardOk){
     btn.textContent=L('copied'); btn.classList.add('done');
     if(mini){ mini.innerHTML=CHECK_SVG; mini.classList.add('done'); }
-    setTimeout(()=>{
-      btn.textContent=L('copy'); btn.classList.remove('done');
-      if(mini){ mini.innerHTML=COPY_SVG; mini.classList.remove('done'); }
-    },2500);
-  });
+  } else {
+    btn.textContent='✗ blocked — saved'; btn.classList.add('done');
+    showToast('clipboard blocked — saved to vault');
+  }
+  setTimeout(()=>{
+    btn.textContent=L('copy'); btn.classList.remove('done');
+    if(mini){ mini.innerHTML=COPY_SVG; mini.classList.remove('done'); }
+  },2500);
 }
 
 // ═══════════════════════════════════════
@@ -1000,19 +1034,6 @@ function updateChipRail(){
     sv.textContent = st==='in_stock'?'in':st==='low_stock'?'low':'out';
     sc.dataset.status = st==='in_stock'?'in':st==='low_stock'?'low':'out';
   }
-  const rc=document.getElementById('chipRetail');
-  if(rc){
-    const on = !!(S.r && S.r.price);
-    rc.classList.toggle('on', on);
-    rc.classList.toggle('off', !on);
-    let label = 'retail';
-    if(on){
-      label = `${CC()} ${fmt(S.r.price)}`;
-      if(S.r.og) label += ` ,${fmt(S.r.og)}`;
-      if(S.r.qty && S.r.qty!=='1') label += ` ×${S.r.qty}`;
-    }
-    rc.querySelector('.rc-v').textContent = label;
-  }
 }
 function cycleStatus(){
   const seq=['in_stock','low_stock','out_of_stock'];
@@ -1024,36 +1045,59 @@ function cycleStatus(){
   updateChipRail();
   regen();
 }
-function toggleRetail(){
-  // ask inline for retail price — same smart grammar as wholesale
-  // e.g. "150", "150 12" (price qty), "150,200" (was-price), "150,200 12"
-  const current = [
-    S.r.price + (S.r.og ? ','+S.r.og : ''),
-    S.r.qty || ''
-  ].filter(Boolean).join(' ');
-  const v = window.prompt('retail price?\nformat: price   price qty   price,was   price,was qty\n(leave blank to remove)', current);
-  if(v===null) return;
-  const trimmed = v.trim();
+function parseRetailString(raw){
+  const trimmed=(raw||'').trim();
   if(!trimmed){
-    S.r = { price:'', qty:'', og:'', ogOn:false, status:'in_stock' };
-  } else {
-    const parts = trimmed.split(/\s+/);
-    const head = parts[0];
-    const sep = head.includes(',') ? ',' : head.includes('~') ? '~' : null;
-    if(sep){
-      const [p,o]=head.split(sep);
-      S.r.price=(p||'').replace(/[^\d.]/g,'');
-      S.r.og=(o||'').replace(/[^\d.]/g,'');
-      S.r.ogOn=!!S.r.og;
-    } else {
-      S.r.price=head.replace(/[^\d.]/g,'');
-      S.r.og=''; S.r.ogOn=false;
-    }
-    if(parts[1] && /^\d+$/.test(parts[1])) S.r.qty=parts[1];
-    else S.r.qty='';
+    S.r.price=''; S.r.qty=''; S.r.og=''; S.r.ogOn=false;
+    return;
   }
-  updateChipRail();
+  const parts=trimmed.split(/\s+/);
+  const head=parts[0];
+  const sep = head.includes(',') ? ',' : head.includes('~') ? '~' : null;
+  if(sep){
+    const [p,o]=head.split(sep);
+    S.r.price=(p||'').replace(/[^\d.]/g,'');
+    S.r.og=(o||'').replace(/[^\d.]/g,'');
+    S.r.ogOn=!!S.r.og;
+  } else {
+    S.r.price=head.replace(/[^\d.]/g,'');
+    S.r.og=''; S.r.ogOn=false;
+  }
+  if(parts[1] && /^\d+$/.test(parts[1])) S.r.qty=parts[1];
+  else S.r.qty='';
+}
+function onRetailInput(raw){
+  parseRetailString(raw);
   regen();
+}
+function toggleRetail(){
+  const box=document.getElementById('retailField');
+  const btn=document.getElementById('retailToggle');
+  if(!box||!btn) return;
+  const open=box.classList.toggle('show');
+  btn.textContent = open ? '− retail' : '+ retail';
+  if(open){ box.focus(); }
+  else { parseRetailString(''); regen(); }
+}
+function revealRetail(){
+  const box=document.getElementById('retailField');
+  const btn=document.getElementById('retailToggle');
+  if(!box||!btn) return;
+  box.classList.add('show');
+  btn.textContent='− retail';
+  // reflect current S.r into input
+  const disp = S.r.price
+    ? (S.r.og ? `${S.r.price},${S.r.og}` : S.r.price) + (S.r.qty && S.r.qty!=='1' ? ` ${S.r.qty}` : '')
+    : '';
+  box.value = disp;
+}
+function collapseRetail(){
+  const box=document.getElementById('retailField');
+  const btn=document.getElementById('retailToggle');
+  if(!box||!btn) return;
+  box.classList.remove('show');
+  btn.textContent='+ retail';
+  box.value='';
 }
 
 // --- side panels ---
@@ -1061,7 +1105,7 @@ function showPanel(id){
   document.getElementById('backdrop')?.classList.add('show');
   document.getElementById(id)?.classList.add('show');
 }
-const ALL_PANELS=['settingsPanel','typesPanel','pickerPanel','vaultPanel','importPanel'];
+const ALL_PANELS=['settingsPanel','typesPanel','pickerPanel','vaultPanel','importPanel','previewPanel'];
 function hidePanel(id){
   document.getElementById(id)?.classList.remove('show');
   const anyOpen = ALL_PANELS.some(p=>document.getElementById(p)?.classList.contains('show'));
@@ -1157,6 +1201,7 @@ function resetAfterSend(){
   const p=document.getElementById('priceField'); if(p) p.value='';
   const db=document.getElementById('descBox'); if(db) db.value='';
   collapseDescription();
+  collapseRetail();
   onNameInput();
   updatePriceChip();
   updateChipRail();
@@ -1187,7 +1232,7 @@ function stateSnapshot(){
     name: S.name || '',
     description: (document.getElementById('descBox')?.value || '').trim(),
     wholesale: { price:S.w.price, qty:S.w.qty, og:S.w.og, ogOn:S.w.ogOn, status:S.w.status },
-    retail:    { enabled: !!(S.r && S.r.price), price:S.r.price, qty:S.r.qty, og:S.r.og, ogOn:S.r.ogOn, status:S.r.status },
+    retail:    { price:S.r.price, qty:S.r.qty, og:S.r.og, ogOn:S.r.ogOn, status:S.r.status },
     flash:     { price:S.flash.price, og:S.flash.og },
     mode: S.mode,
     variants: JSON.parse(JSON.stringify(S.variants || [])),
@@ -1314,6 +1359,7 @@ function pickProduct(id){
     if(S.w.qty && S.w.qty !== '1') disp += ` ${S.w.qty}`;
     pf.value = disp;
   }
+  if(S.r.price) revealRetail(); else collapseRetail();
   onNameInput();
   renderFields();
   updatePriceChip();
@@ -1463,13 +1509,10 @@ function exportOne(id){
 function exportAll(){
   const all = productsAll();
   if(!all.length){ showToast('nothing to export'); return; }
-  all.forEach((p, i)=>{
-    setTimeout(()=>{
-      const slug = productSlug(p);
-      _downloadJSON(`${slug}.json`, productExportPayload(p));
-    }, i * 250);
-  });
-  showToast(`↓ exporting ${all.length} file${all.length>1?'s':''}`);
+  const payload = all.map(productExportPayload);
+  const date = new Date().toISOString().slice(0,10);
+  _downloadJSON(`rapid-captions-vault-${date}.json`, payload);
+  showToast(`↓ exported ${all.length} product${all.length>1?'s':''}`);
 }
 
 // expose for inline handlers
@@ -1488,6 +1531,17 @@ window.exportOne = exportOne;
 window.exportAll = exportAll;
 window.toggleDescription = toggleDescription;
 window.onDescInput = onDescInput;
+window.toggleRetail = toggleRetail;
+window.onRetailInput = onRetailInput;
+window.revealRetail = revealRetail;
+window.collapseRetail = collapseRetail;
+window.toggleVariantMode = toggleVariantMode;
+function openPreview(){
+  const box=document.getElementById('previewBox');
+  if(box && box.value && box.value !== L('pick_prompt')){ regen(); }
+  showPanel('previewPanel');
+}
+window.openPreview = openPreview;
 
 // ═══════════════════════════════════════
 // INIT
