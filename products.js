@@ -51,7 +51,6 @@ function _blankRecord() {
     // variant mode
     mode: 'single',
     variants: [],
-    variantRestock: '',
 
     // type-specific extras
     testimonial: { quote:'', reviewer:'', stars:0 },

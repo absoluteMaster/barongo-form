@@ -82,7 +82,7 @@
              inputmode="text"
              autocomplete="off"
              oninput="parsePriceInput(this.value)"
-             onfocus="setFocusStep('price')"
+             onfocus="setFocusStep('price');if(typeof onVariantPriceFocus==='function')onVariantPriceFocus()"
              onblur="setFocusStep(null)"
              onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
       <div class="extra-toggles">
@@ -101,6 +101,8 @@
     </div>
 
     <div id="fieldsArea" class="extras"></div>
+
+    <div class="variant-row" id="variantRow"></div>
 
     <div class="chip-rail" id="chipRail">
       <button class="rail-chip" id="chipPlatform" onclick="openPicker('platform')">

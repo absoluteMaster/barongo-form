@@ -531,11 +531,84 @@ body.focus-name #retailToggle, body.focus-name .retail-box { display: none; }
 .retail-box:focus { border-color: var(--accent); }
 .extra-toggles { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
 .extra-toggles .desc-toggle { margin-top: 0; }
-body.mode-variant #priceField,
-body.mode-variant #retailField,
-body.mode-variant #retailToggle,
-body.mode-variant #priceHint,
-body.mode-variant #priceChip { display: none !important; }
+/* Variant mode keeps the price field — it re-routes to the active variant. */
+body.mode-variant #priceHint { display: none !important; }
+
+/* ════════════ VARIANTS CHIP ROW ════════════ */
+.variant-row {
+  display: none;
+  margin: 10px 0 0;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+.variant-row.show { display: block; }
+.variant-row::-webkit-scrollbar { height: 0; }
+.variant-row-inner {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 6px;
+  padding: 2px;
+  min-width: 100%;
+}
+.variant-chip {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.2;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .12s, background .12s, color .12s;
+}
+.variant-chip:hover { border-color: var(--accent); }
+.variant-chip.empty { border-style: dashed; color: var(--sub); }
+.variant-chip.named { color: var(--text); }
+.variant-chip.priced { color: var(--accent); border-color: var(--accent); }
+.variant-chip.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent) inset;
+  background: var(--bg);
+}
+.variant-chip .vc-ph { color: var(--sub); }
+.variant-chip .vc-sep { color: var(--sub); }
+.variant-chip .vc-pr { color: var(--accent); }
+.variant-chip .vc-input {
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  outline: 0;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  min-width: 7ch;
+  width: 14ch;
+}
+.variant-clear {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  background: transparent;
+  color: var(--sub);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 13px;
+  cursor: pointer;
+}
+.variant-clear:hover { color: var(--text); border-color: var(--accent); }
+
+/* Kill number-input spinner arrows site-wide. */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
 
 /* ════════════ VAULT PANEL ════════════ */
 .vault-panel .panel-title {

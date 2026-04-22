@@ -88,7 +88,7 @@ const S = {
   r: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
   flash: { price:'', og:'' },
   restockDate: '', restockHeadline: '',
-  variants: [], variantRestock: '',
+  variants: [], activeVariantId: null,
   bundle: { item2:'', comboPrice:'', savings:'' },
   lastQty: '',
   review: { quote:'', reviewer:'', stars:0 },
@@ -210,7 +210,6 @@ const REGISTRY = [
   { id:'last_pieces',   label:'Last Pieces',  nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
   { id:'review',        label:'Review',       nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
 ];
-const UNITS = ['pc','kg','g','L','ml','cm','inch','--'];
 
 function currentTypeLabel() {
   if(!S.type) return '';
@@ -297,7 +296,18 @@ function setMode(m) {
   document.body.classList.toggle('mode-variant', m==='variant');
   const vt=document.getElementById('variantToggle');
   if(vt) vt.textContent = m==='variant' ? '− variants' : '⚡ variants';
-  if(S.type) renderFields(); regen();
+  if(S.type) renderFields();
+  renderVariantChips();
+  // Re-sync price field when returning to single mode: show the single-mode price.
+  if(m==='single'){
+    const pf=document.getElementById('priceField');
+    if(pf){
+      const p = S.type==='flash' ? S.flash.price : S.w.price;
+      pf.value = p || '';
+    }
+  }
+  updatePriceChip();
+  regen();
 }
 function typeSupportsVariants(){
   const def=REGISTRY.find(r=>r.id===S.type);
@@ -308,7 +318,17 @@ function toggleVariantMode(){
   if(!S.type){ showToast('pick a type first'); return; }
   if(!typeSupportsVariants()){ showToast('no variants for this type'); return; }
   setMode(S.mode==='variant' ? 'single' : 'variant');
-  if(S.mode==='variant' && S.variants.length===0) addVariant();
+  if(S.mode==='variant'){
+    if(S.variants.length===0) spawnVariant();
+    S.activeVariantId=S.variants[0].id;
+    renderVariantChips();
+    requestAnimationFrame(()=>{
+      const input=document.querySelector('.variant-chip.active input');
+      if(input) input.focus();
+    });
+  } else {
+    deactivateVariant();
+  }
 }
 
 // ═══════════════════════════════════════
@@ -318,7 +338,7 @@ function clearForm() {
   S.name=''; S.w={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
   S.r={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
   S.flash={price:'',og:''}; S.restockDate=''; S.restockHeadline='';
-  S.variants=[]; S.variantRestock='';
+  S.variants=[]; S.activeVariantId=null;
   S.bundle={item2:'',comboPrice:'',savings:''}; S.lastQty='';
   S.review={quote:'',reviewer:'',stars:0}; S.previewEdited=false;
   document.getElementById('productName').value='';
@@ -335,42 +355,18 @@ function renderFields() {
   if(!S.type){area.innerHTML='';return;}
   const def=REGISTRY.find(r=>r.id===S.type);
   if(!def){area.innerHTML='';return;}
-  // New layout: name + price inputs handle wholesale/retail/flash.
-  // Only render TYPE-SPECIFIC extras here (bundle, review, restock headline, last qty).
+  // Name + price inputs handle wholesale/retail/flash pricing.
+  // Type-specific extras (bundle, review, restock headline, last qty) render here.
+  // Variants render in their own row outside fieldsArea via renderVariantChips().
   let html='<div class="blk">';
   if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
   if(def.groups.includes('testimonial')) html+=htmlTestimonial();
   if(def.groups.includes('bundle')) html+=htmlBundleFields();
   if(def.groups.includes('last_qty')) html+=htmlLastQty();
-  if(S.mode==='variant' && typeSupportsVariants()) html+=htmlVariantSection();
   html+='</div>';
   area.innerHTML=html;
   if(def.groups.includes('testimonial')) applyStars(S.review.stars);
-  if(S.mode==='variant' && typeSupportsVariants()) renderVariantRows();
-  return;
-  // ─── legacy variant/full path retained below but not reached ───
-  if(S.mode==='variant'){
-    const needsPrices=def.groups.some(g=>['wholesale','retail','flash'].includes(g));
-    if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
-    if(def.groups.includes('testimonial')) html+=htmlTestimonial();
-    if(def.groups.includes('bundle')) html+=htmlBundleFields();
-    if(def.groups.includes('last_qty')) html+=htmlLastQty();
-    if(def.groups.includes('flash')) html+=htmlFlashGroup();
-    if(def.groups.includes('wholesale')) html+=htmlWholesaleGroup();
-    if(def.groups.includes('retail')) html+=htmlRetailGroup();
-  }
-  html+='</div>';
-  area.innerHTML=html;
-  if(S.mode==='single'){
-    applyStatus('w',S.w.status); applyStatus('r',S.r.status);
-    // Auto-enable old price fields for Price Drop
-    if(S.type==='price_drop'&&!S.w.ogOn){S.w.ogOn=true;}
-    if(S.type==='price_drop'&&!S.r.ogOn){S.r.ogOn=true;}
-    if(S.w.ogOn){const f=document.getElementById('wOgField');if(f)f.classList.add('show');const b=document.getElementById('wOgBtn');if(b)b.classList.add('on');}
-    if(S.r.ogOn){const f=document.getElementById('rOgField');if(f)f.classList.add('show');const b=document.getElementById('rOgBtn');if(b)b.classList.add('on');}
-    checkRestockVisibility();
-  } else { renderVariantRows(); }
-  if(def.groups.includes('testimonial')) applyStars(S.review.stars);
+  renderVariantChips();
 }
 
 function htmlWholesaleGroup(){
@@ -398,10 +394,6 @@ function htmlFlashGroup(){
     <div class="grid2"><div class="fld"><label class="fld-lbl">Flash Price (${CC()})</label><input type="number" placeholder="Sale price" value="${S.flash.price}" oninput="S.flash.price=this.value;regen()"></div>
     <div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Was price" value="${S.flash.og}" oninput="S.flash.og=this.value;regen()"></div></div></div>`;
 }
-function htmlFlashGroupVariant(){
-  return `<div class="fc"><div class="fc-title">${E('header_flash')} Flash Sale — Per Variant</div>
-    <p style="font-size:12px;color:var(--sub);">Set flash prices on each variant below.</p></div>`;
-}
 function htmlRestockHeadline(){
   return `<div class="fc"><div class="fc-title">${E('header_restock')} Restock Info</div>
     <div class="fld"><label class="fld-lbl">Headline</label><input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()"></div></div>`;
@@ -425,60 +417,138 @@ function htmlTestimonial(){
 function setStar(n){ S.review.stars=(S.review.stars===n)?0:n; applyStars(S.review.stars); regen(); }
 function applyStars(n){ const w=document.getElementById('starsWrap'); if(!w)return; w.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n)); }
 
-function htmlVariantSection(){
-  return `<div class="fc" id="variantSection"><div class="fc-title">VARIANTS</div>
-    <div id="variantRows"></div>
-    <button class="add-variant-btn" onclick="addVariant()">+ Add Variant</button>
-    <div class="restock-reveal" id="variantRestockReveal"><div class="fld"><label class="fld-lbl">Restock Date</label><input type="text" placeholder="e.g. April 20" value="${S.variantRestock}" oninput="S.variantRestock=this.value;regen()"></div></div></div>`;
-}
-
 // ═══════════════════════════════════════
-// VARIANT MANAGEMENT
+// VARIANTS (chip-row model)
 // ═══════════════════════════════════════
-function addVariant(v={}){
-  S.variants.push({ prefix:v.prefix||'',size:v.size||'',unit:v.unit||'pc',customUnit:v.customUnit||'',
-    wholesale:v.wholesale||'',wholesaleQty:v.wholesaleQty||'',wOg:v.wOg||'',
-    retail:v.retail||'',rOg:v.rOg||'',flashPrice:v.flashPrice||'',flashOg:v.flashOg||'',status:v.status||'in_stock' });
-  renderVariantRows(); regen();
+// A variant is { id, rawInput, price }. Status is derived.
+// Rules:
+//   • variantSplit("12kg")          → "12kg"
+//   • variantSplit("bottle 500ml")  → "bottle-500ml"
+//   • variantSplit("large bottle L")→ "large-bottle-L"
+// Spawn rule: when the trailing chip transitions from empty → named via a
+// commit event (tap another chip, tap price field), append one empty chip.
+function variantSplit(raw){
+  const tokens=(raw||'').trim().split(/\s+/).filter(Boolean);
+  if(!tokens.length) return '';
+  if(tokens.length===1) return tokens[0];
+  return tokens.slice(0,-1).join('-')+'-'+tokens[tokens.length-1];
 }
-function removeVariant(i){ S.variants.splice(i,1); renderVariantRows(); regen(); }
-function renderVariantRows(){
-  const c=document.getElementById('variantRows'); if(!c)return; c.innerHTML='';
-  const def=REGISTRY.find(r=>r.id===S.type); const isFlash=def&&def.groups.includes('flash');
-  S.variants.forEach((v,i)=>{
-    const name=buildVName(v); const div=document.createElement('div'); div.className='variant-card';
-    let ph='';
-    if(isFlash){
-      ph=`<div class="div"></div><div class="grid2"><div class="fld"><label class="fld-lbl">Flash (${CC()})</label><input type="number" placeholder="Sale" value="${v.flashPrice}" oninput="S.variants[${i}].flashPrice=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">Original (${CC()})</label><input type="number" placeholder="Was" value="${v.flashOg}" oninput="S.variants[${i}].flashOg=this.value;regen()"></div></div>`;
-    } else {
-      ph=`<div class="div"></div><div class="grid2"><div class="fld"><label class="fld-lbl">Wholesale (${CC()})</label><input type="number" value="${v.wholesale}" oninput="S.variants[${i}].wholesale=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">W. Qty</label><input type="number" value="${v.wholesaleQty}" oninput="S.variants[${i}].wholesaleQty=this.value;regen()"></div></div>
-      <div class="fld"><label class="fld-lbl">Old W. Price</label><input type="number" value="${v.wOg}" oninput="S.variants[${i}].wOg=this.value;regen()"></div>
-      <div class="div"></div>
-      <div class="fld"><label class="fld-lbl">Retail (${CC()})</label><input type="number" value="${v.retail}" oninput="S.variants[${i}].retail=this.value;regen()"></div>
-      <div class="fld"><label class="fld-lbl">Old R. Price</label><input type="number" value="${v.rOg}" oninput="S.variants[${i}].rOg=this.value;regen()"></div>`;
+function variantSuffix(v){ return variantSplit(v&&v.rawInput||''); }
+function variantStatus(v){
+  if(!v) return 'empty';
+  const hasName=!!variantSuffix(v);
+  const hasPrice=!!(v.price||'').toString().trim();
+  if(hasName&&hasPrice) return 'priced';
+  if(hasName) return 'named';
+  return 'empty';
+}
+function activeVariant(){ return S.variants.find(v=>v.id===S.activeVariantId)||null; }
+function spawnVariant(){
+  const id='v'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  S.variants.push({ id, rawInput:'', price:'' });
+  return id;
+}
+function ensureTrailingEmpty(){
+  const last=S.variants[S.variants.length-1];
+  if(!last||variantStatus(last)!=='empty') spawnVariant();
+}
+function addVariant(v){
+  // Kept for back-compat with vault import. Old-shape variants get dropped
+  // (unsupported in the new model) unless they already carry { rawInput }.
+  if(v&&typeof v.rawInput==='string'){
+    S.variants.push({ id:v.id||('v'+Math.random().toString(36).slice(2,8)),
+      rawInput:v.rawInput, price:v.price||'' });
+    renderVariantChips(); regen();
+  }
+}
+function commitTrailing(){
+  const v=activeVariant();
+  if(!v) return;
+  const wasLast=v===S.variants[S.variants.length-1];
+  if(wasLast && variantStatus(v)!=='empty') spawnVariant();
+}
+function activateVariant(id){
+  S.activeVariantId=id;
+  renderVariantChips();
+  updatePriceChip();
+  const v=activeVariant();
+  if(!v) return;
+  // Price field always reflects the active variant's price (empty for un-priced chips).
+  const pf=document.getElementById('priceField');
+  if(pf) pf.value=v.price||'';
+  const st=variantStatus(v);
+  requestAnimationFrame(()=>{
+    if(st==='empty'){
+      const input=document.querySelector('.variant-chip.active input');
+      if(input){ input.focus(); input.setSelectionRange(input.value.length,input.value.length); }
     }
-    div.innerHTML=`<div class="v-label" id="vlabel_${i}">VARIANT ${i+1}${name?' — '+name:''}</div>
-      <button class="v-del" onclick="removeVariant(${i})">x</button>
-      <div class="grid2"><div class="fld"><label class="fld-lbl">Prefix</label><input type="text" placeholder="e.g. Spiral" value="${v.prefix}" oninput="S.variants[${i}].prefix=this.value;updateVLabel(${i});regen()"></div>
-      <div class="fld"><label class="fld-lbl">Size</label><input type="text" placeholder="e.g. 12, L" value="${v.size}" oninput="S.variants[${i}].size=this.value;updateVLabel(${i});regen()"></div></div>
-      <div class="fld"><label class="fld-lbl">Unit</label><div class="unit-chips">${UNITS.map(u=>`<button class="uc ${v.unit===u?'on':''}" onclick="setVUnit(${i},'${u}')">${u==='--'?'Custom':u}</button>`).join('')}</div>
-      <input type="text" id="vcu_${i}" placeholder="Custom unit" value="${v.customUnit}" style="${v.unit!=='--'?'display:none':''}" oninput="S.variants[${i}].customUnit=this.value;regen()"></div>
-      ${ph}
-      <div class="fld-lbl" style="margin-top:10px;">Stock</div>
-      <div class="status-row"><button class="st-btn ${v.status==='in_stock'?'g':''}" onclick="setVStatus(${i},'in_stock')">In</button>
-      <button class="st-btn ${v.status==='low_stock'?'o':''}" onclick="setVStatus(${i},'low_stock')">Low</button>
-      <button class="st-btn ${v.status==='out_of_stock'?'r':''}" onclick="setVStatus(${i},'out_of_stock')">Out</button></div>`;
-    c.appendChild(div);
   });
-  checkVariantRestock();
 }
-function updateVLabel(i){ const el=document.getElementById('vlabel_'+i); if(!el)return; const n=buildVName(S.variants[i]); el.textContent=`VARIANT ${i+1}${n?' — '+n:''}`; }
-function setVUnit(i,u){ S.variants[i].unit=u; const ci=document.getElementById('vcu_'+i); if(ci)ci.style.display=u==='--'?'block':'none'; const card=document.getElementById('variantRows').children[i]; if(card)card.querySelectorAll('.uc').forEach((b,j)=>b.classList.toggle('on',UNITS[j]===u)); regen(); }
-function setVStatus(i,st){ S.variants[i].status=st; const card=document.getElementById('variantRows').children[i]; if(card){const b=card.querySelectorAll('.status-row .st-btn'); b[0].className='st-btn'+(st==='in_stock'?' g':''); b[1].className='st-btn'+(st==='low_stock'?' o':''); b[2].className='st-btn'+(st==='out_of_stock'?' r':'');} checkVariantRestock(); regen(); }
-function checkVariantRestock(){ const el=document.getElementById('variantRestockReveal'); if(!el)return; el.classList.toggle('show',S.variants.length>0&&S.variants.every(v=>v.status==='out_of_stock')); }
-function buildVName(v){ const u=v.unit==='--'?v.customUnit:v.unit; if(!v.size)return v.prefix||''; if(v.prefix)return(u&&u!=='pc')?`${v.prefix}-${v.size} ${u}`:`${v.prefix}-${v.size}`; return(u&&u!=='pc')?`${v.size} ${u}`:v.size; }
+function deactivateVariant(){
+  S.activeVariantId=null;
+  renderVariantChips();
+  updatePriceChip();
+}
+function onVariantInput(id, raw){
+  const v=S.variants.find(x=>x.id===id);
+  if(!v) return;
+  v.rawInput=raw;
+  regen();
+}
+function onVariantChipTap(id){
+  if(S.activeVariantId===id) return;
+  commitTrailing();
+  activateVariant(id);
+}
+function onVariantPriceFocus(){
+  if(S.mode!=='variant') return;
+  commitTrailing();
+  renderVariantChips();
+  const v=activeVariant();
+  if(v){
+    const pf=document.getElementById('priceField');
+    if(pf && pf.value==='' && v.price) pf.value=v.price;
+  }
+}
+function clearVariants(){
+  S.variants=[];
+  S.activeVariantId=null;
+  spawnVariant();
+  S.activeVariantId=S.variants[0].id;
+  renderVariantChips();
+  regen();
+}
+function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function renderVariantChips(){
+  const row=document.getElementById('variantRow');
+  if(!row) return;
+  if(S.mode!=='variant'){ row.classList.remove('show'); row.innerHTML=''; return; }
+  row.classList.add('show');
+  if(S.variants.length===0){
+    spawnVariant();
+    S.activeVariantId=S.variants[0].id;
+  }
+  const chips=S.variants.map(v=>{
+    const st=variantStatus(v);
+    const isActive=S.activeVariantId===v.id;
+    const suffix=variantSuffix(v);
+    const priceTxt=v.price?fmt(v.price):'';
+    let inner;
+    if(isActive){
+      inner=`<input type="text" class="vc-input" value="${escAttr(v.rawInput||'')}" placeholder="size · prefix size" oninput="onVariantInput('${v.id}', this.value)" onclick="event.stopPropagation()" onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('priceField').focus();}">`;
+    } else if(st==='empty'){
+      inner=`<span class="vc-ph">+ variant</span>`;
+    } else if(st==='named'){
+      inner=`<span class="vc-suf">${escAttr(suffix)}</span>`;
+    } else {
+      inner=`<span class="vc-suf">${escAttr(suffix)}</span><span class="vc-sep">·</span><span class="vc-pr">${escAttr(priceTxt)}</span>`;
+    }
+    return `<button type="button" class="variant-chip ${st}${isActive?' active':''}" onclick="onVariantChipTap('${v.id}')">${inner}</button>`;
+  }).join('');
+  const hasAny=S.variants.some(v=>variantStatus(v)!=='empty');
+  const clearBtn=hasAny?`<button type="button" class="variant-clear" onclick="clearVariants()" title="clear">×</button>`:'';
+  row.innerHTML=`<div class="variant-row-inner">${chips}${clearBtn}</div>`;
+}
 
 // ═══════════════════════════════════════
 // STATUS & OG HELPERS
@@ -538,35 +608,17 @@ function getRBlock(){
   if(status==='low_stock') line+=`\n${E('status_low')} ${L('low_stock')}`;
   return clean(line);
 }
-function getVariantLines(isFlash=false){
-  const active=S.variants.filter(v=>v.status!=='out_of_stock');
-  if(!active.length) return null;
-  const pa=E('price_arrow'), sw=E('section_wholesale'), sr=E('section_retail');
-  return active.map(v=>{
-    const vn=buildVName(v);
-    let b=`${E('fire')} ${B(vn)}`;
-    if(isFlash){
-      b+=`\n${E('header_flash')} ${L('flash_price')}`;
-      if(v.flashOg) b+=`\n${STR(`${pa} ${CC()} ${fmt(v.flashOg)}`)}`;
-      if(v.flashPrice) b+=`\n${pa} ${B(`${CC()} ${fmt(v.flashPrice)}`)}`;
-    } else {
-      if(v.wholesale&&v.wholesaleQty){
-        b+=`\n${sw} ${B(L('wholesale'))}`;
-        if(v.wOg) b+=`\n${STR(`${pa} ${v.wholesaleQty}pc = ${CC()} ${fmt(v.wOg)}`)}`;
-        b+=`\n${pa} ${v.wholesaleQty}pc = ${B(`${CC()} ${fmt(v.wholesale)}`)}`;
-      }
-      if(v.retail){
-        b+=`\n${sr} ${B(L('retail'))}`;
-        if(v.rOg) b+=`\n${STR(`${pa} 1pc = ${CC()} ${fmt(v.rOg)}`)}`;
-        b+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(v.retail)}`)}`;
-      }
-    }
-    if(v.status==='low_stock') b+=`\n${E('status_low')} ${L('low_stock')}`;
-    return clean(b);
-  }).join('\n\n');
+function getVariantLines(){
+  const priced=S.variants.filter(v=>variantStatus(v)==='priced');
+  if(!priced.length) return null;
+  const pa=E('price_arrow');
+  return priced.map(v=>{
+    const suffix=variantSuffix(v);
+    return clean(`${pa} ${B(suffix)} — ${B(`${CC()} ${fmt(v.price)}`)}`);
+  }).join('\n');
 }
 function getOutOfStockBlock(){
-  const date=S.mode==='variant'?S.variantRestock:S.restockDate;
+  const date=S.restockDate;
   if(date) return clean(`${E('status_out')} ${L('restocking')} — ${B(date)}`);
   return clean(`${E('status_out')} ${B(L('out_of_stock'))}`);
 }
@@ -580,19 +632,15 @@ function priceBody(){
   if(S.w.status==='out_of_stock'||S.r.status==='out_of_stock') return getOutOfStockBlock();
   return '';
 }
-function variantBody(isFlash=false){
-  const lines=getVariantLines(isFlash);
-  if(lines) return lines;
-  // Only show out-of-stock when user added variants AND every one is out
-  if(S.variants.length>0 && S.variants.every(v=>v.status==='out_of_stock')) return getOutOfStockBlock();
-  return '';
+function variantBody(){
+  return getVariantLines() || '';
 }
 
 function assembleSingle(header, body, footer=''){
   const div=E('divider')||'───────────────'; const sig=getSig();
   const desc=descLine();
   let out=header;
-  if(desc) out+=`\n${desc}`;
+  if(desc) out+=`\n\n${desc}`;
   if(body && body.trim()) out+=`\n${div}\n\n${body}`;
   if(footer) out+= (body && body.trim()) ? `\n\n${footer}` : `\n${div}\n\n${footer}`;
   if(sig) out+=`\n${sig}`;
@@ -612,7 +660,7 @@ function buildShort(hook, cta){
 // CAPTION BUILDERS
 // ═══════════════════════════════════════
 function buildStandard(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   if(isShort()) return buildShort(`${E('header_product')} ${name}`, LH('dm_prices','DM_PRICES'));
   const h=clean(`${E('header_product')} ${B(name)}`);
   if(S.mode==='variant') return assembleSingle(h, variantBody());
@@ -620,7 +668,7 @@ function buildStandard(){
 }
 
 function buildRepost(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   const cta=clean(`${E('cta_order')} ${LH('selling_fast','SELLING_FAST')}`);
   if(isShort()) return buildShort(`${E('header_repost')} ${name} — ${LH('still_available','STILL_AVAILABLE')}`, cta);
   const h=clean(`${E('header_repost')} ${B(`${name} — ${LH('still_available','STILL_AVAILABLE')}`)}`);
@@ -629,20 +677,18 @@ function buildRepost(){
 }
 
 function buildFlash(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   const flashHead=clean(`${E('header_flash')} ${B(L('flash_today'))} ${E('header_flash')}`);
   if(isShort()){
     const fp=S.flash.price?` ${CC()} ${fmt(S.flash.price)}`:'';
     return buildShort(flashHead, `${name}${fp}\n${LH('limited_time','LIMITED_TIME')}`);
   }
   const div=E('divider')||'───────────────'; const sig=getSig(); const pa=E('price_arrow');
-  const desc=descLine(); const descSuffix=desc?`\n${desc}`:'';
+  const desc=descLine(); const descSuffix=desc?`\n\n${desc}`:'';
   if(S.mode==='variant'){
-    const lines=getVariantLines(true);
-    const hasContent=!!lines || S.variants.length>0;
+    const lines=getVariantLines();
     let body='';
     if(lines) body=clean(`${E('header_product')} ${B(name)}`)+'\n\n'+lines;
-    else if(S.variants.length>0 && S.variants.every(v=>v.status==='out_of_stock')) body=getOutOfStockBlock();
     let out=flashHead+descSuffix;
     if(body) out+=`\n${div}\n\n${body}\n\n${LH('limited_time','LIMITED_TIME')}`;
     if(sig) out+=`\n${sig}`; return out;
@@ -656,7 +702,7 @@ function buildFlash(){
 }
 
 function buildNewArrival(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   if(isShort()) return buildShort(`${E('header_new')} ${name} — ${LH('just_arrived','JUST_ARRIVED')}`, LH('dm_prices','DM_PRICES'));
   const h=clean(`${E('header_new')} ${B(`${name} — ${LH('just_arrived','JUST_ARRIVED')}`)}`);
   const intro=LH('new_in_store','NEW_IN_STORE');
@@ -669,7 +715,7 @@ function buildNewArrival(){
 }
 
 function buildBackInStock(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   const headline=S.restockHeadline||LH('back_in_stock','BACK_IN_STOCK');
   if(isShort()) return buildShort(`${E('header_restock')} ${name} — ${headline}`, LH('its_back','ITS_BACK'));
   const h=clean(`${E('header_restock')} ${B(`${name} — ${headline}`)}`);
@@ -683,18 +729,18 @@ function buildBackInStock(){
 }
 
 function buildEngagement(){
-  const name=S.name||'this';
+  const name=(S.name||'').trim()||'this';
   const wantLine=`${L('want')} ${name}?`;
   if(isShort()) return buildShort(wantLine, LH('budget','BUDGET'));
   const div=E('divider')||'───────────────';
   const body=LH('budget','BUDGET')+'\n\n'+LH('ws_rs_welcome','WS_RS_WELCOME');
   const sig=getSig();
-  const desc=descLine(); const descSuffix=desc?`\n${desc}`:'';
+  const desc=descLine(); const descSuffix=desc?`\n\n${desc}`:'';
   return `${wantLine}${descSuffix}\n${div}\n\n${body}${sig?'\n'+sig:''}`;
 }
 
 function buildPriceDrop(){
-  const name=S.name||'—';
+  const name=(S.name||'').trim()||'—';
   if(isShort()) return buildShort(`${E('header_drop')} ${name} — ${LH('price_drop','PRICE_DROP')}`, LH('dm_prices','DM_PRICES'));
   const h=clean(`${E('header_drop')} ${B(`${name} — ${LH('price_drop','PRICE_DROP')}`)}`);
   const intro=LH('prices_slashed','PRICES_SLASHED');
@@ -740,7 +786,7 @@ function buildPriceDrop(){
 }
 
 function buildBundle(){
-  const name=S.name||'—'; const item2=S.bundle.item2||'Item 2';
+  const name=(S.name||'').trim()||'—'; const item2=S.bundle.item2||'Item 2';
   const combo=S.bundle.comboPrice; const savings=S.bundle.savings;
   if(isShort()){
     let short=`${E('header_bundle')} ${name} + ${item2}`;
@@ -757,7 +803,7 @@ function buildBundle(){
 }
 
 function buildLastPieces(){
-  const name=S.name||'—'; const qty=S.lastQty;
+  const name=(S.name||'').trim()||'—'; const qty=S.lastQty;
   const qtyText=qty?L('only_left').replace('%n',qty):L('last_pieces');
   const qtyHype=qty?L('only_left').replace('%n',qty).toUpperCase():L('LAST_PIECES');
   if(isShort()) return buildShort(`${E('header_last')} ${name} — ${qtyText}`, LH('dm_gone','ALMOST_GONE'));
@@ -770,7 +816,7 @@ function buildLastPieces(){
 }
 
 function buildReview(){
-  const name=S.name||'—'; const q=S.review.quote||'Great product!';
+  const name=(S.name||'').trim()||'—'; const q=S.review.quote||'Great product!';
   const reviewer=S.review.reviewer; const stars=S.review.stars;
   const starStr=stars?(E('star')||'★').repeat(stars):'';
   if(isShort()) return buildShort(`${E('header_review')} "${q.slice(0,60)}${q.length>60?'...':''}"`, `${name}${reviewer?' — '+reviewer:''}`);
@@ -962,6 +1008,19 @@ function focusPrice(){
 // (~ also accepted as old-price separator for backward compat)
 function parsePriceInput(raw){
   const text=(raw||'').trim();
+  // Variant mode: price field only routes to the active named/priced variant.
+  // If nothing is active (or active chip is still empty), drop input silently
+  // so we don't clobber S.w/S.r that single-mode owns.
+  if(S.mode==='variant'){
+    const av=activeVariant();
+    if(av && variantStatus(av)!=='empty'){
+      av.price=text.replace(/[^\d.]/g,'');
+      renderVariantChips();
+      updatePriceChip();
+      regen();
+    }
+    return;
+  }
   const tokens=text.split(/\s+/).filter(Boolean);
   let price='', qty='', og='', status=null;
   if(tokens.length){
@@ -1003,6 +1062,17 @@ function parsePriceInput(raw){
 }
 function updatePriceChip(){
   const chip=document.getElementById('priceChip'); if(!chip) return;
+  // Variant mode: show which variant is being priced.
+  if(S.mode==='variant'){
+    const av=activeVariant();
+    if(av && variantStatus(av)!=='empty'){
+      const suf=variantSuffix(av);
+      chip.textContent='• pricing: '+suf;
+      return;
+    }
+    chip.textContent='';
+    return;
+  }
   const p = S.type==='flash' ? S.flash.price : S.w.price;
   const og = S.type==='flash' ? S.flash.og : S.w.og;
   const q = S.w.qty;
@@ -1236,7 +1306,6 @@ function stateSnapshot(){
     flash:     { price:S.flash.price, og:S.flash.og },
     mode: S.mode,
     variants: JSON.parse(JSON.stringify(S.variants || [])),
-    variantRestock: S.variantRestock || '',
     testimonial: { quote:S.review.quote, reviewer:S.review.reviewer, stars:S.review.stars },
     bundle:      { item2:S.bundle.item2, comboPrice:S.bundle.comboPrice, savings:S.bundle.savings },
     restockDate: S.restockDate || '',
@@ -1325,10 +1394,18 @@ function pickProduct(id){
     S.flash.price = p.flash.price || '';
     S.flash.og    = p.flash.og    || '';
   }
-  // 6. mode + variants
+  // 6. mode + variants (migrate/drop legacy variant shape)
   if(p.mode) S.mode = p.mode;
-  if(Array.isArray(p.variants)) S.variants = JSON.parse(JSON.stringify(p.variants));
-  S.variantRestock = p.variantRestock || '';
+  if(Array.isArray(p.variants)){
+    S.variants = p.variants
+      .filter(v => v && typeof v.rawInput === 'string')
+      .map(v => ({
+        id: v.id || ('v'+Math.random().toString(36).slice(2,8)),
+        rawInput: v.rawInput || '',
+        price: v.price || '',
+      }));
+  }
+  S.activeVariantId = null;
   // 7. type-specific extras
   if(p.testimonial){
     S.review.quote    = p.testimonial.quote    || '';
@@ -1536,6 +1613,10 @@ window.onRetailInput = onRetailInput;
 window.revealRetail = revealRetail;
 window.collapseRetail = collapseRetail;
 window.toggleVariantMode = toggleVariantMode;
+window.onVariantInput = onVariantInput;
+window.onVariantChipTap = onVariantChipTap;
+window.onVariantPriceFocus = onVariantPriceFocus;
+window.clearVariants = clearVariants;
 function openPreview(){
   const box=document.getElementById('previewBox');
   if(box && box.value && box.value !== L('pick_prompt')){ regen(); }
