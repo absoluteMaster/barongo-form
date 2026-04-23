@@ -258,11 +258,11 @@ body.focus-price #fieldName .field-lbl { font-size: 9.5px; }
 body.focus-name .extras,
 body.focus-price .extras { display: none; }
 
-/* CHIP RAIL (platform/tone/lang/status) */
+/* CHIP RAIL (platform/tone/lang) — docks above footer, floats above keyboard via --kb-h */
 .chip-rail {
   position: fixed;
   left: 0; right: 0;
-  bottom: calc(58px + env(safe-area-inset-bottom));
+  bottom: calc(var(--kb-h, 58px) + env(safe-area-inset-bottom));
   max-width: 480px; margin: 0 auto;
   display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 6px;
   padding: 8px 12px;
@@ -271,6 +271,7 @@ body.focus-price .extras { display: none; }
   border-top: 1px solid var(--border-2);
   z-index: 29;
   scrollbar-width: none;
+  transition: bottom .16s ease-out;
 }
 .chip-rail::-webkit-scrollbar { display: none; }
 .chip-rail .rail-chip { flex-shrink: 0; }
@@ -292,8 +293,6 @@ body.no-type .chip-rail { display: none; }
 .rc-k { color: var(--sub); font-size: 9.5px; }
 .rc-v { color: var(--accent); font-weight: 500; }
 .rail-chip.on .rc-v { color: var(--accent); }
-.rail-chip[data-status="low"] .rc-v { color: var(--warn); }
-.rail-chip[data-status="out"] .rc-v { color: var(--err); }
 .rail-chip.off .rc-v { color: var(--dim); }
 
 /* EXTRAS (bundle/review/restock fields) */
@@ -571,13 +570,13 @@ body.mode-variant #priceHint { display: none !important; }
 }
 .variant-chip:hover { border-color: var(--accent); }
 .variant-chip.empty { border-style: dashed; color: var(--sub); }
-.variant-chip.named { color: var(--text); }
-.variant-chip.priced { color: var(--accent); border-color: var(--accent); }
+.variant-chip.named { color: var(--text); border-color: var(--accent-dim); }
 .variant-chip.active {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent) inset;
   background: var(--bg);
 }
+.variant-chip.hidden { opacity: .45; text-decoration: line-through; }
 .variant-chip .vc-ph { color: var(--sub); }
 .variant-chip .vc-sep { color: var(--sub); }
 .variant-chip .vc-pr { color: var(--accent); }
@@ -604,6 +603,71 @@ body.mode-variant #priceHint { display: none !important; }
   cursor: pointer;
 }
 .variant-clear:hover { color: var(--text); border-color: var(--accent); }
+
+/* +variants trigger — only visible in single mode (variant row takes over in variant mode) */
+.variants-trigger {
+  display: block;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 7px 10px;
+  background: var(--bg-2);
+  color: var(--sub);
+  border: 1px dashed var(--border-2);
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: color .12s, border-color .12s;
+}
+.variants-trigger:hover { color: var(--text); border-color: var(--accent); }
+body.mode-variant .variants-trigger { display: none; }
+body.no-type .variants-trigger { display: none; }
+body.focus-name .variants-trigger { display: none; }
+
+/* Per-variant pricing panel — opens below the variant row for the active chip */
+.variant-panel {
+  display: none;
+  margin: 8px 0 0;
+  padding: 10px;
+  background: var(--bg-2);
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--r);
+}
+.variant-panel.show { display: block; }
+.vp-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.vp-label {
+  color: var(--sub); font-size: 10px; letter-spacing: .5px;
+  text-transform: uppercase;
+}
+.vp-eye {
+  background: transparent; border: 1px solid var(--border-2);
+  border-radius: var(--r);
+  padding: 3px 7px; cursor: pointer;
+  font-size: 13px; line-height: 1;
+  color: var(--text);
+  transition: border-color .12s, color .12s;
+}
+.vp-eye:hover { border-color: var(--accent); }
+.vp-eye.off { color: var(--dim); }
+.vp-field { margin-top: 6px; }
+.vp-lbl {
+  display: block;
+  color: var(--sub); font-size: 10px; margin-bottom: 3px;
+}
+.vp-field input {
+  width: 100%;
+  padding: 6px 8px;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-2);
+  border-radius: var(--r);
+  font-family: var(--mono); font-size: 11px;
+  outline: none;
+}
+.vp-field input:focus { border-color: var(--accent); }
 
 /* Kill number-input spinner arrows site-wide. */
 input[type="number"]::-webkit-inner-spin-button,

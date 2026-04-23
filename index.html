@@ -82,12 +82,11 @@
              inputmode="text"
              autocomplete="off"
              oninput="parsePriceInput(this.value)"
-             onfocus="setFocusStep('price');if(typeof onVariantPriceFocus==='function')onVariantPriceFocus()"
+             onfocus="setFocusStep('price')"
              onblur="setFocusStep(null)"
              onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
       <div class="extra-toggles">
         <button class="desc-toggle" id="retailToggle" onclick="toggleRetail()" type="button">+ retail</button>
-        <button class="desc-toggle" id="variantToggle" onclick="toggleVariantMode()" type="button">⚡ variants</button>
       </div>
       <input type="text" id="retailField" class="retail-box"
              placeholder="retail: 1500 · 1500 5 · 1500,1800"
@@ -102,14 +101,13 @@
 
     <div id="fieldsArea" class="extras"></div>
 
+    <button type="button" class="variants-trigger" id="variantsTrigger" onclick="toggleVariantMode()">+ variants</button>
     <div class="variant-row" id="variantRow"></div>
+    <div class="variant-panel" id="variantPanel"></div>
 
     <div class="chip-rail" id="chipRail">
       <button class="rail-chip" id="chipPlatform" onclick="openPicker('platform')">
         <span class="rc-k">net</span><span class="rc-v" id="chipPlatformV">whatsapp</span>
-      </button>
-      <button class="rail-chip" id="chipStatus" onclick="cycleStatus()">
-        <span class="rc-k">stock</span><span class="rc-v" id="chipStatusV">in</span>
       </button>
       <button class="rail-chip" id="chipTone" onclick="openPicker('tone')">
         <span class="rc-k">tone</span><span class="rc-v" id="chipToneV">balanced</span>
