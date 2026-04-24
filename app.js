@@ -135,7 +135,7 @@ function descLine(){
   if(!d) return '';
   const cleaned = clean(d);
   if(S.network==='whatsapp'){
-    return cleaned.split('\n').map(line => `> ${line}`).join('\n');
+    return cleaned.split('\n').map(line => `> _${line}_`).join('\n');
   }
   return cleaned;
 }
