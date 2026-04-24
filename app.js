@@ -635,9 +635,12 @@ function dmPricesLine(){
 function assembleSingle(header, body, footer=''){
   const div=platformDivider(); const sig=getSig();
   const desc=descLine();
+  // Divider separates header from body when nothing else does. When a description
+  // is present, it provides the visual break itself — skip the divider then.
+  const useDiv = div && !desc;
+  const joiner = useDiv ? `\n${div}\n\n` : `\n\n`;
   let out=header;
   if(desc) out+=`\n\n${desc}`;
-  const joiner = div ? `\n${div}\n\n` : `\n\n`;
   if(body && body.trim()) out+=`${joiner}${body}`;
   if(footer){
     if(body && body.trim()) out+=`\n\n${footer}`;
