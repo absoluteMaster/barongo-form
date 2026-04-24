@@ -133,7 +133,11 @@ function newPriceLine(arrow, qty, price){
 function descLine(){
   const d=(S.description||'').trim();
   if(!d) return '';
-  return I(clean(d));
+  const cleaned = clean(d);
+  if(S.network==='whatsapp'){
+    return cleaned.split('\n').map(line => `> ${line}`).join('\n');
+  }
+  return cleaned;
 }
 
 // ═══════════════════════════════════════
