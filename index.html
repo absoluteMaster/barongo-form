@@ -43,14 +43,10 @@
       <button class="type-tile" data-type="flash" onclick="selectType('flash')">
         <span class="tt-icon">⚡</span><span class="tt-label">flash</span>
       </button>
-      <button class="type-tile" data-type="new_arrival" onclick="selectType('new_arrival')">
-        <span class="tt-icon">✨</span><span class="tt-label">new</span>
-      </button>
-      <button class="type-tile" data-type="last_pieces" onclick="selectType('last_pieces')">
-        <span class="tt-icon">🔥</span><span class="tt-label">last</span>
+      <button class="type-tile" data-type="price_drop" onclick="selectType('price_drop')">
+        <span class="tt-icon">📉</span><span class="tt-label">drop</span>
       </button>
     </div>
-    <button class="more-types" onclick="openTypesPanel()">▸ more types</button>
   </section>
 
   <section class="field-stack" id="fieldStack">
@@ -109,12 +105,13 @@
       <button class="rail-chip" id="chipPlatform" onclick="openPicker('platform')">
         <span class="rc-k">net</span><span class="rc-v" id="chipPlatformV">whatsapp</span>
       </button>
-      <button class="rail-chip" id="chipTone" onclick="openPicker('tone')">
-        <span class="rc-k">tone</span><span class="rc-v" id="chipToneV">balanced</span>
-      </button>
       <button class="rail-chip" id="chipLang" onclick="openPicker('lang')">
         <span class="rc-k">lang</span><span class="rc-v" id="chipLangV">en</span>
       </button>
+      <button class="rail-chip" id="chipPrices" onclick="togglePrices()" title="toggle price visibility">
+        <span class="rc-k">prices</span><span class="rc-v" id="chipPricesV">on</span>
+      </button>
+      <input type="text" id="captionTags" class="rail-tags" placeholder="#tags" oninput="onCaptionTagsInput()" autocomplete="off">
     </div>
 
   </section>
@@ -203,9 +200,6 @@
   <div id="typeBlk"></div>
   <button id="modeSingle"></button>
   <button id="modeVariant"></button>
-  <button id="toneHype"></button>
-  <button id="toneBalanced"></button>
-  <button id="tonePro"></button>
   <button id="langEn"></button>
   <button id="langSw"></button>
   <button id="miniCopyBtn"></button>

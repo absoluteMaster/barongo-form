@@ -3,99 +3,42 @@
 // ═══════════════════════════════════════
 const LANG = {
   en: {
-    wholesale: 'Wholesale', retail: 'Retail', flash_price: 'Flash Price',
+    wholesale: 'Wholesale', retail: 'Retail',
     low_stock: 'Low stock', out_of_stock: 'Out of Stock',
-    restocking: 'Restocking', order_now: 'Order now',
-    selling_fast: 'Selling fast — grab yours now!',
-    SELLING_FAST: 'SELLING FAST — grab yours NOW!',
-    still_available: 'still available!', STILL_AVAILABLE: 'STILL AVAILABLE!',
     flash_today: 'FLASH SALE — TODAY ONLY', limited_time: 'Limited time offer',
-    LIMITED_TIME: 'LIMITED TIME — ACT NOW!',
-    just_arrived: 'Just Arrived!', JUST_ARRIVED: 'JUST ARRIVED!',
-    new_in_store: 'New in store!', NEW_IN_STORE: 'BRAND NEW IN STORE!',
-    back_in_stock: 'Back in Stock!', BACK_IN_STOCK: 'BACK IN STOCK!',
-    available_again: 'Available again!', AVAILABLE_AGAIN: 'AVAILABLE AGAIN!',
-    coming_soon: 'Coming soon...',
-    want: 'Want', budget: 'Tell us your budget — we\'ll make it work!',
-    BUDGET: 'Tell us your budget — we\'ll give you the BEST deal!',
-    ws_rs_welcome: 'Wholesale and retail welcome.',
-    WS_RS_WELCOME: 'Wholesale and retail ALL welcome!',
-    bundle_deal: 'Bundle Deal', BUNDLE_DEAL: 'BUNDLE DEAL',
-    combo: 'Combo', save: 'Save', YOU_SAVE: 'YOU SAVE',
-    only_left: 'Only %n left!', last_pieces: 'Last pieces!',
-    LAST_PIECES: 'LAST PIECES!', dont_miss: 'Don\'t miss out.',
-    DONT_MISS: 'GET YOURS BEFORE THEY\'RE GONE!',
-    customer_review: 'Customer Review',
-    price_drop: 'Price Drop', PRICE_DROP: 'PRICE DROP',
-    was: 'Was', now_only: 'Now only', you_save_pct: 'You save %p%!',
-    YOU_SAVE_PCT: 'YOU SAVE %p%!', prices_slashed: 'Prices slashed!',
-    PRICES_SLASHED: 'PRICES SLASHED!',
-    dm_prices: 'DM for prices', DM_PRICES: 'DM NOW for prices!',
-    dm_order: 'DM to order', GET_DEAL: 'GET THIS DEAL NOW!',
-    dm_budget: 'DM your budget', dm_gone: 'DM before it\'s gone',
-    ALMOST_GONE: 'ALMOST GONE — DM NOW!',
-    its_back: 'It\'s back! Get yours', ITS_BACK: 'IT\'S BACK! Get yours',
+    price_drop: 'Price Drop', prices_slashed: 'Prices slashed!',
+    you_save_pct: 'You save %p%!',
+    dm_prices: 'DM for prices',
+    order_now: 'Order now', restocking: 'Restocking',
     pick_prompt: 'Pick a platform and caption type…',
     copied: 'Copied!', copy: 'Copy Caption',
   },
   sw: {
-    wholesale: 'Jumla', retail: 'Rejareja', flash_price: 'Bei ya Flash',
+    wholesale: 'Jumla', retail: 'Rejareja',
     low_stock: 'Inakwisha', out_of_stock: 'Haipatikani',
-    restocking: 'Inarudi', order_now: 'Agiza sasa',
-    selling_fast: 'Inaendelea kuuzwa — chukua yako sasa!',
-    SELLING_FAST: 'INAUZWA HARAKA — chukua yako SASA!',
-    still_available: 'bado zipo!', STILL_AVAILABLE: 'BADO ZIPO!',
     flash_today: 'FLASH SALE — LEO TU', limited_time: 'Offer ya muda mfupi',
-    LIMITED_TIME: 'MUDA MFUPI — CHUKUA SASA!',
-    just_arrived: 'Imefika!', JUST_ARRIVED: 'IMEFIKA!',
-    new_in_store: 'Mpya dukani!', NEW_IN_STORE: 'MPYA DUKANI!',
-    back_in_stock: 'Imerudishwa!', BACK_IN_STOCK: 'IMERUDISHWA!',
-    available_again: 'Inapatikana tena!', AVAILABLE_AGAIN: 'INAPATIKANA TENA!',
-    coming_soon: 'Inakuja hivi karibuni...',
-    want: 'Unataka', budget: 'Tuambie bajeti yako — tutakupa bei nzuri!',
-    BUDGET: 'Tuambie bajeti yako — tutakupa BEI BORA!',
-    ws_rs_welcome: 'Jumla na rejareja mnakaribishwa.',
-    WS_RS_WELCOME: 'Jumla na rejareja MNAKARIBISHWA!',
-    bundle_deal: 'Mchanganyiko', BUNDLE_DEAL: 'MCHANGANYIKO',
-    combo: 'Pamoja', save: 'Okoa', YOU_SAVE: 'UNAOKOA',
-    only_left: 'Zimebaki %n tu!', last_pieces: 'Mwisho!',
-    LAST_PIECES: 'MWISHO!', dont_miss: 'Usikose.',
-    DONT_MISS: 'CHUKUA KABLA HAZIJAISHA!',
-    customer_review: 'Maoni ya Mteja',
-    price_drop: 'Bei Imeshuka', PRICE_DROP: 'BEI IMESHUKA',
-    was: 'Ilikuwa', now_only: 'Sasa ni', you_save_pct: 'Unaokoa %p%!',
-    YOU_SAVE_PCT: 'UNAOKOA %p%!', prices_slashed: 'Bei zimeshuka!',
-    PRICES_SLASHED: 'BEI ZIMESHUKA!',
-    dm_prices: 'DM kwa bei', DM_PRICES: 'DM SASA kwa bei!',
-    dm_order: 'DM kuagiza', GET_DEAL: 'PATA DEAL HII SASA!',
-    dm_budget: 'DM bajeti yako', dm_gone: 'DM kabla haijaisha',
-    ALMOST_GONE: 'INAKWISHA — DM SASA!',
-    its_back: 'Imerudishwa! Chukua yako', ITS_BACK: 'IMERUDISHWA! Chukua yako',
+    price_drop: 'Bei Imeshuka', prices_slashed: 'Bei zimeshuka!',
+    you_save_pct: 'Unaokoa %p%!',
+    dm_prices: 'DM nikupe bei',
+    order_now: 'Agiza sasa', restocking: 'Inarudi',
     pick_prompt: 'Chagua mtandao na aina ya caption…',
     copied: 'Imenakiliwa!', copy: 'Nakili Caption',
   }
 };
 
 function L(key) { return LANG[S.lang]?.[key] || LANG.en[key] || key; }
-function LH(normalKey, hypeKey) { return S.tone === 'hype' ? L(hypeKey) : L(normalKey); }
 
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
 const S = {
-  network: 'whatsapp', type: null, mode: 'single', tone: 'balanced', lang: 'en', name: '',
-  w: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
-  r: { price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
-  flash: { price:'', og:'' },
-  restockDate: '', restockHeadline: '',
-  // Each variant is a full mini-product with its own wholesale, retail, flash,
-  // plus visibility (👁 in caption) and a free-typed name (split to prefix-size
-  // at caption build time only). Family S.w/S.r/S.flash are independent: family
-  // wholesale in variants mode = carton pricing.
+  network: 'whatsapp', type: null, mode: 'single', lang: 'en', name: '',
+  description: '',
+  showPrices: true,
+  hashtags: '',
+  w: { price:'', qty:'', og:'', ogOn:false, status:'in_stock', flashPrice:'', flashQty:'' },
+  r: { price:'', qty:'', og:'', ogOn:false, status:'in_stock', flashPrice:'', flashQty:'' },
   variants: [], activeVariantId: null,
-  bundle: { item2:'', comboPrice:'', savings:'' },
-  lastQty: '',
-  review: { quote:'', reviewer:'', stars:0 },
   previewEdited: false,
 };
 
@@ -104,7 +47,7 @@ const S = {
 // ═══════════════════════════════════════
 const CFG = (() => {
   try { const r=localStorage.getItem('rc_cfg'); if(r) return JSON.parse(r); } catch(e){}
-  return { handle:'', location:'', phone:'', currency:'USD', tone:'balanced', lang:'en', hashtags:'' };
+  return { handle:'', location:'', phone:'', currency:'USD', lang:'en', hashtags:'' };
 })();
 
 function saveCfg() {
@@ -113,7 +56,7 @@ function saveCfg() {
   CFG.phone=document.getElementById('cfgPhone').value;
   CFG.currency=document.getElementById('cfgCurrency').value||'USD';
   CFG.hashtags=document.getElementById('cfgHashtags').value;
-  CFG.tone=S.tone; CFG.lang=S.lang;
+  CFG.lang=S.lang;
   localStorage.setItem('rc_cfg', JSON.stringify(CFG));
   updateSettingsBtn(); regen();
 }
@@ -123,7 +66,6 @@ function initCfgFields() {
   document.getElementById('cfgPhone').value=CFG.phone||'';
   document.getElementById('cfgCurrency').value=CFG.currency||'USD';
   document.getElementById('cfgHashtags').value=CFG.hashtags||'';
-  if(CFG.tone){ S.tone=CFG.tone; setTone(S.tone); }
   if(CFG.lang){ S.lang=CFG.lang; setLang(S.lang); }
   updateSettingsBtn();
 }
@@ -140,58 +82,54 @@ function CC() { return CFG.currency||'USD'; }
 // EMOJI REGISTRY
 // ═══════════════════════════════════════
 const EM = {
-  header_product:    { hype:'🛒', balanced:'🛒', pro:'' },
-  header_flash:      { hype:'⚡', balanced:'⚡', pro:'' },
-  header_new:        { hype:'✨', balanced:'✨', pro:'' },
-  header_restock:    { hype:'🔄', balanced:'🔄', pro:'' },
-  header_repost:     { hype:'📢', balanced:'📢', pro:'' },
-  header_bundle:     { hype:'🎁', balanced:'🎁', pro:'' },
-  header_last:       { hype:'🚨', balanced:'🚨', pro:'' },
-  header_drop:       { hype:'📉', balanced:'📉', pro:'' },
-  header_review:     { hype:'⭐', balanced:'⭐', pro:'' },
-  section_wholesale: { hype:'📦', balanced:'📦', pro:'' },
-  section_retail:    { hype:'🛍️', balanced:'🛍️', pro:'' },
-  price_arrow:       { hype:'👉', balanced:'👉', pro:'•' },
-  status_in:         { hype:'✅', balanced:'✅', pro:'' },
-  status_low:        { hype:'⚠️', balanced:'⚠️', pro:'' },
-  status_out:        { hype:'❌', balanced:'❌', pro:'' },
-  cta_order:         { hype:'🏃💨', balanced:'👇', pro:'' },
-  cta_dm:            { hype:'💬', balanced:'💬', pro:'' },
-  sig_handle:        { hype:'🌐', balanced:'🌐', pro:'' },
-  sig_location:      { hype:'📍', balanced:'📍', pro:'' },
-  sig_phone:         { hype:'📞', balanced:'📞', pro:'' },
-  fire:              { hype:'🔥', balanced:'', pro:'' },
-  star:              { hype:'⭐', balanced:'⭐', pro:'' },
-  divider:           { hype:'🔥🔥🔥🔥🔥🔥🔥🔥🔥', balanced:'───────────────', pro:'───────────────' },
+  header_product:    '🛒',
+  header_flash:      '⚡',
+  header_drop:       '📉',
+  section_wholesale: '📦',
+  section_retail:    '🛍️',
+  variant_anchor:    '🏷️',
+  price_arrow:       '👉',
+  status_in:         '✅',
+  status_low:        '⚠️',
+  status_out:        '❌',
+  cta_dm:            '💬',
+  sig_handle:        '🌐',
+  sig_location:      '📍',
+  sig_phone:         '📞',
+  divider:           '━━━━━━━━━━━━━━━',
+  divider_light:     '───────────────',
 };
 
-function E(role) {
-  let effective=S.tone;
-  if(S.network==='tiktok'||S.network==='twitter') effective='pro';
-  else if((S.network==='instagram'||S.network==='facebook')&&S.tone==='hype') effective='balanced';
-  else if(S.network==='any') effective='pro';
-  return EM[role]?.[effective]||'';
-}
-function Ep(role) { return EM[role]?.[S.tone]||''; }
+function E(role) { return EM[role] || ''; }
 
 // ═══════════════════════════════════════
 // PLATFORM CONFIG
 // ═══════════════════════════════════════
 const PLATFORMS = {
-  whatsapp:  { label:'💬 WA', fullLabel:'WhatsApp',  md:true,  maxLen:0,    short:false },
-  telegram:  { label:'✈️ TG', fullLabel:'Telegram',  md:true,  maxLen:0,    short:false },
-  instagram: { label:'📸 IG', fullLabel:'Instagram', md:false, maxLen:2200, short:false },
-  tiktok:    { label:'🎵 TT', fullLabel:'TikTok',    md:false, maxLen:150,  short:true  },
-  facebook:  { label:'👥 FB', fullLabel:'Facebook',  md:false, maxLen:500,  short:false },
-  twitter:   { label:'𝕏 X',   fullLabel:'X',         md:false, maxLen:280,  short:true  },
-  any:       { label:'📄 Plain', fullLabel:'Plain',  md:false, maxLen:0,    short:false },
+  whatsapp:  { label:'💬 WA', fullLabel:'WhatsApp',  md:true,  maxLen:0    },
+  telegram:  { label:'✈️ TG', fullLabel:'Telegram',  md:false, maxLen:0    },
+  instagram: { label:'📸 IG', fullLabel:'Instagram', md:false, maxLen:2200 },
+  tiktok:    { label:'🎵 TT', fullLabel:'TikTok',    md:false, maxLen:2200 },
 };
 function useMd() { return PLATFORMS[S.network]?.md; }
-function isShort() { return PLATFORMS[S.network]?.short; }
 function maxLen() { return PLATFORMS[S.network]?.maxLen||0; }
 function B(t) { return useMd()?`*${t}*`:t; }
 function STR(t) { return useMd()?`~${t}~`:t; }
 function I(t) { return useMd()?`_${t}_`:t; }
+function MONO(t) { return useMd()?`\`${t}\``:t; }
+function platformDivider(){
+  if(S.network==='whatsapp') return '━━━━━━━━━━━━━━━';
+  if(S.network==='instagram') return '───────────────';
+  return '';
+}
+// Universal old→new price pattern (§4.2): ❌ ~qty = CCY X~ / 👉 qty = `CCY Y`.
+// TT/IG strip tildes+backticks automatically via useMd()=false.
+function oldPriceLine(qty, price){
+  return `${E('status_out')} ${STR(`${qty} = ${CC()} ${fmt(price)}`)}`;
+}
+function newPriceLine(arrow, qty, price){
+  return `${arrow} ${qty} = ${MONO(`${CC()} ${fmt(price)}`)}`;
+}
 function descLine(){
   const d=(S.description||'').trim();
   if(!d) return '';
@@ -203,16 +141,9 @@ function descLine(){
 // ═══════════════════════════════════════
 const NETWORKS = Object.keys(PLATFORMS);
 const REGISTRY = [
-  { id:'standard',      label:'Standard',     nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildStandard },
-  { id:'repost',        label:'Repost',       nets:['whatsapp','telegram','instagram','facebook','any'], groups:['wholesale','retail'], build:buildRepost },
-  { id:'flash',         label:'Flash Sale',   nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['flash','wholesale'], build:buildFlash },
-  { id:'new_arrival',   label:'New Arrival',  nets:['whatsapp','telegram','tiktok','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildNewArrival },
-  { id:'back_in_stock', label:'Back in Stock',nets:['whatsapp','telegram','instagram','facebook','any'], groups:['restock_headline','wholesale','retail'], build:buildBackInStock },
-  { id:'engagement',    label:'Engagement',   nets:['tiktok','instagram','facebook','twitter','any'], groups:[], build:buildEngagement },
-  { id:'price_drop',    label:'Price Drop',   nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['wholesale','retail'], build:buildPriceDrop },
-  { id:'bundle',        label:'Bundle Deal',  nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['bundle','wholesale','retail'], build:buildBundle },
-  { id:'last_pieces',   label:'Last Pieces',  nets:['whatsapp','telegram','instagram','facebook','twitter','any'], groups:['last_qty','wholesale','retail'], build:buildLastPieces },
-  { id:'review',        label:'Review',       nets:['whatsapp','telegram','instagram','facebook','any'], groups:['testimonial','wholesale','retail'], build:buildReview },
+  { id:'standard',   label:'Standard',   nets:['whatsapp','telegram','tiktok','instagram'], groups:['wholesale','retail'],   build:buildStandard  },
+  { id:'flash',      label:'Flash Sale', nets:['whatsapp','telegram','tiktok','instagram'], groups:['flash_w','flash_r'],    build:buildFlash     },
+  { id:'price_drop', label:'Price Drop', nets:['whatsapp','telegram','tiktok','instagram'], groups:['wholesale','retail'],   build:buildPriceDrop },
 ];
 
 function currentTypeLabel() {
@@ -224,14 +155,6 @@ function currentTypeLabel() {
 // ═══════════════════════════════════════
 // TONE & LANG
 // ═══════════════════════════════════════
-function setTone(t) {
-  S.tone=t;
-  document.getElementById('toneHype').classList.toggle('on',t==='hype');
-  document.getElementById('toneBalanced').classList.toggle('on',t==='balanced');
-  document.getElementById('tonePro').classList.toggle('on',t==='pro');
-  CFG.tone=t; try{localStorage.setItem('rc_cfg',JSON.stringify(CFG));}catch(e){}
-  regen();
-}
 function setLang(lang) {
   S.lang=lang;
   document.getElementById('langEn').classList.toggle('on',lang==='en');
@@ -307,7 +230,7 @@ function setMode(m) {
   // Re-sync price field with family wholesale (or flash outside variant mode).
   const pf=document.getElementById('priceField');
   if(pf){
-    const p = S.type==='flash' && m!=='variant' ? S.flash.price : S.w.price;
+    const p = S.type==='flash' && m!=='variant' ? S.w.flashPrice : S.w.price;
     pf.value = p || '';
   }
   updatePriceChip();
@@ -316,7 +239,7 @@ function setMode(m) {
 function typeSupportsVariants(){
   const def=REGISTRY.find(r=>r.id===S.type);
   if(!def) return false;
-  return def.groups.some(g=>['wholesale','retail','flash'].includes(g));
+  return def.groups.some(g=>['wholesale','retail'].includes(g));
 }
 // Entering variants via the row trigger. Exiting happens automatically when
 // the user taps `+ retail` (family retail is mutually exclusive with variants).
@@ -342,13 +265,13 @@ function toggleVariantMode(){
 // CLEAR FORM
 // ═══════════════════════════════════════
 function clearForm() {
-  S.name=''; S.w={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
-  S.r={price:'',qty:'',og:'',ogOn:false,status:'in_stock'};
-  S.flash={price:'',og:''}; S.restockDate=''; S.restockHeadline='';
+  S.name='';
+  S.w={price:'',qty:'',og:'',ogOn:false,status:'in_stock',flashPrice:'',flashQty:''};
+  S.r={price:'',qty:'',og:'',ogOn:false,status:'in_stock',flashPrice:'',flashQty:''};
   S.variants=[]; S.activeVariantId=null; S.mode='single';
+  S.description=''; S.hashtags=''; S.showPrices=true;
   document.body.classList.remove('mode-variant');
-  S.bundle={item2:'',comboPrice:'',savings:''}; S.lastQty='';
-  S.review={quote:'',reviewer:'',stars:0}; S.previewEdited=false;
+  S.previewEdited=false;
   document.getElementById('productName').value='';
   document.getElementById('resetPill').classList.remove('show');
   if(S.type) renderFields();
@@ -369,48 +292,19 @@ function renderFields() {
   // Type-specific extras (bundle, review, restock headline, last qty) render here.
   // Variants render in their own row outside fieldsArea via renderVariantChips().
   let html='<div class="blk">';
-  if(def.groups.includes('restock_headline')) html+=htmlRestockHeadline();
-  if(def.groups.includes('testimonial')) html+=htmlTestimonial();
-  if(def.groups.includes('bundle')) html+=htmlBundleFields();
-  if(def.groups.includes('last_qty')) html+=htmlLastQty();
   html+='</div>';
   area.innerHTML=html;
-  if(def.groups.includes('testimonial')) applyStars(S.review.stars);
   renderVariantChips();
 }
-
-function htmlRestockHeadline(){
-  return `<div class="fc"><div class="fc-title">${E('header_restock')} Restock Info</div>
-    <div class="fld"><label class="fld-lbl">Headline</label><input type="text" placeholder="e.g. Back April 15" value="${S.restockHeadline}" oninput="S.restockHeadline=this.value;regen()"></div></div>`;
-}
-function htmlBundleFields(){
-  return `<div class="fc"><div class="fc-title">${E('header_bundle')} Bundle Details</div>
-    <div class="fld"><label class="fld-lbl">Second Item</label><input type="text" placeholder="e.g. Phone Case" value="${S.bundle.item2}" oninput="S.bundle.item2=this.value;regen()"></div>
-    <div class="grid2"><div class="fld"><label class="fld-lbl">Combo Price (${CC()})</label><input type="number" placeholder="Bundle price" value="${S.bundle.comboPrice}" oninput="S.bundle.comboPrice=this.value;regen()"></div>
-    <div class="fld"><label class="fld-lbl">You Save (${CC()})</label><input type="number" placeholder="Savings" value="${S.bundle.savings}" oninput="S.bundle.savings=this.value;regen()"></div></div></div>`;
-}
-function htmlLastQty(){
-  return `<div class="fc"><div class="fc-title">${E('header_last')} Remaining</div>
-    <div class="fld"><label class="fld-lbl">Pieces Left</label><input type="number" placeholder="e.g. 5" value="${S.lastQty}" oninput="S.lastQty=this.value;regen()"></div></div>`;
-}
-function htmlTestimonial(){
-  return `<div class="fc"><div class="fc-title">${E('header_review')} Review</div>
-    <div class="fld"><label class="fld-lbl">Rating</label><div class="stars" id="starsWrap">${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setStar(${n})">&#9733;</button>`).join('')}</div></div>
-    <div class="fld"><label class="fld-lbl">Quote</label><textarea class="field-ta" placeholder="What they said..." oninput="S.review.quote=this.value;regen()">${S.review.quote}</textarea></div>
-    <div class="fld"><label class="fld-lbl">Reviewer (optional)</label><input type="text" placeholder="e.g. Sarah M." value="${S.review.reviewer}" oninput="S.review.reviewer=this.value;regen()"></div></div>`;
-}
-function setStar(n){ S.review.stars=(S.review.stars===n)?0:n; applyStars(S.review.stars); regen(); }
-function applyStars(n){ const w=document.getElementById('starsWrap'); if(!w)return; w.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n)); }
 
 // ═══════════════════════════════════════
 // VARIANTS — each is a full mini-product
 // ═══════════════════════════════════════
-// Shape: { id, name, w:{price,qty,og,ogOn,status}, r:{price,qty,og,ogOn,status},
-//          flash:{price,og}, visible }
+// Shape: { id, name, w:{price,qty,og,ogOn,status,flashPrice,flashQty},
+//          r:{price,qty,og,ogOn,status,flashPrice,flashQty}, visible }
 // - name is the raw typed text. Caption-side splits last token = size, rest = prefix.
-// - Each variant carries its own wholesale / retail / flash + stock-via-status.
 // - visible=false hides the variant from caption output but keeps its data.
-// - Family S.w / S.r / S.flash are independent (S.w in variants mode = carton).
+// - Family S.w in variants mode = carton pricing.
 
 function variantSplit(raw){
   const tokens=(raw||'').trim().split(/\s+/).filter(Boolean);
@@ -420,16 +314,15 @@ function variantSplit(raw){
 }
 function variantHas(v){
   if(!v) return false;
-  return !!(v.name||'').trim() || !!(v.w&&v.w.price) || !!(v.r&&v.r.price) || !!(v.flash&&v.flash.price);
+  return !!(v.name||'').trim() || !!(v.w&&v.w.price) || !!(v.r&&v.r.price) || !!(v.w&&v.w.flashPrice) || !!(v.r&&v.r.flashPrice);
 }
 function activeVariant(){ return S.variants.find(v=>v.id===S.activeVariantId)||null; }
 function newVariantSlot(){
   return {
     id:'v'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
     name:'',
-    w:{ price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
-    r:{ price:'', qty:'', og:'', ogOn:false, status:'in_stock' },
-    flash:{ price:'', og:'' },
+    w:{ price:'', qty:'', og:'', ogOn:false, status:'in_stock', flashPrice:'', flashQty:'' },
+    r:{ price:'', qty:'', og:'', ogOn:false, status:'in_stock', flashPrice:'', flashQty:'' },
     visible:true,
   };
 }
@@ -495,8 +388,8 @@ function onVariantFieldInput(kind, raw){
     if(p.status) v.r.status=p.status;
     else if(!raw||!raw.trim()) v.r.status='in_stock';
   } else if(kind==='flash'){
-    v.flash.price=p.price;
-    v.flash.og=p.og||'';
+    v.w.flashPrice=p.price;
+    v.w.flashQty=p.qty||'';
   }
   renderVariantChips();
   regen();
@@ -521,8 +414,8 @@ function clearVariants(){
 function escAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 function variantDisplayValue(v,kind){
   if(kind==='flash'){
-    if(!v.flash.price) return '';
-    return v.flash.og ? `${v.flash.price},${v.flash.og}` : v.flash.price;
+    if(!v.w.flashPrice) return '';
+    return v.w.flashQty && v.w.flashQty!=='1' ? `${v.w.flashPrice} ${v.w.flashQty}` : v.w.flashPrice;
   }
   const s = kind==='w' ? v.w : v.r;
   if(!s.price) return '';
@@ -609,14 +502,14 @@ function clean(text){ return text.replace(/  +/g,' ').replace(/^ +/gm,'').replac
 function getSig(){
   const h=CFG.handle,l=CFG.location,p=CFG.phone;
   if(!h&&!l&&!p) return '';
-  if(S.network==='tiktok'||S.network==='twitter') return h?`\n${h}`:'';
+  if(S.network==='tiktok') return h?`\n${h}`:'';
   if(S.network==='instagram') return '\n'+[h,l,p].filter(Boolean).join(' | ');
   if(S.network==='whatsapp'||S.network==='telegram'){
     const div=E('divider')||'───────────────';
     let lines=[`\n${div}`];
-    if(h)lines.push(`${Ep('sig_handle')} ${h}`.trim());
-    if(l)lines.push(`${Ep('sig_location')} ${l}`.trim());
-    if(p)lines.push(`${Ep('sig_phone')} ${p}`.trim());
+    if(h)lines.push(`${E('sig_handle')} ${h}`.trim());
+    if(l)lines.push(`${E('sig_location')} ${l}`.trim());
+    if(p)lines.push(`${E('sig_phone')} ${p}`.trim());
     return lines.join('\n');
   }
   return '\n'+[h,l,p].filter(Boolean).join(' | ');
@@ -625,82 +518,96 @@ function getSig(){
 // ═══════════════════════════════════════
 // CAPTION BLOCKS
 // ═══════════════════════════════════════
-function getWBlock(){
-  const price=S.mode==='single'?S.w.price:null, qty=S.mode==='single'?(S.w.qty||'1'):null;
-  const og=S.mode==='single'&&S.w.ogOn?S.w.og:'', status=S.mode==='single'?S.w.status:null;
-  if(!price||!qty||status==='out_of_stock') return '';
-  const sw=E('section_wholesale'), pa=E('price_arrow');
-  let line=og
-    ? `${sw} ${B(L('wholesale'))}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
-    : `${sw} ${B(L('wholesale'))}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=`\n${E('status_low')} ${L('low_stock')}`;
-  return clean(line);
+// Price-tier block (wholesale/retail). newArrow lets Price Drop variant override
+// the new-price prefix (📦/🛍️ instead of universal 👉) to preserve tier identity
+// in a context where the header doesn't declare a sale.
+function buildTierBlock(slot, tier, newArrow){
+  if(!slot) return '';
+  const label = L(tier);
+  const sec   = E(tier==='wholesale' ? 'section_wholesale' : 'section_retail');
+  const head  = `${sec} ${B(label)}`;
+  if(!S.showPrices) return head;
+  const status = slot.status;
+  if(status==='out_of_stock') return '';
+  const price = slot.price;
+  if(!price) return '';
+  const qty = slot.qty||'1';
+  const arrow = newArrow || E('price_arrow');
+  const lines = [head];
+  if(slot.ogOn && slot.og){
+    lines.push(oldPriceLine(qty, slot.og));
+    lines.push(newPriceLine(arrow, qty, price));
+  } else {
+    lines.push(newPriceLine(arrow, qty, price));
+  }
+  if(status==='low_stock') lines.push(`${E('status_low')} ${L('low_stock')}`);
+  return clean(lines.join('\n'));
 }
-function getRBlock(){
-  const price=S.mode==='single'?S.r.price:null, qty=S.mode==='single'?(S.r.qty||'1'):null;
-  const og=S.mode==='single'&&S.r.ogOn?S.r.og:'', status=S.mode==='single'?S.r.status:null;
-  if(!price||status==='out_of_stock') return '';
-  const sr=E('section_retail'), pa=E('price_arrow');
-  let line=og
-    ? `${sr} ${B(L('retail'))}\n${STR(`${pa} ${qty}pc = ${CC()} ${fmt(og)}`)}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`
-    : `${sr} ${B(L('retail'))}\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(price)}`)}`;
-  if(status==='low_stock') line+=`\n${E('status_low')} ${L('low_stock')}`;
-  return clean(line);
-}
-// Build a full pricing block for one variant: its name-heading plus per-variant
-// wholesale / retail / flash lines. Hidden or empty variants return ''.
+function getWBlock(){ return S.mode==='single' ? buildTierBlock(S.w, 'wholesale') : ''; }
+function getRBlock(){ return S.mode==='single' ? buildTierBlock(S.r, 'retail')    : ''; }
+// Build a pricing block for one variant: size-anchor heading + per-side price
+// lines. Hidden variants return ''. When showPrices=false the anchor still
+// renders but all price lines are stripped.
 function getVariantBlock(v){
   if(!v || v.visible===false) return '';
-  const pa=E('price_arrow');
-  const lines=[];
-  // Variant label: prefix-size suffix only. Family name is rendered as the
-  // outer caption header by the builder — avoid repeating it per variant.
   const suffix=variantSplit(v.name||'');
   if(!suffix) return '';
-  const label = suffix;
-  // Wholesale
-  if(v.w && v.w.price && v.w.status!=='out_of_stock'){
-    const sw=E('section_wholesale');
-    const qty=v.w.qty||'1';
+  const anchor = `${E('variant_anchor')} ${B(suffix)}`;
+  if(!S.showPrices) return clean(anchor);
+  const lines=[];
+  const pa=E('price_arrow');
+  // Price Drop exception: new-price prefix is 📦/🛍️ per tier. Flash + Standard
+  // variants use universal 👉 (flash declares sale context via ⚡ header).
+  const wArrow = (S.type==='price_drop') ? E('section_wholesale') : pa;
+  const rArrow = (S.type==='price_drop') ? E('section_retail')    : pa;
+  const isFlash = S.type==='flash';
+  const wHasFlash = isFlash && v.w && v.w.flashPrice;
+  const rHasFlash = isFlash && v.r && v.r.flashPrice;
+  // Wholesale side — skip when flashPrice set (the flash block below covers the strike→new pair)
+  if(!wHasFlash && v.w && v.w.price && v.w.status!=='out_of_stock'){
+    const qty = v.w.qty||'1';
     if(v.w.og){
-      lines.push(`${sw} ${B(L('wholesale'))}`);
-      lines.push(`${STR(`${pa} ${qty}pc = ${CC()} ${fmt(v.w.og)}`)}`);
-      lines.push(`${pa} ${qty}pc = ${B(`${CC()} ${fmt(v.w.price)}`)}`);
+      lines.push(oldPriceLine(qty, v.w.og));
+      lines.push(newPriceLine(wArrow, qty, v.w.price));
     } else {
-      lines.push(`${sw} ${B(L('wholesale'))} ${pa} ${qty}pc = ${B(`${CC()} ${fmt(v.w.price)}`)}`);
+      lines.push(newPriceLine(wArrow, qty, v.w.price));
     }
     if(v.w.status==='low_stock') lines.push(`${E('status_low')} ${L('low_stock')}`);
   }
-  // Retail
-  if(v.r && v.r.price && v.r.status!=='out_of_stock'){
-    const sr=E('section_retail');
-    const qty=v.r.qty||'1';
+  // Retail side — same guard
+  if(!rHasFlash && v.r && v.r.price && v.r.status!=='out_of_stock'){
+    const qty = v.r.qty||'1';
     if(v.r.og){
-      lines.push(`${sr} ${B(L('retail'))}`);
-      lines.push(`${STR(`${pa} ${qty}pc = ${CC()} ${fmt(v.r.og)}`)}`);
-      lines.push(`${pa} ${qty}pc = ${B(`${CC()} ${fmt(v.r.price)}`)}`);
+      lines.push(oldPriceLine(qty, v.r.og));
+      lines.push(newPriceLine(rArrow, qty, v.r.price));
     } else {
-      lines.push(`${sr} ${B(L('retail'))} ${pa} ${qty}pc = ${B(`${CC()} ${fmt(v.r.price)}`)}`);
+      lines.push(newPriceLine(rArrow, qty, v.r.price));
     }
     if(v.r.status==='low_stock') lines.push(`${E('status_low')} ${L('low_stock')}`);
   }
-  // Flash (only in flash type)
-  if(S.type==='flash' && v.flash && v.flash.price){
-    if(v.flash.og){
-      lines.push(`${STR(`${pa} ${CC()} ${fmt(v.flash.og)}`)}`);
+  // Flash side (only in flash type) — universal pattern with ⚡ declared above
+  if(S.type==='flash'){
+    if(v.w && v.w.flashPrice){
+      const oldQty = v.w.qty||'1';
+      const newQty = v.w.flashQty||oldQty;
+      if(v.w.price) lines.push(oldPriceLine(oldQty, v.w.price));
+      lines.push(newPriceLine(pa, newQty, v.w.flashPrice));
     }
-    lines.push(`${pa} ${B(`${CC()} ${fmt(v.flash.price)}`)}`);
+    if(v.r && v.r.flashPrice){
+      const oldQty = v.r.qty||'1';
+      const newQty = v.r.flashQty||oldQty;
+      if(v.r.price) lines.push(oldPriceLine(oldQty, v.r.price));
+      lines.push(newPriceLine(pa, newQty, v.r.flashPrice));
+    }
   }
-  if(!lines.length) return '';
-  return clean(`${E('header_product')} ${B(label)}\n${lines.join('\n')}`);
+  if(!lines.length) return clean(anchor);
+  return clean(`${anchor}\n${lines.join('\n')}`);
 }
 function getVariantLines(){
   const blocks=S.variants.map(getVariantBlock).filter(Boolean);
   return blocks.length ? blocks.join('\n\n') : null;
 }
 function getOutOfStockBlock(){
-  const date=S.restockDate;
-  if(date) return clean(`${E('status_out')} ${L('restocking')} — ${B(date)}`);
   return clean(`${E('status_out')} ${B(L('out_of_stock'))}`);
 }
 
@@ -717,204 +624,127 @@ function variantBody(){
   return getVariantLines() || '';
 }
 
+// DM-prices CTA shown between empty price area and signature when showPrices=false.
+function dmPricesLine(){
+  return `${E('cta_dm')} ${L('dm_prices')}`;
+}
 function assembleSingle(header, body, footer=''){
-  const div=E('divider')||'───────────────'; const sig=getSig();
+  const div=platformDivider(); const sig=getSig();
   const desc=descLine();
   let out=header;
   if(desc) out+=`\n\n${desc}`;
-  if(body && body.trim()) out+=`\n${div}\n\n${body}`;
-  if(footer) out+= (body && body.trim()) ? `\n\n${footer}` : `\n${div}\n\n${footer}`;
+  const joiner = div ? `\n${div}\n\n` : `\n\n`;
+  if(body && body.trim()) out+=`${joiner}${body}`;
+  if(footer){
+    if(body && body.trim()) out+=`\n\n${footer}`;
+    else out+=`${joiner}${footer}`;
+  }
+  if(!S.showPrices){
+    out+=`\n\n${dmPricesLine()}`;
+  }
   if(sig) out+=`\n${sig}`;
   return out;
 }
-function buildShort(hook, cta){
-  const sig=getSig();
-  let out=`${hook}\n${cta}`;
-  if(sig) out+=sig;
-  // truncate for platform
-  const ml=maxLen();
-  if(ml&&out.length>ml) out=out.slice(0,ml-1)+'…';
-  return out;
-}
-
 // ═══════════════════════════════════════
 // CAPTION BUILDERS
 // ═══════════════════════════════════════
 function buildStandard(){
   const name=(S.name||'').trim()||'—';
-  if(isShort()) return buildShort(`${E('header_product')} ${name}`, LH('dm_prices','DM_PRICES'));
   const h=clean(`${E('header_product')} ${B(name)}`);
   if(S.mode==='variant') return assembleSingle(h, variantBody());
   return assembleSingle(h, priceBody());
 }
 
-function buildRepost(){
-  const name=(S.name||'').trim()||'—';
-  const cta=clean(`${E('cta_order')} ${LH('selling_fast','SELLING_FAST')}`);
-  if(isShort()) return buildShort(`${E('header_repost')} ${name} — ${LH('still_available','STILL_AVAILABLE')}`, cta);
-  const h=clean(`${E('header_repost')} ${B(`${name} — ${LH('still_available','STILL_AVAILABLE')}`)}`);
-  if(S.mode==='variant') return assembleSingle(h, variantBody(), cta);
-  return assembleSingle(h, priceBody(), cta);
-}
-
 function buildFlash(){
   const name=(S.name||'').trim()||'—';
   const flashHead=clean(`${E('header_flash')} ${B(L('flash_today'))} ${E('header_flash')}`);
-  if(isShort()){
-    const fp=S.flash.price?` ${CC()} ${fmt(S.flash.price)}`:'';
-    return buildShort(flashHead, `${name}${fp}\n${LH('limited_time','LIMITED_TIME')}`);
-  }
-  const div=E('divider')||'───────────────'; const sig=getSig(); const pa=E('price_arrow');
-  const desc=descLine(); const descSuffix=desc?`\n\n${desc}`:'';
+  const famHead=clean(`${E('header_product')} ${B(name)}`);
+  const pa=E('price_arrow');
   if(S.mode==='variant'){
     const lines=getVariantLines();
-    const famHead=clean(`${E('header_product')} ${B(name)}`);
-    let body = lines ? `${famHead}\n\n${lines}` : famHead;
-    let out=flashHead+descSuffix;
-    out+=`\n${div}\n\n${body}\n\n${LH('limited_time','LIMITED_TIME')}`;
-    if(sig) out+=`\n${sig}`; return out;
+    const body = lines ? `${famHead}\n\n${lines}` : famHead;
+    const footer = S.showPrices ? L('limited_time') : '';
+    return assembleSingle(flashHead, body, footer);
   }
-  let body=clean(`${E('header_product')} ${B(name)}`);
-  if(S.flash.og) body+='\n'+clean(`${STR(`${pa} ${CC()} ${fmt(S.flash.og)}`)}`);
-  if(S.flash.price) body+='\n'+clean(`${pa} ${B(`${CC()} ${fmt(S.flash.price)}`)}`);
-  const wBlock=getWBlock(); if(wBlock) body+='\n\n'+wBlock;
-  body+=`\n\n${LH('limited_time','LIMITED_TIME')}`;
-  let out=`${flashHead}${descSuffix}\n${div}\n\n${body}`; if(sig) out+=`\n${sig}`; return out;
-}
-
-function buildNewArrival(){
-  const name=(S.name||'').trim()||'—';
-  if(isShort()) return buildShort(`${E('header_new')} ${name} — ${LH('just_arrived','JUST_ARRIVED')}`, LH('dm_prices','DM_PRICES'));
-  const h=clean(`${E('header_new')} ${B(`${name} — ${LH('just_arrived','JUST_ARRIVED')}`)}`);
-  const intro=LH('new_in_store','NEW_IN_STORE');
-  if(S.mode==='variant'){
-    const vb=variantBody();
-    return assembleSingle(h, vb?`${intro}\n\n${vb}`:intro);
+  let body = famHead;
+  if(S.showPrices){
+    if(S.w.flashPrice){
+      const oldQty = S.w.qty||'1';
+      if(S.w.price) body += '\n'+clean(oldPriceLine(oldQty, S.w.price));
+      const newQty = S.w.flashQty||oldQty;
+      body += '\n'+clean(newPriceLine(pa, newQty, S.w.flashPrice));
+    } else {
+      const wBlock = getWBlock(); if(wBlock) body += '\n\n'+wBlock;
+      const rBlock = getRBlock(); if(rBlock) body += '\n\n'+rBlock;
+    }
   }
-  const pb=priceBody();
-  return assembleSingle(h, pb?`${intro}\n\n${pb}`:intro);
+  const footer = S.showPrices ? L('limited_time') : '';
+  return assembleSingle(flashHead, body, footer);
 }
 
-function buildBackInStock(){
-  const name=(S.name||'').trim()||'—';
-  const headline=S.restockHeadline||LH('back_in_stock','BACK_IN_STOCK');
-  if(isShort()) return buildShort(`${E('header_restock')} ${name} — ${headline}`, LH('its_back','ITS_BACK'));
-  const h=clean(`${E('header_restock')} ${B(`${name} — ${headline}`)}`);
-  const intro=clean(`${E('status_in')} ${LH('available_again','AVAILABLE_AGAIN')}`);
-  if(S.mode==='variant'){
-    const vb=variantBody();
-    return assembleSingle(h, vb?`${intro}\n\n${vb}`:intro);
+// Price Drop single-mode tier line: universal old→new pattern, but the new-price
+// prefix is the section emoji (📦/🛍️) instead of 👉, since the header doesn't
+// declare a sale context — tier identity must ride the arrow.
+function priceDropTier(slot, tier){
+  const label = L(tier);
+  const sec   = E(tier==='wholesale' ? 'section_wholesale' : 'section_retail');
+  const head  = `${sec} ${B(label)}`;
+  if(!S.showPrices) return head;
+  if(!slot || slot.status==='out_of_stock' || !slot.price) return '';
+  const qty = slot.qty||'1';
+  const lines = [head];
+  if(slot.og){
+    lines.push(oldPriceLine(qty, slot.og));
+    lines.push(newPriceLine(sec, qty, slot.price));
+    const pct = Math.round((1 - Number(slot.price)/Number(slot.og))*100);
+    if(pct>0) lines.push(L('you_save_pct').replace('%p',pct));
+  } else {
+    lines.push(newPriceLine(sec, qty, slot.price));
   }
-  const pb=priceBody();
-  return assembleSingle(h, pb?`${intro}\n\n${pb}`:intro);
+  if(slot.status==='low_stock') lines.push(`${E('status_low')} ${L('low_stock')}`);
+  return clean(lines.join('\n'));
 }
-
-function buildEngagement(){
-  const name=(S.name||'').trim()||'this';
-  const wantLine=`${L('want')} ${name}?`;
-  if(isShort()) return buildShort(wantLine, LH('budget','BUDGET'));
-  const div=E('divider')||'───────────────';
-  const body=LH('budget','BUDGET')+'\n\n'+LH('ws_rs_welcome','WS_RS_WELCOME');
-  const sig=getSig();
-  const desc=descLine(); const descSuffix=desc?`\n\n${desc}`:'';
-  return `${wantLine}${descSuffix}\n${div}\n\n${body}${sig?'\n'+sig:''}`;
-}
-
 function buildPriceDrop(){
   const name=(S.name||'').trim()||'—';
-  if(isShort()) return buildShort(`${E('header_drop')} ${name} — ${LH('price_drop','PRICE_DROP')}`, LH('dm_prices','DM_PRICES'));
-  const h=clean(`${E('header_drop')} ${B(`${name} — ${LH('price_drop','PRICE_DROP')}`)}`);
-  const intro=LH('prices_slashed','PRICES_SLASHED');
+  const h=clean(`${E('header_drop')} ${B(`${name} — ${L('price_drop')}`)}`);
+  const intro=S.showPrices ? L('prices_slashed') : '';
   let pb;
   if(S.mode==='variant'){
     pb=variantBody();
+  } else if(!S.showPrices){
+    const blocks=[priceDropTier(S.w,'wholesale'), priceDropTier(S.r,'retail')].filter(Boolean);
+    pb=blocks.join('\n\n');
   } else {
-    let wLine='';
-    if(S.w.price && S.w.status!=='out_of_stock'){
-      const sw=E('section_wholesale'), pa=E('price_arrow');
-      const qty=S.w.qty||'1';
-      wLine=`${sw} ${B(L('wholesale'))}`;
-      if(S.w.og){
-        wLine+=`\n${STR(`${pa} ${L('was')}: ${CC()} ${fmt(S.w.og)}`)}`;
-        wLine+=`\n${pa} ${L('now_only')}: ${B(`${CC()} ${fmt(S.w.price)}`)}`;
-        const pct=Math.round((1-Number(S.w.price)/Number(S.w.og))*100);
-        if(pct>0) wLine+=`\n${LH('you_save_pct','YOU_SAVE_PCT').replace('%p',pct)}`;
-      } else {
-        wLine+=`\n${pa} ${qty}pc = ${B(`${CC()} ${fmt(S.w.price)}`)}`;
-      }
-      if(S.w.status==='low_stock') wLine+=`\n${E('status_low')} ${L('low_stock')}`;
-    }
-    let rLine='';
-    if(S.r.price && S.r.status!=='out_of_stock'){
-      const sr=E('section_retail'), pa=E('price_arrow');
-      rLine=`${sr} ${B(L('retail'))}`;
-      if(S.r.og){
-        rLine+=`\n${STR(`${pa} ${L('was')}: ${CC()} ${fmt(S.r.og)}`)}`;
-        rLine+=`\n${pa} ${L('now_only')}: ${B(`${CC()} ${fmt(S.r.price)}`)}`;
-        const pct=Math.round((1-Number(S.r.price)/Number(S.r.og))*100);
-        if(pct>0) rLine+=`\n${LH('you_save_pct','YOU_SAVE_PCT').replace('%p',pct)}`;
-      } else {
-        rLine+=`\n${pa} 1pc = ${B(`${CC()} ${fmt(S.r.price)}`)}`;
-      }
-      if(S.r.status==='low_stock') rLine+=`\n${E('status_low')} ${L('low_stock')}`;
-    }
-    const blocks=[wLine,rLine].filter(Boolean);
+    const blocks=[priceDropTier(S.w,'wholesale'), priceDropTier(S.r,'retail')].filter(Boolean);
     if(blocks.length) pb=blocks.join('\n\n');
     else if(S.w.status==='out_of_stock'||S.r.status==='out_of_stock') pb=getOutOfStockBlock();
     else pb='';
   }
-  return assembleSingle(h, pb?`${intro}\n\n${pb}`:intro);
-}
-
-function buildBundle(){
-  const name=(S.name||'').trim()||'—'; const item2=S.bundle.item2||'Item 2';
-  const combo=S.bundle.comboPrice; const savings=S.bundle.savings;
-  if(isShort()){
-    let short=`${E('header_bundle')} ${name} + ${item2}`;
-    if(combo) short+=`\n${L('combo')}: ${CC()} ${fmt(combo)}`;
-    return buildShort(short, LH('dm_order','GET_DEAL'));
-  }
-  const h=clean(`${E('header_bundle')} ${B(`${name} + ${item2}`)}`);
-  let bb=LH('bundle_deal','BUNDLE_DEAL');
-  if(combo) bb+='\n'+clean(`${E('price_arrow')} ${L('combo')}: ${B(`${CC()} ${fmt(combo)}`)}`);
-  if(savings) bb+='\n'+LH(`${L('save')} ${CC()} ${fmt(savings)}`,`${L('YOU_SAVE')} ${CC()} ${fmt(savings)}!`);
-  if(S.mode==='variant'){ const l=getVariantLines(); if(l) bb+='\n\n'+l; }
-  else { const pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n'); if(pb) bb+='\n\n'+pb; }
-  return assembleSingle(h, bb);
-}
-
-function buildLastPieces(){
-  const name=(S.name||'').trim()||'—'; const qty=S.lastQty;
-  const qtyText=qty?L('only_left').replace('%n',qty):L('last_pieces');
-  const qtyHype=qty?L('only_left').replace('%n',qty).toUpperCase():L('LAST_PIECES');
-  if(isShort()) return buildShort(`${E('header_last')} ${name} — ${qtyText}`, LH('dm_gone','ALMOST_GONE'));
-  const h=clean(`${E('header_last')} ${B(`${name} — ${S.tone==='hype'?qtyHype:qtyText}`)}`);
-  const urgency=clean(`${E('status_low')} ${S.tone==='hype'?qtyHype:qtyText} ${LH('dont_miss','DONT_MISS')}`);
-  let body;
-  if(S.mode==='variant'){ const vb=variantBody(); body=vb?`${urgency}\n\n${vb}`:urgency; }
-  else { const pb=priceBody(); body=pb?`${urgency}\n\n${pb}`:urgency; }
+  const body = intro && pb ? `${intro}\n\n${pb}` : (intro || pb || '');
   return assembleSingle(h, body);
 }
 
-function buildReview(){
-  const name=(S.name||'').trim()||'—'; const q=S.review.quote||'Great product!';
-  const reviewer=S.review.reviewer; const stars=S.review.stars;
-  const starStr=stars?(E('star')||'★').repeat(stars):'';
-  if(isShort()) return buildShort(`${E('header_review')} "${q.slice(0,60)}${q.length>60?'...':''}"`, `${name}${reviewer?' — '+reviewer:''}`);
-  const h=clean(`${E('header_review')} ${B(name)} — ${L('customer_review')}`);
-  let rb=''; if(starStr) rb+=starStr+'\n'; rb+=`"${q}"`; if(reviewer) rb+=`\n— ${reviewer}`;
-  let pb; if(S.mode==='variant') pb=getVariantLines(); else pb=[getWBlock(),getRBlock()].filter(Boolean).join('\n\n');
-  return assembleSingle(h, pb?`${rb}\n\n${pb}`:rb);
+// ═══════════════════════════════════════
+// HASHTAGS — TT + IG only. Three tiers concatenated with spaces:
+// 1) type-auto per-language, 2) per-caption (S.hashtags), 3) global CFG.hashtags.
+// IG prepends `.\n.\n.\n` buffer to keep tags out of feed preview.
+// ═══════════════════════════════════════
+function typeAutoHashtags(){
+  if(S.type==='flash'){
+    return S.lang==='sw' ? '#flashsale #leotu' : '#flashsale #todayonly';
+  }
+  if(S.type==='price_drop'){
+    return S.lang==='sw' ? '#pricedrop #beiimeshuka' : '#pricedrop #priceslashed';
+  }
+  return '';
 }
-
-// ═══════════════════════════════════════
-// INSTAGRAM HASHTAGS
-// ═══════════════════════════════════════
 function maybeAddHashtags(text){
-  if(S.network!=='instagram') return text;
-  const custom=CFG.hashtags?.trim();
-  if(!custom) return text;
-  return text+'\n.\n.\n.\n'+custom;
+  if(S.network!=='instagram' && S.network!=='tiktok') return text;
+  const tiers=[typeAutoHashtags(), (S.hashtags||'').trim(), (CFG.hashtags||'').trim()].filter(Boolean);
+  if(!tiers.length) return text;
+  const tags=tiers.join(' ');
+  const sep = S.network==='instagram' ? '\n.\n.\n.\n' : '\n\n';
+  return text+sep+tags;
 }
 
 // ═══════════════════════════════════════
@@ -1031,7 +861,7 @@ function updateTypeChip(){
   if(!chip) return;
   if(!S.type){ chip.textContent='—'; return; }
   const def=REGISTRY.find(r=>r.id===S.type);
-  const icon={standard:'🛒',flash:'⚡',new_arrival:'✨',last_pieces:'🔥',repost:'📢',back_in_stock:'🔄',engagement:'💬',price_drop:'📉',bundle:'🎁',review:'⭐'}[S.type]||'▸';
+  const icon={standard:'🛒',flash:'⚡',price_drop:'📉'}[S.type]||'▸';
   chip.textContent=`${icon} ${def?def.label.toLowerCase():S.type}`;
 }
 
@@ -1120,9 +950,8 @@ function parsePriceFormat(raw){
 function parsePriceInput(raw){
   const p=parsePriceFormat(raw);
   if(S.type==='flash' && S.mode!=='variant'){
-    S.flash.price=p.price;
-    S.flash.og=p.og||'';
-    if(p.qty) S.w.qty=p.qty;
+    S.w.flashPrice=p.price;
+    S.w.flashQty=p.qty||'';
     if(p.status) S.w.status=p.status;
   } else {
     S.w.price=p.price;
@@ -1139,9 +968,10 @@ function updatePriceChip(){
   const chip=document.getElementById('priceChip'); if(!chip) return;
   // priceField represents family wholesale (or family flash when type=flash).
   // In variants mode the family wholesale = optional carton price.
-  const p = S.type==='flash' && S.mode!=='variant' ? S.flash.price : S.w.price;
-  const og = S.type==='flash' && S.mode!=='variant' ? S.flash.og : S.w.og;
-  const q = S.w.qty;
+  const isFlash = S.type==='flash' && S.mode!=='variant';
+  const p = isFlash ? S.w.flashPrice : S.w.price;
+  const og = isFlash ? '' : S.w.og;
+  const q = isFlash ? (S.w.flashQty||S.w.qty) : S.w.qty;
   if(!p){ chip.textContent=''; return; }
   let parts=[`${CC()} ${fmt(p)}`];
   if(og) parts.push(`,${fmt(og)}`);
@@ -1158,13 +988,29 @@ function setFocusStep(step){
   }
 }
 
-// --- chip rail (platform / tone / lang) ---
+// --- chip rail (platform / lang / prices) ---
 // Stock lives inline in the price field (e.g. "500 10 low"), not as a chip.
 function updateChipRail(){
   const p=document.getElementById('chipPlatformV');
   if(p) p.textContent = (PLATFORMS[S.network]?.fullLabel || S.network || '').toLowerCase();
-  const t=document.getElementById('chipToneV'); if(t) t.textContent=S.tone;
   const l=document.getElementById('chipLangV'); if(l) l.textContent=S.lang;
+  const pc=document.getElementById('chipPricesV'); if(pc) pc.textContent = S.showPrices ? 'on' : 'off';
+  const tagsInput = document.getElementById('captionTags');
+  if(tagsInput){
+    const isTagNet = S.network==='tiktok' || S.network==='instagram';
+    tagsInput.style.display = isTagNet ? '' : 'none';
+    if(tagsInput.value !== (S.hashtags||'')) tagsInput.value = S.hashtags || '';
+  }
+}
+function togglePrices(){
+  S.showPrices = !S.showPrices;
+  updateChipRail();
+  regen();
+}
+function onCaptionTagsInput(){
+  const el=document.getElementById('captionTags');
+  S.hashtags = el ? el.value : '';
+  regen();
 }
 function parseRetailString(raw){
   const p=parsePriceFormat(raw);
@@ -1249,7 +1095,7 @@ function openTypesPanel(){
   const list=document.getElementById('typesList'); if(!list) return;
   const avail=REGISTRY.filter(r=>r.nets.includes(S.network));
   list.innerHTML = avail.map(r=>{
-    const icon={standard:'🛒',flash:'⚡',new_arrival:'✨',last_pieces:'🔥',repost:'📢',back_in_stock:'🔄',engagement:'💬',price_drop:'📉',bundle:'🎁',review:'⭐'}[r.id]||'▸';
+    const icon={standard:'🛒',flash:'⚡',price_drop:'📉'}[r.id]||'▸';
     return `<button class="type-row${S.type===r.id?' on':''}" onclick="pickTypeFromPanel('${r.id}')">${icon} ${r.label.toLowerCase()}</button>`;
   }).join('');
   showPanel('typesPanel');
@@ -1272,10 +1118,6 @@ function openPicker(field){
     title.textContent = '▸ platform';
     current = S.network;
     rows = Object.keys(PLATFORMS).map(k=>({ id:k, label:(PLATFORMS[k].fullLabel||k).toLowerCase() }));
-  } else if(field==='tone'){
-    title.textContent = '▸ tone';
-    current = S.tone;
-    rows = [{id:'hype',label:'hype — playful, emoji-heavy'},{id:'balanced',label:'balanced — clean & warm'},{id:'pro',label:'pro — minimal, business'}];
   } else if(field==='lang'){
     title.textContent = '▸ language';
     current = S.lang;
@@ -1287,7 +1129,6 @@ function openPicker(field){
 function closePicker(){ hidePanel('pickerPanel'); _pickerField=null; }
 function pickFromPanel(id){
   if(_pickerField==='platform') selectNetwork(id);
-  else if(_pickerField==='tone') setTone(id);
   else if(_pickerField==='lang') setLang(id);
   closePicker();
   updateChipRail();
@@ -1313,12 +1154,12 @@ function clearAll(){
 }
 // After sending from Telegram, we clear name+price but keep type/platform
 function resetAfterSend(){
-  S.name=''; S.w.price=''; S.w.qty=''; S.w.og=''; S.w.ogOn=false;
-  S.flash.price=''; S.flash.og='';
-  S.r.price=''; S.r.qty=''; S.r.og=''; S.r.ogOn=false;
+  S.name='';
+  S.w.price=''; S.w.qty=''; S.w.og=''; S.w.ogOn=false; S.w.flashPrice=''; S.w.flashQty='';
+  S.r.price=''; S.r.qty=''; S.r.og=''; S.r.ogOn=false; S.r.flashPrice=''; S.r.flashQty='';
   S.variants=[]; S.activeVariantId=null; S.mode='single';
   document.body.classList.remove('mode-variant');
-  S.description='';
+  S.description=''; S.hashtags=''; S.showPrices=true;
   S.previewEdited=false;
   const n=document.getElementById('productName'); if(n) n.value='';
   const p=document.getElementById('priceField'); if(p) p.value='';
@@ -1356,19 +1197,12 @@ function stateSnapshot(){
   return {
     name: S.name || '',
     description: (document.getElementById('descBox')?.value || '').trim(),
-    wholesale: { price:S.w.price, qty:S.w.qty, og:S.w.og, ogOn:S.w.ogOn, status:S.w.status },
-    retail:    { price:S.r.price, qty:S.r.qty, og:S.r.og, ogOn:S.r.ogOn, status:S.r.status },
-    flash:     { price:S.flash.price, og:S.flash.og },
+    wholesale: { price:S.w.price, qty:S.w.qty, og:S.w.og, ogOn:S.w.ogOn, status:S.w.status, flashPrice:S.w.flashPrice, flashQty:S.w.flashQty },
+    retail:    { price:S.r.price, qty:S.r.qty, og:S.r.og, ogOn:S.r.ogOn, status:S.r.status, flashPrice:S.r.flashPrice, flashQty:S.r.flashQty },
     mode: S.mode,
     variants: JSON.parse(JSON.stringify(S.variants || [])),
-    testimonial: { quote:S.review.quote, reviewer:S.review.reviewer, stars:S.review.stars },
-    bundle:      { item2:S.bundle.item2, comboPrice:S.bundle.comboPrice, savings:S.bundle.savings },
-    restockDate: S.restockDate || '',
-    restockHeadline: S.restockHeadline || '',
-    lastQty: S.lastQty || '',
     lastType: S.type || '',
     lastPlatform: S.network || '',
-    lastTone: S.tone || '',
     lastLang: S.lang || '',
   };
 }
@@ -1430,24 +1264,30 @@ function pickProduct(id){
   if(desc) revealDescription(); else collapseDescription();
   // 3. wholesale
   if(p.wholesale){
-    S.w.price  = p.wholesale.price  || '';
-    S.w.qty    = p.wholesale.qty    || '';
-    S.w.og     = p.wholesale.og     || '';
-    S.w.ogOn   = !!p.wholesale.ogOn;
-    S.w.status = p.wholesale.status || 'in_stock';
+    S.w.price      = p.wholesale.price      || '';
+    S.w.qty        = p.wholesale.qty        || '';
+    S.w.og         = p.wholesale.og         || '';
+    S.w.ogOn       = !!p.wholesale.ogOn;
+    S.w.status     = p.wholesale.status     || 'in_stock';
+    S.w.flashPrice = p.wholesale.flashPrice || '';
+    S.w.flashQty   = p.wholesale.flashQty   || '';
   }
   // 4. retail
   if(p.retail){
-    S.r.price  = p.retail.price  || '';
-    S.r.qty    = p.retail.qty    || '';
-    S.r.og     = p.retail.og     || '';
-    S.r.ogOn   = !!p.retail.ogOn;
-    S.r.status = p.retail.status || 'in_stock';
+    S.r.price      = p.retail.price      || '';
+    S.r.qty        = p.retail.qty        || '';
+    S.r.og         = p.retail.og         || '';
+    S.r.ogOn       = !!p.retail.ogOn;
+    S.r.status     = p.retail.status     || 'in_stock';
+    S.r.flashPrice = p.retail.flashPrice || '';
+    S.r.flashQty   = p.retail.flashQty   || '';
   }
-  // 5. flash
-  if(p.flash){
-    S.flash.price = p.flash.price || '';
-    S.flash.og    = p.flash.og    || '';
+  // 5. legacy flash migration: old records carried top-level `flash:{price,og}` →
+  // fold price into S.w.flashPrice; the old `og` was a duplicate "was" — drop it
+  // (regular S.w.price already carries the crossed-out baseline under the new pattern).
+  if(p.flash && !S.w.flashPrice){
+    S.w.flashPrice = p.flash.price || '';
+    S.w.flashQty   = S.w.qty || '';
   }
   // 6. mode + variants (migrate legacy {rawInput,price} chip-row data into full slots)
   if(p.mode) S.mode = p.mode;
@@ -1459,7 +1299,11 @@ function pickProduct(id){
       else if(typeof v.rawInput === 'string') slot.name = v.rawInput;
       if(v.w) Object.assign(slot.w, v.w);
       if(v.r) Object.assign(slot.r, v.r);
-      if(v.flash) Object.assign(slot.flash, v.flash);
+      // Legacy slot had v.flash:{price,og} — migrate price into w.flashPrice.
+      if(v.flash && !slot.w.flashPrice){
+        slot.w.flashPrice = v.flash.price || '';
+        slot.w.flashQty   = slot.w.qty || '';
+      }
       // Legacy shape had a flat v.price → fold it into wholesale.
       if(!slot.w.price && v.price) slot.w.price = v.price;
       if(typeof v.visible === 'boolean') slot.visible = v.visible;
@@ -1469,34 +1313,21 @@ function pickProduct(id){
     S.variants = [];
   }
   S.activeVariantId = null;
-  // 7. type-specific extras
-  if(p.testimonial){
-    S.review.quote    = p.testimonial.quote    || '';
-    S.review.reviewer = p.testimonial.reviewer || '';
-    S.review.stars    = p.testimonial.stars    || 0;
-  }
-  if(p.bundle){
-    S.bundle.item2      = p.bundle.item2      || '';
-    S.bundle.comboPrice = p.bundle.comboPrice || '';
-    S.bundle.savings    = p.bundle.savings    || '';
-  }
-  S.restockDate     = p.restockDate     || '';
-  S.restockHeadline = p.restockHeadline || '';
-  S.lastQty         = p.lastQty         || '';
-  // 8. last session context — auto-select type; detect falls back to standard
+  // 7. last session context — auto-select type; detect falls back to standard
   if(p.lastPlatform && PLATFORMS[p.lastPlatform]) S.network = p.lastPlatform;
-  if(p.lastTone) { S.tone = p.lastTone; setTone(p.lastTone); }
   if(p.lastLang) { S.lang = p.lastLang; setLang(p.lastLang); }
   const resolvedType = (p.lastType && REGISTRY.find(r=>r.id===p.lastType)) ? p.lastType : 'standard';
   if(resolvedType !== S.type) selectType(resolvedType);
-  // 9. reflect price field + chips
+  // 8. reflect price field + chips
   const pf = document.getElementById('priceField');
   if(pf){
-    const p0 = (S.type==='flash' ? S.flash.price : S.w.price) || '';
-    const og0 = (S.type==='flash' ? S.flash.og : (S.w.ogOn ? S.w.og : '')) || '';
+    const isFlash = S.type==='flash';
+    const p0 = (isFlash ? S.w.flashPrice : S.w.price) || '';
+    const og0 = (isFlash ? '' : (S.w.ogOn ? S.w.og : '')) || '';
+    const q0 = isFlash ? (S.w.flashQty||S.w.qty) : S.w.qty;
     let disp = p0;
     if(og0) disp = `${p0},${og0}`;
-    if(S.w.qty && S.w.qty !== '1') disp += ` ${S.w.qty}`;
+    if(q0 && q0 !== '1') disp += ` ${q0}`;
     pf.value = disp;
   }
   if(S.r.price) revealRetail(); else collapseRetail();
@@ -1681,6 +1512,8 @@ window.onVariantChipTap = onVariantChipTap;
 window.onVariantFieldInput = onVariantFieldInput;
 window.toggleVariantVisibility = toggleVariantVisibility;
 window.clearVariants = clearVariants;
+window.togglePrices = togglePrices;
+window.onCaptionTagsInput = onCaptionTagsInput;
 function openPreview(){
   const box=document.getElementById('previewBox');
   if(box && box.value && box.value !== L('pick_prompt')){ regen(); }
